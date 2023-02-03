@@ -3,17 +3,20 @@ using UnityEngine;
 
 public class CardView : MonoBehaviour
 {
-    private Card _card;
+    [SerializeField] private Card card;
+    [SerializeField] private SpriteRenderer mainSprite;
     private int _occupiedSockets = 0;
+    
+    public Card Card => card;
 
     public Card GetCard()
     {
-        return _card;
+        return card;
     }
 
     public bool HasOpenSockets()
     {
-        if (_occupiedSockets < _card.numberOfSockets)
+        if (_occupiedSockets < card.numberOfSockets)
         {
             return true;
         }

@@ -39,7 +39,7 @@ public class CardGrid : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         for (var x = 0; x < widthCells; ++x)
         {

@@ -4,6 +4,8 @@ using System.Linq;
 [CreateAssetMenu(menuName = "Card")]
 public class Card : ScriptableObject
 {
+    public Sprite sprite;
+    
     public string cardType;
     public int numberOfSockets;
     public string[] attachableCardTypes;
