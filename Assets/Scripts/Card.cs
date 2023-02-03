@@ -9,6 +9,8 @@ public class Card : ScriptableObject
     public string cardType;
     public int numberOfSockets;
     public string[] attachableCardTypes;
+    public float gatherMultiplierOnResource;
+    public float gatherMultiplierNextToResource;
 
 
     public bool CanAttachCardType(string cardType)
