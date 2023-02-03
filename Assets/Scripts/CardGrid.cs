@@ -74,7 +74,9 @@ public class CardGrid : MonoBehaviour
 
     public (int, int) WorldCoordinatesToGridPosition(float x, float y)
     {
-
+        int gridX = (int)System.Math.Floor(x / cellSize);
+        int gridY = (int)System.Math.Floor(y / cellSize);
+        return (gridX, gridY);
     }
 
 
