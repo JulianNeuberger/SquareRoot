@@ -22,13 +22,4 @@ public class CardView : MonoBehaviour
         }
         return false;
     }
-
-    public Dictionary<string, int> GatherResources()
-    {
-        var gatheredResources = new Dictionary<string, int>();
-        
-
-
-
-    }
 }
