@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GridCell : MonoBehaviour
 {
-    private Card _activeCard;
+    private CardView _activeCardView;
     private TerrainType _terrain;
 
     [SerializeField] private SpriteRenderer backgroundSprite;
