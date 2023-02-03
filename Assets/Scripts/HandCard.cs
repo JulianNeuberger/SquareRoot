@@ -11,6 +11,12 @@ public class HandCard : MonoBehaviour
         set => SetCard(value);
     }
 
+    public void SetSortingOrder(int index)
+    {
+        mainSprite.sortingOrder = index;
+        borderSprite.sortingOrder = index;
+    }
+    
     private void SetCard(Card newCard)
     {
         this.card = newCard;

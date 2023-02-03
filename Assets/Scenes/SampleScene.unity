@@ -351,6 +351,7 @@ MonoBehaviour:
   cardSize: 1
   availableSpace: 20
   height: 1
+  maxGap: 1
   cards:
   - {fileID: 11400000, guid: 74cca85b24e4ed04ba90053dbefc231d, type: 2}
   - {fileID: 11400000, guid: 4a5b0cc321de67f4daef664ed4749ed0, type: 2}

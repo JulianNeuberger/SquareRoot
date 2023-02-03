@@ -11,6 +11,7 @@ public class Hand : MonoBehaviour
     [SerializeField] private float cardSize = 1f;
     [SerializeField] private float availableSpace = 30f;
     [SerializeField] private float height = 3f;
+    [SerializeField] private float maxGap = 1f;
 
     public List<Card> cards = new();
 
@@ -39,6 +40,8 @@ public class Hand : MonoBehaviour
         var handCard = Instantiate(handCardPrefab, transform);
         handCard.transform.position = Vector3.zero;
         handCard.Card = card;
+        handCard.transform.SetSiblingIndex(transform.childCount - 1);
+        handCard.SetSortingOrder(transform.childCount - 1);
         _currentCards.Add(handCard);
 
         LayoutCards();
@@ -54,10 +57,36 @@ public class Hand : MonoBehaviour
 
     private void LayoutCards()
     {
+        var gap = 0f;
+        if (_currentCards.Count > 1)
+        {
+            // more than one card on hand, there will be gaps, but how large?
+            var gapSpace = availableSpace - _currentCards.Count * cardSize;
+            gap = gapSpace / (_currentCards.Count - 1);
+            gap = Mathf.Min(maxGap, gap);
+        }
+
+        var margin = 0f;
+        // how much space do the cards themselves take up and what remains?
+        var remainingSpace = availableSpace - _currentCards.Count * cardSize;
+        if (_currentCards.Count > 1)
+        {
+            // account for gaps
+            remainingSpace -= gap * (_currentCards.Count - 1);
+        }
+        
+        // the rest is margin
+        margin = remainingSpace / 2f;
+
         for (var i = 0; i < _currentCards.Count; ++i)
         {
-            _currentCards[i].transform.localPosition =
-                new Vector3(i * cardSize + cardSize / 2f + .5f, cardSize / 2f, 0f);
+            var pos = new Vector3(i * cardSize, 0f, 0f);
+            pos += new Vector3(cardSize / 2f, cardSize / 2f, 0f);
+            pos += new Vector3(margin, 0f, 0f);
+            // account for gaps, after the first card
+            if (i > 0) pos += new Vector3(i * gap, 0f, 0f);
+            
+            _currentCards[i].transform.localPosition = pos;
         }
     }
 
