@@ -1,9 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CardView : MonoBehaviour
 {
     private Card _card;
-
     private int _occupiedSockets = 0;
 
     public Card GetCard()
@@ -18,5 +18,14 @@ public class CardView : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public Dictionary<string, int> GatherResources()
+    {
+        var gatheredResources = new Dictionary<string, int>();
+        
+
+
+
     }
 }

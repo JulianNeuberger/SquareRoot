@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CardGrid : MonoBehaviour
@@ -56,6 +57,27 @@ public class CardGrid : MonoBehaviour
     }
 
 
+    public List<(int, int)> GetAllGridPositionsWithActiveCardViews()
+    {
+        // TODO IMPLEMENT
+        return new List<(int, int)>();
+    }
+
+    public GridCell GetGridCell(int x, int y)
+    {
+        if(x >= 0 && x < widthCells && y >= 0 && y <= heightCells) {
+            return _grid[x, y];
+        }
+        return null;
+    }
+
+
+    public (int, int) WorldCoordinatesToGridPosition(float x, float y)
+    {
+
+    }
+
+
     public bool CanPlaceCard(int x, int y, Card card)
     {
         if(_grid[x, y].GetActiveCardView() != null)
@@ -64,31 +86,48 @@ public class CardGrid : MonoBehaviour
             return false;
         }
 
-        var cardViewLeft = _grid[x - 1, y].GetActiveCardView();
-        if (cardViewLeft.HasOpenSockets() && cardViewLeft.GetCard().CanAttachCardType(card.cardType))
-        { 
-            return true;            
-        }
+        var neighbors = GetNeighbors(x, y);
 
-        var cardViewBelow = _grid[x, y - 1].GetActiveCardView();
-        if (cardViewBelow.HasOpenSockets() && cardViewBelow.GetCard().CanAttachCardType(card.cardType))
+        foreach(var neighbor in neighbors)
         {
-            return true;
-        }
-
-        var cardViewRight = _grid[x + 1, y].GetActiveCardView();
-        if (cardViewRight.HasOpenSockets() && cardViewRight.GetCard().CanAttachCardType(card.cardType))
-        {
-            return true;
-        }
-
-        var cardViewAbove = _grid[x, y + 1].GetActiveCardView();
-        if (cardViewAbove.HasOpenSockets() && cardViewAbove.GetCard().CanAttachCardType(card.cardType))
-        {
-            return true;
+            if (neighbor.GetActiveCardView().HasOpenSockets() && neighbor.GetActiveCardView().GetCard().CanAttachCardType(card.cardType))
+            {
+                return true;
+            }
         }
 
         return false;
+    }
+
+    public List<GridCell> GetNeighbors(int x, int y)
+    {
+        var neighbors = new List<GridCell>();
+
+        var gridCellLeft = GetGridCell(x - 1, y);
+        if(gridCellLeft != null)
+        {
+            neighbors.Add(gridCellLeft);
+        }
+
+        var gridCellBelow = GetGridCell(x, y - 1);
+        if (gridCellBelow != null)
+        {
+            neighbors.Add(gridCellBelow);
+        }
+
+        var gridCellRight = GetGridCell(x + 1, y);
+        if (gridCellRight != null)
+        {
+            neighbors.Add(gridCellRight);
+        }
+
+        var gridCellAbove = GetGridCell(x, y + 1);
+        if (gridCellAbove != null)
+        {
+            neighbors.Add(gridCellAbove);
+        }
+
+        return neighbors;
     }
 
 
