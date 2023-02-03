@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Terrain
+    uniqueID: 614160669
+    locked: 0
+  - name: ActiveCards
+    uniqueID: 1384053029
+    locked: 0
+  - name: HandCards
+    uniqueID: 3197825485
+    locked: 0
