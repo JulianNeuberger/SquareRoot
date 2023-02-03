@@ -13,4 +13,9 @@ public class GridCell : MonoBehaviour
         _terrain = type;
         backgroundSprite.sprite = _terrain.Sprite;
     }
+
+    public CardView GetActiveCardView()
+    {
+        return _activeCardView;
+    }
 }

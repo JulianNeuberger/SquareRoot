@@ -54,4 +54,43 @@ public class CardGrid : MonoBehaviour
         Gizmos.DrawLine(transform.position + new Vector3(-cellSize / 2f, earthLevel * cellSize - cellSize / 2f), 
             transform.position + new Vector3(widthCells - cellSize / 2f, earthLevel * cellSize - cellSize / 2f));
     }
+
+
+    public bool CanPlaceCard(int x, int y, Card card)
+    {
+        if(_grid[x, y].GetActiveCardView() != null)
+        {
+            // there is already an active card here
+            return false;
+        }
+
+        var cardViewLeft = _grid[x - 1, y].GetActiveCardView();
+        if (cardViewLeft.HasOpenSockets() && cardViewLeft.GetCard().CanAttachCardType(card.cardType))
+        { 
+            return true;            
+        }
+
+        var cardViewBelow = _grid[x, y - 1].GetActiveCardView();
+        if (cardViewBelow.HasOpenSockets() && cardViewBelow.GetCard().CanAttachCardType(card.cardType))
+        {
+            return true;
+        }
+
+        var cardViewRight = _grid[x + 1, y].GetActiveCardView();
+        if (cardViewRight.HasOpenSockets() && cardViewRight.GetCard().CanAttachCardType(card.cardType))
+        {
+            return true;
+        }
+
+        var cardViewAbove = _grid[x, y + 1].GetActiveCardView();
+        if (cardViewAbove.HasOpenSockets() && cardViewAbove.GetCard().CanAttachCardType(card.cardType))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+
+
 }
