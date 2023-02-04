@@ -7,6 +7,17 @@ public class ResourceManager : MonoBehaviour
 {
     public CardGrid _cardGrid;
 
+    public TerrainType waterTerrain;
+    public TerrainType nitrateTerrain;
+
+    public WaterAmountDisplay waterAmountDisplay;
+    public NitrateAmountDisplay nitrateAmountDisplay;
+
+    private int waterAmount = 0;
+    private int nitrateAmount = 0;
+
+
+
     public Dictionary<TerrainType, float> GatherAllResources()
     {
         var gatheredResources = new Dictionary<TerrainType, float>();
@@ -45,6 +56,16 @@ public class ResourceManager : MonoBehaviour
             Debug.Log($"{pair.Key}: {pair.Value}");
         }
         Debug.Log($"===== ===== ===== =====");
+
+        Debug.Log($"Water amount before: {waterAmount}");
+        waterAmount += (int)gatheredResources[waterTerrain];
+        waterAmountDisplay.UpdateWaterAmount(waterAmount);
+        Debug.Log($"Water amount after: {waterAmount}");
+
+        Debug.Log($"Nitrate amount before: {nitrateAmount}");
+        nitrateAmount += (int)gatheredResources[nitrateTerrain];
+        nitrateAmountDisplay.UpdateNitrateAmount(nitrateAmount);
+        Debug.Log($"Nitrate amount after: {nitrateAmount}");
 
         return gatheredResources;
     }
