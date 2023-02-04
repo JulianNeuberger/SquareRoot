@@ -6,7 +6,9 @@ using System.Collections.Generic;
 public class Card : ScriptableObject
 {
     public Sprite sprite;
-    
+
+    public TerrainType[] validTerrain;
+
     public bool hasSocketAtCardTopSide;
     public bool hasSocketAtCardRightSide;
     public bool hasSocketAtCardBottomSide;
@@ -34,6 +36,15 @@ public class Card : ScriptableObject
             case 2: return hasSocketAtCardBottomSide;
             case 3: return hasSocketAtCardLeftSide;
 
+        }
+        return false;
+    }
+
+    public bool CanPlaceOnTerrain(TerrainType terrain)
+    {
+        if (validTerrain.Contains(terrain))
+        {
+            return true;
         }
         return false;
     }

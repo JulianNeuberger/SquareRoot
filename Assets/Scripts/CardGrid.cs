@@ -96,31 +96,37 @@ public class CardGrid : MonoBehaviour
     {
         Debug.Log($"Trying to place card {card.name} with rotation {rotation} at pos {gridPos}");
 
-        var activeCard = _grid[gridPos.x, gridPos.y].GetActiveCardView();
-        if (activeCard != null)
+        if (GetGridCell(gridPos).GetActiveCardView() != null)
         {
-            Debug.Log($"Can not place card here, there is already a {activeCard.name} here!");
-            // there is already an active card here
+            Debug.Log($"Can not place card here, there is already a {GetGridCell(gridPos).GetActiveCardView().name} here!");
+            return false;
+        }
+
+        if(!card.CanPlaceOnTerrain(GetGridCell(gridPos).GetTerrain()))
+        {
+            Debug.Log($"Can not place card here, card {card.name} can not be placed on terrain {GetGridCell(gridPos).GetTerrain().name}.");
             return false;
         }
 
         bool connectingSocketAvailable = false;
 
         //card to place has socket at top side -> if there is a neighbor card above that one needs to have open socket at its bottom
+        var neighborGridCell = GetNeighborAbove(gridPos);
         if (card.HasSocketAtWorldSideId(0, rotation))
         {
             Debug.Log($"Card has socket at top side.");
-            if (GetNeighborAbove(gridPos) != null && GetNeighborAbove(gridPos).GetActiveCardView() != null)
+            if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
                 Debug.Log($"Found a neighbor above.");
-                if (GetNeighborAbove(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(2))
+                if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(2) &&
+                    neighborGridCell.GetActiveCardView().GetCard().CanAttachCardType(card))
                 {
                     Debug.Log($"Found connecting socket available at neighbor above.");
                     connectingSocketAvailable = true;
                 }
                 else
                 {
-                    Debug.Log($"Can not place card here, card to place has socket at top, but neighbor above has no open socket at bottom.");
+                    Debug.Log($"Can not place card here, card to place has socket at top, but neighbor above has no attachable open socket at bottom.");
                     return false;
                 }
             }
@@ -129,10 +135,10 @@ public class CardGrid : MonoBehaviour
         else
         {
             Debug.Log($"Card has no socket at top side.");
-            if (GetNeighborAbove(gridPos) != null && GetNeighborAbove(gridPos).GetActiveCardView() != null)
+            if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
                 Debug.Log($"Found a neighbor above.");
-                if (GetNeighborAbove(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(2))
+                if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(2))
                 {
                     Debug.Log($"Can not place card here, card to place has no socket at top, but neighbor above has an open socket at bottom.");
                     return false;
@@ -141,20 +147,22 @@ public class CardGrid : MonoBehaviour
         }
 
         //card to place has socket at right side -> if there is a neighbor card right that one needs to have open socket at its left
+        neighborGridCell = GetNeighborRight(gridPos);
         if (card.HasSocketAtWorldSideId(1, rotation))
         {
             Debug.Log($"Card has socket at right side.");
-            if (GetNeighborRight(gridPos) != null && GetNeighborRight(gridPos).GetActiveCardView() != null)
+            if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
                 Debug.Log($"Found a neighbor right.");
-                if (GetNeighborRight(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(3))
+                if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(3) &&
+                    neighborGridCell.GetActiveCardView().GetCard().CanAttachCardType(card))
                 {
                     Debug.Log($"Found connecting socket available at neighbor right.");
                     connectingSocketAvailable = true;
                 }
                 else
                 {
-                    Debug.Log($"Can not place card here, card to place has socket at right, but neighbor right has no open socket at left.");
+                    Debug.Log($"Can not place card here, card to place has socket at right, but neighbor right has no attachable open socket at left.");
                     return false;
                 }
             }
@@ -163,10 +171,10 @@ public class CardGrid : MonoBehaviour
         else
         {
             Debug.Log($"Card has no socket at right side.");
-            if (GetNeighborRight(gridPos) != null && GetNeighborRight(gridPos).GetActiveCardView() != null)
+            if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
                 Debug.Log($"Found a neighbor right.");
-                if (GetNeighborRight(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(3))
+                if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(3))
                 {
                     Debug.Log($"Can not place card here, card to place has no socket at right, but neighbor right has an open socket at left.");
                     return false;
@@ -174,21 +182,23 @@ public class CardGrid : MonoBehaviour
             }
         }
 
+        neighborGridCell = GetNeighborBelow(gridPos);
         //card to place has socket at bottom side -> if there is a neighbor card below that one needs to have open socket at its top
         if (card.HasSocketAtWorldSideId(2, rotation))
         {
             Debug.Log($"Card has socket at bottom side.");
-            if (GetNeighborBelow(gridPos) != null && GetNeighborBelow(gridPos).GetActiveCardView() != null)
+            if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
                 Debug.Log($"Found a neighbor below.");
-                if (GetNeighborBelow(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(0))
+                if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(0) &&
+                    neighborGridCell.GetActiveCardView().GetCard().CanAttachCardType(card))
                 {
                     Debug.Log($"Found connecting socket available at neighbor below.");
                     connectingSocketAvailable = true;
                 }
                 else
                 {
-                    Debug.Log($"Can not place card here, card to place has socket at bottom, but neighbor below has no open socket at top.");
+                    Debug.Log($"Can not place card here, card to place has socket at bottom, but neighbor below has no attachable open socket at top.");
                     return false;
                 }
             }
@@ -197,10 +207,10 @@ public class CardGrid : MonoBehaviour
         else
         {
             Debug.Log($"Card has no socket at bottom side.");
-            if (GetNeighborBelow(gridPos) != null && GetNeighborBelow(gridPos).GetActiveCardView() != null)
+            if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
                 Debug.Log($"Found a neighbor below.");
-                if (GetNeighborBelow(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(0))
+                if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(0))
                 {
                     Debug.Log($"Can not place card here, card to place has no socket at bottom, but neighbor below has an open socket at top.");
                     return false;
@@ -209,20 +219,22 @@ public class CardGrid : MonoBehaviour
         }
 
         //card to place has socket at left side -> if there is a neighbor card left that one needs to have open socket at its right
+        neighborGridCell = GetNeighborLeft(gridPos);
         if (card.HasSocketAtWorldSideId(3, rotation))
         {
             Debug.Log($"Card has socket at left side.");
-            if (GetNeighborLeft(gridPos) != null && GetNeighborLeft(gridPos).GetActiveCardView() != null)
+            if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
                 Debug.Log($"Found a neighbor left.");
-                if (GetNeighborLeft(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(1))
+                if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(1) &&
+                    neighborGridCell.GetActiveCardView().GetCard().CanAttachCardType(card))
                 {
                     Debug.Log($"Found connecting socket available at neighbor left.");
                     connectingSocketAvailable = true;
                 }
                 else
                 {
-                    Debug.Log($"Can not place card here, card to place has socket at left, but neighbor left has no open socket at right.");
+                    Debug.Log($"Can not place card here, card to place has socket at left, but neighbor left has no attachable open socket at right.");
                     return false;
                 }
             }
@@ -231,10 +243,10 @@ public class CardGrid : MonoBehaviour
         else
         {
             Debug.Log($"Card has no socket at left side.");
-            if (GetNeighborLeft(gridPos) != null && GetNeighborLeft(gridPos).GetActiveCardView() != null)
+            if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
                 Debug.Log($"Found a neighbor left.");
-                if (GetNeighborLeft(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(1))
+                if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(1))
                 {
                     Debug.Log($"Can not place card here, card to place has no socket at left, but neighbor left has an open socket at right.");
                     return false;

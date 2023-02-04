@@ -148,7 +148,9 @@ public class Hand : MonoBehaviour
 
         _draggedCard.Collider2D.enabled = true;
         _draggedCard = null;
-        
+        _draggedCardRotation = 0;
+
+
         LayoutCards();
     }
     
