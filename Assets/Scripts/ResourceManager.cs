@@ -16,6 +16,31 @@ public class ResourceManager : MonoBehaviour
     private int waterAmount = 0;
     private int nitrateAmount = 0;
 
+    private int waterUpkeep = 0;
+    private int nitrateUpkeep = 0;
+
+
+    public int getWaterAmount()
+    {
+        return waterAmount;
+    }
+
+    public int getNitrateAmoun()
+    {
+        return nitrateAmount;
+    }
+
+
+    public int getWaterUpkeep()
+    {
+        return waterUpkeep;
+    }
+
+    public int getNitrateUpkeep()
+    {
+        return nitrateUpkeep;
+    }
+
 
 
     public Dictionary<TerrainType, float> GatherAllResources()
@@ -58,12 +83,12 @@ public class ResourceManager : MonoBehaviour
         Debug.Log($"===== ===== ===== =====");
 
         Debug.Log($"Water amount before: {waterAmount}");
-        waterAmount += (int)gatheredResources[waterTerrain];
+        waterAmount += (int)gatheredResources.GetValueOrDefault(waterTerrain, 0);
         waterAmountDisplay.UpdateWaterAmount(waterAmount);
         Debug.Log($"Water amount after: {waterAmount}");
 
         Debug.Log($"Nitrate amount before: {nitrateAmount}");
-        nitrateAmount += (int)gatheredResources[nitrateTerrain];
+        nitrateAmount += (int)gatheredResources.GetValueOrDefault(nitrateTerrain, 0);
         nitrateAmountDisplay.UpdateNitrateAmount(nitrateAmount);
         Debug.Log($"Nitrate amount after: {nitrateAmount}");
 
@@ -112,6 +137,11 @@ public class ResourceManager : MonoBehaviour
         }
 
         return gatheredResources;
+    }
+
+    public void UpdateUpkeep()
+    {
+
     }
 
     [CustomEditor(typeof(ResourceManager))]
