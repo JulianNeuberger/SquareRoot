@@ -19,6 +19,7 @@ public class Hand : MonoBehaviour
 
     private readonly List<HandCard> _currentCards = new();
     private HandCard _draggedCard;
+    private int _draggedCardRotation;
 
     private Camera _camera;
 
@@ -35,6 +36,7 @@ public class Hand : MonoBehaviour
     {
         HandleCardDragStarted();
         HandleCardDragOngoing();
+        HandleCardDragRotate();
         HandleCardDragEnded();
     }
 
@@ -117,6 +119,16 @@ public class Hand : MonoBehaviour
         // TODO: animate if card cant be dropped here
     }
 
+    private void HandleCardDragRotate()
+    {
+        if (_draggedCard == null) return;
+
+        if (!Input.GetMouseButtonDown(1)) return;
+
+        _draggedCardRotation = (_draggedCardRotation + 1) % 4;
+        _draggedCard.RotateSprite(new Vector3(0, 0, -90));
+    }
+
     private void HandleCardDragEnded()
     {
         if (!Input.GetMouseButtonUp(0)) return;
@@ -125,11 +137,10 @@ public class Hand : MonoBehaviour
         var worldPos = _camera.ScreenToWorldPoint(Input.mousePosition);
         var gridPos = grid.WorldCoordinatesToGridPosition(worldPos);
 
-        // TODO: Use rotation
-        if (grid.CanPlaceCard(gridPos, _draggedCard.Card, 0))
+        if (grid.CanPlaceCard(gridPos, _draggedCard.Card, _draggedCardRotation))
         {
             Debug.Log("Can place card");
-            var success = grid.TryPlaceCard(gridPos, _draggedCard.Card, 0);
+            var success = grid.TryPlaceCard(gridPos, _draggedCard.Card, _draggedCardRotation);
             if(success) RemoveCard(_draggedCard);
             
         }

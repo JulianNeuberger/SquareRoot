@@ -6,7 +6,6 @@ public class GridCell : MonoBehaviour
     private TerrainType _terrain;
 
     [SerializeField] private SpriteRenderer backgroundSprite;
-    [SerializeField] private SpriteRenderer activeCardSprite;
 
     public void SetTerrain(TerrainType type)
     {
@@ -27,6 +26,5 @@ public class GridCell : MonoBehaviour
     public void SetCardView(CardView card)
     {
         _activeCardView = card;
-        activeCardSprite.sprite = card.Card.sprite;
     }
 }

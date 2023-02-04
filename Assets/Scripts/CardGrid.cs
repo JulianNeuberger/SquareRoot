@@ -276,7 +276,9 @@ public class CardGrid : MonoBehaviour
         Debug.Log("Checks out, placing card!");
         var cardView = Instantiate(cardViewPrefab, transform);
         cardView.transform.position = GridPositionToWorldCoordinates(gridPos);
-        cardView.Card = card;
+        Debug.Log($"Setting rotation of new card to {rotation}");
+        cardView.SetRotation(rotation);
+        cardView.SetCard(card);
         _grid[gridPos.x, gridPos.y].SetCardView(cardView);
         if(!_gridPositionsWithActiveCardView.Contains(gridPos))
         {

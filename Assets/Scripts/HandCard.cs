@@ -28,6 +28,11 @@ public class HandCard : MonoBehaviour
         borderSprite.sortingOrder = index;
     }
 
+    public void RotateSprite(Vector3 eulers)
+    {
+        mainSprite.transform.Rotate(eulers);
+    }
+
     private void SetCard(Card newCard)
     {
         this.card = newCard;

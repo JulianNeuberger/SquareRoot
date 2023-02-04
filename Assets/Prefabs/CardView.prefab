@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b13b67d0da8345042a1a1a08a452b58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  card: {fileID: 0}
-  mainSprite: {fileID: 2924243570784368075}
+  _card: {fileID: 0}
+  _mainSprite: {fileID: 2924243570784368075}
 --- !u!1 &2924243570784368074
 GameObject:
   m_ObjectHideFlags: 0
