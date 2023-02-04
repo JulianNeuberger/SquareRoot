@@ -14,8 +14,8 @@ public class ResourceManager : MonoBehaviour
     public TerrainType waterTerrain;
     public TerrainType nitrateTerrain;
 
-    public WaterAmountDisplay waterAmountDisplay;
-    public NitrateAmountDisplay nitrateAmountDisplay;
+    public WaterDisplay waterDisplay;
+    public NitrateDisplay nitrateDisplay;
 
     private int waterAmount = 0;
     private int nitrateAmount = 0;
@@ -102,20 +102,20 @@ public class ResourceManager : MonoBehaviour
         var resourceIncome = GatherAllResources();
 
         waterIncome = (int)resourceIncome.GetValueOrDefault(waterTerrain, 0);
-        waterAmountDisplay.UpdateWaterIncome(waterIncome);
+        waterDisplay.UpdateWaterIncome(waterIncome);
 
         nitrateIncome = (int)resourceIncome.GetValueOrDefault(nitrateTerrain, 0);
-        nitrateAmountDisplay.UpdateNitrateIncome(nitrateIncome);
+        nitrateDisplay.UpdateNitrateIncome(nitrateIncome);
     }
 
 
     public void ReceiveResourceIncome()
     {
         waterAmount += waterIncome;
-        waterAmountDisplay.UpdateWaterAmount(waterAmount);
+        waterDisplay.UpdateWaterAmount(waterAmount);
 
         nitrateAmount += nitrateIncome;
-        nitrateAmountDisplay.UpdateNitrateAmount(nitrateAmount);
+        nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
     }
 
 
@@ -222,10 +222,10 @@ public class ResourceManager : MonoBehaviour
         }
 
         waterUpkeep = (int)totalWaterUpkeep;
-        waterAmountDisplay.UpdateWaterUpkeep(waterUpkeep);
+        waterDisplay.UpdateWaterUpkeep(waterUpkeep);
 
         nitrateUpkeep = (int)totalNitrateUpkeep;
-        nitrateAmountDisplay.UpdateNitrateUpkeep(nitrateUpkeep);
+        nitrateDisplay.UpdateNitrateUpkeep(nitrateUpkeep);
     }
 
 
@@ -236,29 +236,29 @@ public class ResourceManager : MonoBehaviour
         {
             Debug.Log("Water shortage!");
             waterAmount = 0;
-            waterAmountDisplay.UpdateWaterShortageStatus(true);
+            waterDisplay.UpdateWaterShortageStatus(true);
             DecreaseLeaveHealth();
         }
         else
         {
-            waterAmountDisplay.UpdateWaterShortageStatus(false);
+            waterDisplay.UpdateWaterShortageStatus(false);
         }
 
-        waterAmountDisplay.UpdateWaterAmount(waterAmount);
+        waterDisplay.UpdateWaterAmount(waterAmount);
 
         nitrateAmount -= nitrateUpkeep;
         if(nitrateAmount < 0)
         {
             nitrateAmount = 0;
-            nitrateAmountDisplay.UpdateNitrateShortageStatus(true);
+            nitrateDisplay.UpdateNitrateShortageStatus(true);
             //TODO: Do something to have consequences (?)
         }
         else
         {
-            nitrateAmountDisplay.UpdateNitrateShortageStatus(false);
+            nitrateDisplay.UpdateNitrateShortageStatus(false);
         }
 
-        nitrateAmountDisplay.UpdateNitrateAmount(nitrateAmount);
+        nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
     }
 
     public void DecreaseLeaveHealth()

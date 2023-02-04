@@ -4,30 +4,31 @@ using UnityEngine;
 using TMPro;
 using System;
 
-public class WaterAmountDisplay : MonoBehaviour
+public class WaterDisplay : MonoBehaviour
 {
     private int waterAmount = 0;
     private int waterIncome = 0;
     private int waterUpkeep = 0;
     private bool waterShortageStatus = false;
-    private TextMeshProUGUI tmp;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        tmp = GetComponent<TextMeshProUGUI>();
-    }
+    public TextMeshProUGUI waterAmountTmp;
+    public TextMeshProUGUI waterIncomeTmp;
+    public TextMeshProUGUI waterUpkeepTmp;
+    public TextMeshProUGUI waterMessageTmp;
 
     // Update is called once per frame
     void Update()
     {
-        if(waterShortageStatus)
+        waterAmountTmp.text = $"{waterAmount}";
+        waterIncomeTmp.text = $"{waterIncome}";
+        waterUpkeepTmp.text = $"{waterUpkeep}";
+
+        if (waterShortageStatus)
         {
-            tmp.text = $"Water: {waterAmount} + {waterIncome} - {waterUpkeep} | WATER SHORTAGE!";
+            waterMessageTmp.text = "WATER SHORTAGE!";
         }
         else
         {
-            tmp.text = $"Water: {waterAmount} + {waterIncome} - {waterUpkeep}";
+            waterMessageTmp.text = "";
         }
     }
 

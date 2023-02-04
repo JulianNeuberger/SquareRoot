@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Leaf
   m_EditorClassIdentifier: 
   sprite: {fileID: 1622307489, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+  unhealthySprite: {fileID: 0}
+  deadSprite: {fileID: 0}
   validTerrain:
   - {fileID: 11400000, guid: ed7a3595f23dd5344a680e264dc7fb5f, type: 2}
   hasSocketAtCardTopSide: 0
@@ -29,3 +31,4 @@ MonoBehaviour:
   gatherableResources: []
   waterUpkeep: 1
   nitrateUpkeep: 0
+  initialHealth: 2
