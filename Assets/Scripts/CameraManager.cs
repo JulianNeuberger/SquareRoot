@@ -14,14 +14,8 @@ public class CameraManager : MonoBehaviour
     public float gateTop = 5;
     public float gateBottom = -7;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         float mousePosX = Input.mousePosition.x;
         float mousePosY = Input.mousePosition.y;

@@ -1,31 +1,23 @@
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
-[RequireComponent(typeof(Collider2D))]
 public class HandCard : MonoBehaviour
 {
     [SerializeField] private Card card;
-    [SerializeField] private SpriteRenderer mainSprite;
-    [SerializeField] private SpriteRenderer borderSprite;
+    [SerializeField] private Image mainSprite;
 
-    private Collider2D _collider2D;
-
-    public Collider2D Collider2D => _collider2D;
-
-    protected void Awake()
+    [HideInInspector] public RectTransform rectTransform;
+    
+    private void Awake()
     {
-        _collider2D = GetComponent<Collider2D>();
+        rectTransform = GetComponent<RectTransform>();
     }
 
     public Card Card
     {
         get => card;
         set => SetCard(value);
-    }
-
-    public void SetSortingOrder(int index)
-    {
-        mainSprite.sortingOrder = index * 2;
-        borderSprite.sortingOrder = index * 2 - 1;
     }
 
     public void RotateSprite(Vector3 eulers)

@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Hand : MonoBehaviour
 {
@@ -12,10 +15,14 @@ public class Hand : MonoBehaviour
     [SerializeField] private float height = 3f;
     [SerializeField] private float maxGap = 1f;
 
+    [SerializeField] private Image ghost;
+    
     [SerializeField] private Vector3 draggingOffset = new(1f, -1.5f, 0f);
 
     [SerializeField] private CardGrid grid;
     [SerializeField] private ResourceManager resourceManager;
+    
+    [SerializeField] private Camera camera;
     
     public Deck redrawPile;
     public List<HandCard> Current => _currentCards;
@@ -24,14 +31,8 @@ public class Hand : MonoBehaviour
     private HandCard _draggedCard;
     private int _draggedCardRotation;
 
-    private Camera _camera;
-
     protected void Start()
     {
-        _camera = transform.parent.GetComponent<Camera>();
-        // we could also set the camera somehow, to allow this component to be a child of anything other than a cam
-        // but then we would have to update its position in each update accordingly!
-        if (_camera == null) throw new ArgumentException("Hand has to be a child of the camera for now.");
         if (grid == null) throw new ArgumentException("CardGrid not set!");
     }
     
@@ -59,7 +60,6 @@ public class Hand : MonoBehaviour
         handCard.transform.position = Vector3.zero;
         handCard.Card = card;
         handCard.transform.SetSiblingIndex(transform.childCount - 1);
-        handCard.SetSortingOrder(transform.childCount - 1);
         _currentCards.Add(handCard);
 
         LayoutCards();
@@ -101,12 +101,14 @@ public class Hand : MonoBehaviour
         for (var i = 0; i < _currentCards.Count; ++i)
         {
             var pos = new Vector3(i * cardSize, 0f, 0f);
-            pos += new Vector3(cardSize / 2f, cardSize / 2f, 0f);
+            pos += new Vector3(cardSize / 2f, 0, 0f);
             pos += new Vector3(margin, 0f, 0f);
             // account for gaps, after the first card
             if (i > 0) pos += new Vector3(i * gap, 0f, 0f);
             
-            _currentCards[i].transform.localPosition = pos;
+            Debug.Log(pos);
+            
+            _currentCards[i].rectTransform.anchoredPosition = pos;
         }
     }
 
@@ -118,17 +120,19 @@ public class Hand : MonoBehaviour
         if (cardStartedDragging == null) return;
 
         _draggedCard = cardStartedDragging;
-        _draggedCard.Collider2D.enabled = false;
+        
+        ghost.sprite = cardStartedDragging.Card.sprite;
+        ghost.enabled = true;
     }
 
     private void HandleCardDragOngoing()
     {
         if (_draggedCard == null) return;
 
-        var worldPos = _camera.ScreenToWorldPoint(Input.mousePosition);
+        ghost.transform.position = Input.mousePosition;
+        
+        var worldPos = camera.ScreenToWorldPoint(Input.mousePosition);
         worldPos.z = 0f;
-        _draggedCard.transform.position = worldPos + draggingOffset;
-
         var gridPos = grid.WorldCoordinatesToGridPosition(worldPos);
         var canPlace = grid.CanPlaceCard(gridPos, _draggedCard.Card, _draggedCardRotation);
         grid.HighlightCell(gridPos, canPlace ? Color.green : Color.red);
@@ -141,7 +145,9 @@ public class Hand : MonoBehaviour
         if (!Input.GetMouseButtonDown(1)) return;
 
         _draggedCardRotation = (_draggedCardRotation + 1) % 4;
-        _draggedCard.RotateSprite(new Vector3(0, 0, -90));
+
+        var rotationAngles = new Vector3(0, 0, -90);
+        ghost.transform.Rotate(rotationAngles);
     }
 
     private void HandleCardDragEnded()
@@ -149,7 +155,7 @@ public class Hand : MonoBehaviour
         if (!Input.GetMouseButtonUp(0)) return;
         if (!_draggedCard) return;
         
-        var worldPos = _camera.ScreenToWorldPoint(Input.mousePosition);
+        var worldPos = camera.ScreenToWorldPoint(Input.mousePosition);
         var gridPos = grid.WorldCoordinatesToGridPosition(worldPos);
 
         if (grid.CanPlaceCard(gridPos, _draggedCard.Card, _draggedCardRotation))
@@ -166,9 +172,10 @@ public class Hand : MonoBehaviour
             }
         }
 
-        _draggedCard.Collider2D.enabled = true;
         _draggedCard = null;
         _draggedCardRotation = 0;
+
+        ghost.enabled = false;
 
         grid.ResetHighlight();
         
@@ -177,12 +184,20 @@ public class Hand : MonoBehaviour
     
     private HandCard GetDraggedHandCard()
     {
-        var ray = _camera.ScreenPointToRay(Input.mousePosition);
-        var hit = Physics2D.Raycast(ray.origin, ray.direction, 10f);
-        if (!hit) return null;
+        Debug.Log($"Event system: '{EventSystem.current}'");
+        var pointerData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
+        var hits = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, hits);
+        if (hits.Count == 0)
+        {
+            Debug.Log("No hits");
+            return null;
+        }
+
+        var handCards = hits.Where(h => h.gameObject.GetComponent<HandCard>() != null);
+        if (handCards.Count() == 0) return null;
         
-        var target = hit.collider.gameObject;
-        return target.GetComponent<HandCard>();
+        return handCards.First().gameObject.GetComponent<HandCard>();
     }
     
     // GIZMOS
