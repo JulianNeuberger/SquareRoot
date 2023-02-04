@@ -8,7 +8,7 @@ public class CardGrid : MonoBehaviour
     [SerializeField] private int heightCells = 50;
 
     [SerializeField] private GridCell cellPrefab;
-    
+
     [SerializeField] private int earthLevel = 25;
 
     [SerializeField] private TerrainType airTerrain;
@@ -16,10 +16,118 @@ public class CardGrid : MonoBehaviour
 
     private GridCell[,] _grid;
 
+
+    #region UnityCallbacks
+
     protected void Awake()
     {
         PopulateGrid();
     }
+
+    protected void OnDrawGizmosSelected()
+    {
+        for (var x = 0; x < widthCells; ++x)
+        {
+            for (var y = 0; y < heightCells; ++y)
+            {
+                var center = transform.position + new Vector3(x * cellSize, y * cellSize, 0f);
+                var size = new Vector3(cellSize, cellSize, 0f);
+                Gizmos.DrawWireCube(center, size);
+            }
+        }
+
+        Gizmos.color = Color.red;
+        var worldPos = transform.position;
+        var offset = new Vector3(-cellSize / 2f, earthLevel * cellSize - cellSize / 2f);
+        var start = worldPos + offset;
+        var end = worldPos + offset + new Vector3(widthCells * cellSize, 0, 0);
+        Gizmos.DrawLine(start, end);
+    }
+
+    #endregion
+
+    #region PublicInterface
+
+    public List<(int, int)> GetAllGridPositionsWithActiveCardViews()
+    {
+        // TODO IMPLEMENT
+        return new List<(int, int)>();
+    }
+
+    public GridCell GetGridCell(Vector2Int gridPos)
+    {
+        if (gridPos.x < 0) return null;
+        if (gridPos.x >= widthCells) return null;
+        if (gridPos.y < 0) return null;
+        if (gridPos.y > heightCells) return null;
+
+        return _grid[gridPos.x, gridPos.y];
+    }
+
+
+    public Vector2Int WorldCoordinatesToGridPosition(Vector3 worldPos)
+    {
+        worldPos -= transform.position;
+        var gridPos = new Vector2Int((int) (worldPos.x / cellSize), (int) (worldPos.y / cellSize));
+        return gridPos;
+    }
+
+    public bool CanPlaceCard(Vector2Int gridPos, Card card)
+    {
+        if (_grid[gridPos.x, gridPos.y].GetActiveCardView() != null)
+        {
+            // there is already an active card here
+            return false;
+        }
+
+        var neighbors = GetNeighbors(gridPos);
+
+        foreach (var neighbor in neighbors)
+        {
+            if (neighbor.GetActiveCardView().HasOpenSockets() &&
+                neighbor.GetActiveCardView().GetCard().CanAttachCardType(card.cardType))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public List<GridCell> GetNeighbors(Vector2Int gridPos)
+    {
+        var neighbors = new List<GridCell>();
+
+        var gridCellLeft = GetGridCell(new Vector2Int(gridPos.x - 1, gridPos.y));
+        if (gridCellLeft != null)
+        {
+            neighbors.Add(gridCellLeft);
+        }
+
+        var gridCellBelow = GetGridCell(new Vector2Int(gridPos.x, gridPos.y - 1));
+        if (gridCellBelow != null)
+        {
+            neighbors.Add(gridCellBelow);
+        }
+
+        var gridCellRight = GetGridCell(new Vector2Int(gridPos.x + 1, gridPos.y));
+        if (gridCellRight != null)
+        {
+            neighbors.Add(gridCellRight);
+        }
+
+        var gridCellAbove = GetGridCell(new Vector2Int(gridPos.x, gridPos.y + 1));
+        if (gridCellAbove != null)
+        {
+            neighbors.Add(gridCellAbove);
+        }
+
+        return neighbors;
+    }
+
+    #endregion
+
+    #region PrivateMethods
 
     private void PopulateGrid()
     {
@@ -33,105 +141,11 @@ public class CardGrid : MonoBehaviour
                 var cell = Instantiate(cellPrefab, transform);
                 cell.SetTerrain(terrainType);
                 cell.transform.localPosition = new Vector3(x * cellSize, y * cellSize, 0f);
-                
+
                 _grid[x, y] = cell;
             }
         }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        for (var x = 0; x < widthCells; ++x)
-        {
-            for (var y = 0; y < heightCells; ++y)
-            {
-                var center = transform.position + new Vector3(x * cellSize, y * cellSize, 0f);
-                var size = new Vector3(cellSize, cellSize, 0f);
-                Gizmos.DrawWireCube(center, size);
-            }
-        }
-        
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position + new Vector3(-cellSize / 2f, earthLevel * cellSize - cellSize / 2f), 
-            transform.position + new Vector3(widthCells - cellSize / 2f, earthLevel * cellSize - cellSize / 2f));
-    }
-
-
-    public List<(int, int)> GetAllGridPositionsWithActiveCardViews()
-    {
-        // TODO IMPLEMENT
-        return new List<(int, int)>();
-    }
-
-    public GridCell GetGridCell(int x, int y)
-    {
-        if(x >= 0 && x < widthCells && y >= 0 && y <= heightCells) {
-            return _grid[x, y];
-        }
-        return null;
-    }
-
-
-    public (int, int) WorldCoordinatesToGridPosition(float x, float y)
-    {
-        int gridX = (int)System.Math.Floor(x / cellSize);
-        int gridY = (int)System.Math.Floor(y / cellSize);
-        return (gridX, gridY);
-    }
-
-
-    public bool CanPlaceCard(int x, int y, Card card)
-    {
-        if(_grid[x, y].GetActiveCardView() != null)
-        {
-            // there is already an active card here
-            return false;
-        }
-
-        var neighbors = GetNeighbors(x, y);
-
-        foreach(var neighbor in neighbors)
-        {
-            if (neighbor.GetActiveCardView().HasOpenSockets() && neighbor.GetActiveCardView().GetCard().CanAttachCardType(card.cardType))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public List<GridCell> GetNeighbors(int x, int y)
-    {
-        var neighbors = new List<GridCell>();
-
-        var gridCellLeft = GetGridCell(x - 1, y);
-        if(gridCellLeft != null)
-        {
-            neighbors.Add(gridCellLeft);
-        }
-
-        var gridCellBelow = GetGridCell(x, y - 1);
-        if (gridCellBelow != null)
-        {
-            neighbors.Add(gridCellBelow);
-        }
-
-        var gridCellRight = GetGridCell(x + 1, y);
-        if (gridCellRight != null)
-        {
-            neighbors.Add(gridCellRight);
-        }
-
-        var gridCellAbove = GetGridCell(x, y + 1);
-        if (gridCellAbove != null)
-        {
-            neighbors.Add(gridCellAbove);
-        }
-
-        return neighbors;
-    }
-
-
-
+    #endregion
 }
