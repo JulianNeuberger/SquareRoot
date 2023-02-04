@@ -365,9 +365,15 @@ MonoBehaviour:
   maxGap: 1
   grid: {fileID: 25653747}
   cards:
+  - {fileID: 11400000, guid: b82dac58bfc8c47409f8d2792a9426cd, type: 2}
+  - {fileID: 11400000, guid: 3b00d86a09e3c87469c0f1cf8cef1ebc, type: 2}
   - {fileID: 11400000, guid: 01f55ef142cb0a949b51b3473ed4724e, type: 2}
   - {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
   - {fileID: 11400000, guid: 40e7e84e72349b54d905c03d86a54637, type: 2}
+  - {fileID: 11400000, guid: 2fc09d9e7c79be547aed2cbe7540dde6, type: 2}
+  - {fileID: 11400000, guid: fd1794bb3d3cc9d4a9b1a38c3107630c, type: 2}
+  - {fileID: 11400000, guid: 63190a13cb753a641afbf9a04bc57e31, type: 2}
+  - {fileID: 11400000, guid: e31c2775e02960340842119c3ffde10a, type: 2}
 --- !u!1001 &1559707098897353143
 PrefabInstance:
   m_ObjectHideFlags: 0

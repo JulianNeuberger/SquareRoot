@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252d61365a1f5da46b532c25e312fe7c, type: 3}
   m_Name: RootTJunction
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 9025279af1630414f922352f5142c939, type: 3}
+  sprite: {fileID: 1811129118, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
   numberOfSockets: 0
   attachableCardTypes: []
   gatherMultiplierOnResource: 0
