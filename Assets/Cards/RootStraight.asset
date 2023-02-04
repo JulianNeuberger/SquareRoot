@@ -13,10 +13,25 @@ MonoBehaviour:
   m_Name: RootStraight
   m_EditorClassIdentifier: 
   sprite: {fileID: -1150833887, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+  validTerrain:
+  - {fileID: 11400000, guid: 666c4dce50c47a246b17571849249a1d, type: 2}
+  - {fileID: 11400000, guid: ebc5ca55e6646ee4ea9c63cd4d34945a, type: 2}
+  - {fileID: 11400000, guid: 85242d5b7ba437440a3c8cdb4745216c, type: 2}
   hasSocketAtCardTopSide: 1
   hasSocketAtCardRightSide: 0
   hasSocketAtCardBottomSide: 1
   hasSocketAtCardLeftSide: 0
-  attachableCardTypes: []
+  attachableCardTypes:
+  - {fileID: 11400000, guid: 3b00d86a09e3c87469c0f1cf8cef1ebc, type: 2}
+  - {fileID: 11400000, guid: 01f55ef142cb0a949b51b3473ed4724e, type: 2}
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 40e7e84e72349b54d905c03d86a54637, type: 2}
+  - {fileID: 11400000, guid: 2fc09d9e7c79be547aed2cbe7540dde6, type: 2}
+  - {fileID: 11400000, guid: fd1794bb3d3cc9d4a9b1a38c3107630c, type: 2}
+  - {fileID: 11400000, guid: 63190a13cb753a641afbf9a04bc57e31, type: 2}
+  - {fileID: 11400000, guid: e31c2775e02960340842119c3ffde10a, type: 2}
   gatherMultiplierOnResource: 0
   gatherMultiplierNextToResource: 0
+  gatherableResources:
+  - {fileID: 11400000, guid: ebc5ca55e6646ee4ea9c63cd4d34945a, type: 2}
+  - {fileID: 11400000, guid: 85242d5b7ba437440a3c8cdb4745216c, type: 2}

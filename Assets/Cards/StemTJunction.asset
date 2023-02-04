@@ -13,7 +13,18 @@ MonoBehaviour:
   m_Name: StemTJunction
   m_EditorClassIdentifier: 
   sprite: {fileID: -1323756322, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
-  numberOfSockets: 0
-  attachableCardTypes: []
+  validTerrain:
+  - {fileID: 11400000, guid: ed7a3595f23dd5344a680e264dc7fb5f, type: 2}
+  hasSocketAtCardTopSide: 0
+  hasSocketAtCardRightSide: 1
+  hasSocketAtCardBottomSide: 1
+  hasSocketAtCardLeftSide: 1
+  attachableCardTypes:
+  - {fileID: 11400000, guid: b82dac58bfc8c47409f8d2792a9426cd, type: 2}
+  - {fileID: 11400000, guid: 2fc09d9e7c79be547aed2cbe7540dde6, type: 2}
+  - {fileID: 11400000, guid: fd1794bb3d3cc9d4a9b1a38c3107630c, type: 2}
+  - {fileID: 11400000, guid: 63190a13cb753a641afbf9a04bc57e31, type: 2}
+  - {fileID: 11400000}
   gatherMultiplierOnResource: 0
   gatherMultiplierNextToResource: 0
+  gatherableResources: []
