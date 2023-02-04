@@ -9,6 +9,11 @@ public class CameraManager : MonoBehaviour
     public float slowScrollDistance = 30;
     public float fastScrollDistance = 15;
 
+    public float gateLeft = -5;
+    public float gateRight = 5;
+    public float gateTop = 5;
+    public float gateBottom = -7;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +26,7 @@ public class CameraManager : MonoBehaviour
         float mousePosX = Input.mousePosition.x;
         float mousePosY = Input.mousePosition.y;
 
-        if (mousePosX < slowScrollDistance)
+        if (mousePosX < slowScrollDistance && transform.position.x > gateLeft)
         {
             if(mousePosX < fastScrollDistance)
             {
@@ -33,7 +38,7 @@ public class CameraManager : MonoBehaviour
             }
         }
 
-        if (mousePosX >= Screen.width - slowScrollDistance)
+        if (mousePosX >= Screen.width - slowScrollDistance && transform.position.x < gateRight)
         {
             if (mousePosX >= Screen.width - fastScrollDistance)
             {
@@ -45,7 +50,7 @@ public class CameraManager : MonoBehaviour
             }
         }
 
-        if (mousePosY < slowScrollDistance)
+        if (mousePosY < slowScrollDistance && transform.position.y > gateBottom)
         {
             if (mousePosY < fastScrollDistance)
             {
@@ -57,7 +62,7 @@ public class CameraManager : MonoBehaviour
             }
         }
 
-        if (mousePosY >= Screen.height - slowScrollDistance)
+        if (mousePosY >= Screen.height - slowScrollDistance && transform.position.y < gateTop)
         {
             if (mousePosY >= Screen.height - fastScrollDistance)
             {

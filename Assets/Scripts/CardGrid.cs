@@ -140,7 +140,14 @@ public class CardGrid : MonoBehaviour
 
     public bool CanPlaceCard(Vector2Int gridPos, Card card, int rotation)
     {
-        Debug.Log($"Trying to place card {card.name} with rotation {rotation} at pos {gridPos}");
+        //Debug.Log($"Trying to place card {card.name} with rotation {rotation} at pos {gridPos}");
+
+        if (!resourceManager.CanPayForCard(card))
+        {
+            // TODO: Better move this to start of dragging
+            Debug.Log($"Not enough resources to pay for this card");
+            return false;
+        }
 
         if (GetGridCell(gridPos).GetActiveCardView() != null)
         {
@@ -307,12 +314,6 @@ public class CardGrid : MonoBehaviour
         if (!connectingSocketAvailable)
         {
             Debug.Log($"Can not place card here, did not find any available connecting sockets.");
-            
-            return false;
-        }
-
-        if (!resourceManager.CanPayForCard(card))
-        {
             return false;
         }
         

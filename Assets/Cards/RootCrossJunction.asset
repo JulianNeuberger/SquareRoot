@@ -25,11 +25,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 01f55ef142cb0a949b51b3473ed4724e, type: 2}
   - {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
   - {fileID: 11400000, guid: 40e7e84e72349b54d905c03d86a54637, type: 2}
+  - {fileID: 11400000, guid: c0198354da9511c4c812c83648584bff, type: 2}
   - {fileID: 11400000, guid: 2fc09d9e7c79be547aed2cbe7540dde6, type: 2}
   - {fileID: 11400000, guid: fd1794bb3d3cc9d4a9b1a38c3107630c, type: 2}
   - {fileID: 11400000, guid: 63190a13cb753a641afbf9a04bc57e31, type: 2}
   - {fileID: 11400000, guid: e31c2775e02960340842119c3ffde10a, type: 2}
-  - {fileID: 11400000, guid: c0198354da9511c4c812c83648584bff, type: 2}
   - {fileID: 11400000, guid: 4c70f00f65c908a45b64506c2e372787, type: 2}
   hasSocketAtCardTopSide: 1
   hasSocketAtCardRightSide: 1
@@ -44,5 +44,5 @@ MonoBehaviour:
   nitrateUpkeep: 0
   sugarUpkeep: 0
   nitrateCost: 0
-  sugarCost: 0
+  sugarCost: 1
   waterCost: 0

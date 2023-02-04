@@ -1388,6 +1388,10 @@ MonoBehaviour:
   fastScrollSpeed: 5
   slowScrollDistance: 30
   fastScrollDistance: 10
+  gateLeft: -5
+  gateRight: 5
+  gateTop: 5
+  gateBottom: -5
 --- !u!1 &1238767437
 GameObject:
   m_ObjectHideFlags: 0
