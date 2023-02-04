@@ -36,6 +36,25 @@ public class ResourceManager : MonoBehaviour
         UpdateAmountsDisplay();
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown("w"))
+        {
+            waterAmount++;
+            UpdateAmountsDisplay();
+        }
+        if (Input.GetKeyDown("n"))
+        {
+            nitrateAmount++;
+            UpdateAmountsDisplay();
+        }
+        if (Input.GetKeyDown("s"))
+        {
+            sugarAmount++;
+            UpdateAmountsDisplay();
+        }
+    }
+
     public void PayWater(int amount)
     {
         if (amount < 0f) throw new ArgumentException("Trying to pay a negative amount!");
