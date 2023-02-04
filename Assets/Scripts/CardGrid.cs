@@ -141,10 +141,10 @@ public class CardGrid : MonoBehaviour
         var neighborGridCell = GetNeighborAbove(gridPos);
         if (card.HasSocketAtWorldSideId(0, rotation))
         {
-            Debug.Log($"Card has socket at top side.");
+            //Debug.Log($"Card has socket at top side.");
             if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
-                Debug.Log($"Found a neighbor above.");
+                //Debug.Log($"Found a neighbor above.");
                 if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(2) &&
                     neighborGridCell.GetActiveCardView().GetCard().CanAttachCardType(card))
                 {
@@ -161,10 +161,10 @@ public class CardGrid : MonoBehaviour
         //card to place has no socket at top side -> if there is a neighbor card above that one must not have an open socket at its bottom
         else
         {
-            Debug.Log($"Card has no socket at top side.");
+            //Debug.Log($"Card has no socket at top side.");
             if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
-                Debug.Log($"Found a neighbor above.");
+                //Debug.Log($"Found a neighbor above.");
                 if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(2))
                 {
                     Debug.Log(
@@ -178,10 +178,10 @@ public class CardGrid : MonoBehaviour
         neighborGridCell = GetNeighborRight(gridPos);
         if (card.HasSocketAtWorldSideId(1, rotation))
         {
-            Debug.Log($"Card has socket at right side.");
+            //Debug.Log($"Card has socket at right side.");
             if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
-                Debug.Log($"Found a neighbor right.");
+                //Debug.Log($"Found a neighbor right.");
                 if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(3) &&
                     neighborGridCell.GetActiveCardView().GetCard().CanAttachCardType(card))
                 {
@@ -198,10 +198,10 @@ public class CardGrid : MonoBehaviour
         //card to place has no socket at right side -> if there is a neighbor card right that one must not have an open socket at its left
         else
         {
-            Debug.Log($"Card has no socket at right side.");
+            //Debug.Log($"Card has no socket at right side.");
             if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
-                Debug.Log($"Found a neighbor right.");
+                //Debug.Log($"Found a neighbor right.");
                 if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(3))
                 {
                     Debug.Log(
@@ -215,10 +215,10 @@ public class CardGrid : MonoBehaviour
         //card to place has socket at bottom side -> if there is a neighbor card below that one needs to have open socket at its top
         if (card.HasSocketAtWorldSideId(2, rotation))
         {
-            Debug.Log($"Card has socket at bottom side.");
+            //Debug.Log($"Card has socket at bottom side.");
             if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
-                Debug.Log($"Found a neighbor below.");
+                //Debug.Log($"Found a neighbor below.");
                 if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(0) &&
                     neighborGridCell.GetActiveCardView().GetCard().CanAttachCardType(card))
                 {
@@ -235,10 +235,10 @@ public class CardGrid : MonoBehaviour
         //card to place has no socket at bottom side -> if there is a neighbor card below that one must not have an open socket at its top
         else
         {
-            Debug.Log($"Card has no socket at bottom side.");
+            //Debug.Log($"Card has no socket at bottom side.");
             if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
-                Debug.Log($"Found a neighbor below.");
+                //Debug.Log($"Found a neighbor below.");
                 if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(0))
                 {
                     Debug.Log(
@@ -252,10 +252,10 @@ public class CardGrid : MonoBehaviour
         neighborGridCell = GetNeighborLeft(gridPos);
         if (card.HasSocketAtWorldSideId(3, rotation))
         {
-            Debug.Log($"Card has socket at left side.");
+            //Debug.Log($"Card has socket at left side.");
             if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
-                Debug.Log($"Found a neighbor left.");
+                //Debug.Log($"Found a neighbor left.");
                 if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(1) &&
                     neighborGridCell.GetActiveCardView().GetCard().CanAttachCardType(card))
                 {
@@ -272,10 +272,10 @@ public class CardGrid : MonoBehaviour
         //card to place has no socket at left side -> if there is a neighbor card left that one must not have an open socket at its right
         else
         {
-            Debug.Log($"Card has no socket at left side.");
+            //Debug.Log($"Card has no socket at left side.");
             if (neighborGridCell != null && neighborGridCell.GetActiveCardView() != null)
             {
-                Debug.Log($"Found a neighbor left.");
+                //Debug.Log($"Found a neighbor left.");
                 if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(1))
                 {
                     Debug.Log(
@@ -355,6 +355,7 @@ public class CardGrid : MonoBehaviour
         {
             neighbors.Add(GetNeighborLeft(gridPos));
         }
+        Debug.Log($"GetNeighbors returning {neighbors.Count} neighbors");
 
         return neighbors;
     }
@@ -379,6 +380,7 @@ public class CardGrid : MonoBehaviour
             {
                 var terrainType = y < earthLevel ? earthTerrain : airTerrain;
                 var cell = Instantiate(cellPrefab, transform);
+                cell.StoreGridPosition(new Vector2Int(x, y));
                 cell.SetTerrain(terrainType);
                 cell.transform.localPosition = new Vector3(x * cellSize, y * cellSize, 0f);
 

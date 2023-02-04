@@ -19,4 +19,4 @@ MonoBehaviour:
     weight: 1
   - sprite: {fileID: 2054867290, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
     weight: 1
-  IsGatherable: 0
+  IsGatherable: 1
