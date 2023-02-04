@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class CardGrid : MonoBehaviour
@@ -30,6 +31,10 @@ public class CardGrid : MonoBehaviour
     [SerializeField] private Card sapling;
     [SerializeField] private Card leaf;
 
+    [SerializeField] private GameObject leafExchangeButtonContainer;
+    [SerializeField] private Button leafExchangeButton;
+    private CardView _leafSelectedForExchange;
+
     private GridCell[,] _grid;
     private List<Vector2Int> _gridPositionsWithActiveCardView = new List<Vector2Int>();
     private GridCell _highlightedCell;
@@ -45,6 +50,20 @@ public class CardGrid : MonoBehaviour
         PopulateGrid();
     }
 
+    protected void Start()
+    {
+        leafExchangeButton.onClick.AddListener(() =>
+        {
+            Debug.Log("User clicked on leaf exchange button, exchanging resources");
+            var success = resourceManager.ExchangeResourcesAtLeaf();
+            if(success)
+            {
+                _leafSelectedForExchange.Use();
+            }
+            leafExchangeButtonContainer.SetActive(false);
+        });
+    }
+
     protected void Update()
     {
         if (Input.GetKeyUp(KeyCode.Delete))
@@ -55,6 +74,9 @@ public class CardGrid : MonoBehaviour
             var gridPos = WorldCoordinatesToGridPosition(cardView.transform.position);
             DeleteCardAt(gridPos);
         }
+
+
+        HandleLeafClicked();
     }
 
     protected void OnDrawGizmosSelected()
@@ -453,6 +475,29 @@ public class CardGrid : MonoBehaviour
     #endregion
 
     #region PrivateMethods
+
+    private void HandleLeafClicked()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            var cardView = GetCardViewUnderMouse();
+            if (cardView == null || cardView.GetCard() != leaf || !cardView.CanBeUsed())
+            {
+                leafExchangeButtonContainer.SetActive(false);
+                return;
+            }
+
+            _leafSelectedForExchange = cardView;
+
+            var gridPos = WorldCoordinatesToGridPosition(cardView.transform.position);
+            var screenPos = _camera.WorldToScreenPoint(cardView.transform.position);
+
+            Debug.Log($"Leaf clicked at position {gridPos}. Setting button to world position of cardView {cardView.transform.position} which is screen point {screenPos}");
+
+            leafExchangeButtonContainer.transform.position = screenPos;
+            leafExchangeButtonContainer.SetActive(true);
+        }
+    }
 
     private void PopulateGrid()
     {

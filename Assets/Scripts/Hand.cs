@@ -115,6 +115,7 @@ public class Hand : MonoBehaviour
         if (!Input.GetMouseButtonDown(0)) return;
 
         var cardStartedDragging = GetDraggedHandCard();
+        Debug.Log($"cardStartedDraggin: {cardStartedDragging}.");
         if (cardStartedDragging == null) return;
 
         _draggedCard = cardStartedDragging;

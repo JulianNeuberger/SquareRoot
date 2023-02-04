@@ -40,6 +40,7 @@ public class RoundManager : MonoBehaviour
     
     public void NextRound()
     {
+        UnUseAllCardViews();
         DiscardHandCards();
         ReshuffleDeck();
         DrawCards();
@@ -49,6 +50,16 @@ public class RoundManager : MonoBehaviour
         resourceManager.PayUpkeep();
 
         deckDisplay.text = $"Deck: {redrawPile.CardsRemaining()}, Discard: {discardPile.CardsRemaining()}";
+    }
+
+
+    private void UnUseAllCardViews()
+    {
+        var allActiveCardViewsGridPositions = grid.GetAllGridPositionsWithActiveCardViews();
+        foreach(var gridPos in allActiveCardViewsGridPositions)
+        {
+            grid.GetGridCell(gridPos).GetActiveCardView().UnUse();
+        }
     }
 
     private void DiscardHandCards()

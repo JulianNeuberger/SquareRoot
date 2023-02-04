@@ -14,6 +14,7 @@ public class CardView : MonoBehaviour
     private bool[] _hasOccupiedSocketAtWorldSideId = new bool[4]; // stored in world coordinates
 
     private int _currentHealth;
+    private bool _wasAlreadyUsedInCurrentRound;
 
     public void SetCard(Card card)
     {
@@ -54,6 +55,29 @@ public class CardView : MonoBehaviour
         {
             OnDeath?.Invoke(this);
         }
+    }
+
+    public void Use()
+    {
+        if (!_wasAlreadyUsedInCurrentRound)
+        {
+            _wasAlreadyUsedInCurrentRound = true;
+            _mainSprite.color = new Color(_mainSprite.color.r / 2, _mainSprite.color.g / 2, _mainSprite.color.b / 2);
+        }
+    }
+
+    public void UnUse()
+    {
+        if (_wasAlreadyUsedInCurrentRound)
+        {
+            _wasAlreadyUsedInCurrentRound = false;
+            _mainSprite.color = new Color(_mainSprite.color.r * 2, _mainSprite.color.g * 2, _mainSprite.color.b * 2);
+        }
+    }
+
+    public bool CanBeUsed()
+    {
+        return !_wasAlreadyUsedInCurrentRound;
     }
 
     public int GetCurrentHealth()

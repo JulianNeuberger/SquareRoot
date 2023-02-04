@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private int nitrateAmount = 1;
     [SerializeField] private int sugarAmount = 1;
 
+    
+
     public int WaterIncome { get; private set; }
     public int NitrateIncome { get; private set; }
 
@@ -30,9 +33,7 @@ public class ResourceManager : MonoBehaviour
 
     private void Start()
     {
-        waterDisplay.UpdateWaterAmount(waterAmount);
-        nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
-        sugarDisplay.UpdateSugarAmount(sugarAmount);
+        UpdateAmountsDisplay();
     }
 
     public void PayWater(int amount)
@@ -74,6 +75,20 @@ public class ResourceManager : MonoBehaviour
         return true;
     }
 
+    public bool ExchangeResourcesAtLeaf()
+    {
+        if (waterAmount < 1) return false;
+        if (nitrateAmount < 1) return false;
+        
+        waterAmount--;
+        nitrateAmount--;
+        sugarAmount++;
+        
+        UpdateAmountsDisplay();
+        
+        return true;
+    }
+
     public void UpdateResourceIncome()
     {
         var resourceIncome = GatherAllResources();
@@ -89,10 +104,9 @@ public class ResourceManager : MonoBehaviour
     public void ReceiveResourceIncome()
     {
         waterAmount += WaterIncome;
-        waterDisplay.UpdateWaterAmount(waterAmount);
-
         nitrateAmount += NitrateIncome;
-        nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
+
+        UpdateAmountsDisplay();
     }
 
 
@@ -231,8 +245,7 @@ public class ResourceManager : MonoBehaviour
         {
             waterDisplay.UpdateWaterShortageStatus(false);
         }
-        waterDisplay.UpdateWaterAmount(waterAmount);
-
+        
         nitrateAmount -= NitrateUpkeep;
         if (nitrateAmount < 0)
         {
@@ -244,8 +257,7 @@ public class ResourceManager : MonoBehaviour
         {
             nitrateDisplay.UpdateNitrateShortageStatus(false);
         }
-        nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
-
+        
         sugarAmount -= sugarUpkeep;
         if (sugarAmount < 0)
         {
@@ -257,7 +269,8 @@ public class ResourceManager : MonoBehaviour
         {
             sugarDisplay.UpdateSugarShortageStatus(false);
         }
-        sugarDisplay.UpdateSugarAmount(nitrateAmount);
+
+        UpdateAmountsDisplay();
     }
 
     public void DecreaseLeaveHealth()
@@ -281,6 +294,13 @@ public class ResourceManager : MonoBehaviour
         cardGrid.GetGridCell(firstLeafAlivePosition).GetActiveCardView().DecreaseHealth();
 
         UpdateUpkeep();
+    }
+
+    private void UpdateAmountsDisplay()
+    {
+        waterDisplay.UpdateWaterAmount(waterAmount);
+        nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
+        sugarDisplay.UpdateSugarAmount(sugarAmount);
     }
 }
 
