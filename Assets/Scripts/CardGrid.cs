@@ -59,6 +59,7 @@ public class CardGrid : MonoBehaviour
         return new List<Vector2Int>();
     }
 
+
     public GridCell GetGridCell(Vector2Int gridPos)
     {
         if (gridPos.x < 0) return null;
@@ -77,12 +78,14 @@ public class CardGrid : MonoBehaviour
         return gridPos;
     }
 
+
     public Vector3 GridPositionToWorldCoordinates(Vector2Int gridPos)
     {
         var worldPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         worldPos += new Vector3(gridPos.x * cellSize, gridPos.y * cellSize);
         return worldPos;
     }
+
 
     public bool CanPlaceCard(Vector2Int gridPos, Card card, int rotation)
     {
@@ -104,12 +107,12 @@ public class CardGrid : MonoBehaviour
             {
                 if (GetNeighborAbove(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(2))
                 {
-                    //neighboring card has open socket to connect to
+                    Debug.Log($"Found connecting socket available at neighbor above.");
                     connectingSocketAvailable = true;
                 }
                 else
                 {
-                    //card to place has socket, but neighbor card does not
+                    Debug.Log($"Can not place card here, card to place has socket at top, but neighbor above has no open socket at bottom.");
                     return false;
                 }
             }
@@ -121,7 +124,7 @@ public class CardGrid : MonoBehaviour
             {
                 if (GetNeighborAbove(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(2))
                 {
-                    //card to place has no open socket, but neighbor card does
+                    Debug.Log($"Can not place card here, card to place has no socket at top, but neighbor above has an open socket at bottom.");
                     return false;
                 }
             }
@@ -134,12 +137,12 @@ public class CardGrid : MonoBehaviour
             {
                 if (GetNeighborRight(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(3))
                 {
-                    //neighboring card has open socket to connect to
+                    Debug.Log($"Found connecting socket available at neighbor right.");
                     connectingSocketAvailable = true;
                 }
                 else
                 {
-                    //card to place has socket, but neighbor card does not
+                    Debug.Log($"Can not place card here, card to place has socket at right, but neighbor right has no open socket at left.");
                     return false;
                 }
             }
@@ -151,7 +154,7 @@ public class CardGrid : MonoBehaviour
             {
                 if (GetNeighborRight(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(3))
                 {
-                    //card to place has no open socket, but neighbor card does
+                    Debug.Log($"Can not place card here, card to place has no socket at right, but neighbor right has an open socket at left.");
                     return false;
                 }
             }
@@ -164,12 +167,12 @@ public class CardGrid : MonoBehaviour
             {
                 if (GetNeighborBelow(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(0))
                 {
-                    //neighboring card has open socket to connect to
+                    Debug.Log($"Found connecting socket available at neighbor below.");
                     connectingSocketAvailable = true;
                 }
                 else
                 {
-                    //card to place has socket, but neighbor card does not
+                    Debug.Log($"Can not place card here, card to place has socket at bottom, but neighbor below has no open socket at top.");
                     return false;
                 }
             }
@@ -181,7 +184,7 @@ public class CardGrid : MonoBehaviour
             {
                 if (GetNeighborBelow(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(0))
                 {
-                    //card to place has no open socket, but neighbor card does
+                    Debug.Log($"Can not place card here, card to place has no socket at bottom, but neighbor below has an open socket at top.");
                     return false;
                 }
             }
@@ -194,12 +197,12 @@ public class CardGrid : MonoBehaviour
             {
                 if (GetNeighborLeft(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(1))
                 {
-                    //neighboring card has open socket to connect to
+                    Debug.Log($"Found connecting socket available at neighbor left.");
                     connectingSocketAvailable = true;
                 }
                 else
                 {
-                    //card to place has socket, but neighbor card does not
+                    Debug.Log($"Can not place card here, card to place has socket at left, but neighbor left has no open socket at right.");
                     return false;
                 }
             }
@@ -211,7 +214,7 @@ public class CardGrid : MonoBehaviour
             {
                 if (GetNeighborLeft(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(1))
                 {
-                    //card to place has no open socket, but neighbor card does
+                    Debug.Log($"Can not place card here, card to place has no socket at left, but neighbor left has an open socket at right.");
                     return false;
                 }
             }
@@ -220,13 +223,15 @@ public class CardGrid : MonoBehaviour
 
         if(connectingSocketAvailable)
         {
+            Debug.Log($"Can place card! All checks passed and we found connecting sockets available.");
             return true;
         }
         
-        Debug.Log($"Can not place card here, none of the {neighbors.Count} neighbours have a valid socket.");
+        Debug.Log($"Can not place card here, did not find any available connecting sockets.");
         return false;
     }
     
+
     /// <summary>
     /// tries to place a card at given grid position. Returns true if successful, false otherwise.
     /// If force is set, we dont check if the card can be placed, useful to spawn the starter plant.
@@ -240,7 +245,7 @@ public class CardGrid : MonoBehaviour
         Debug.Log("Rotation ok");
         if (!force)
         {
-            if (!CanPlaceCard(gridPos, card))
+            if (!CanPlaceCard(gridPos, card, rotation))
             {
                 return false;
             }            
