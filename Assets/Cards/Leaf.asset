@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Leaf
   m_EditorClassIdentifier: 
   sprite: {fileID: 1622307489, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
-  unhealthySprite: {fileID: 0}
+  unhealthySprite: {fileID: -160660832, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
   deadSprite: {fileID: 0}
   initialHealth: 2
   validTerrain:

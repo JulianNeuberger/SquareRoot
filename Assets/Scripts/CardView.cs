@@ -46,18 +46,12 @@ public class CardView : MonoBehaviour
 
     public void DecreaseHealth()
     {
-        Debug.Log($"Decreasing health of current cardView, initial health: {_currentHealth}");
         _currentHealth--;
 
-        //TODO: activate individual sprites
-        //_mainSprite.sprite = _card.unhealthySprite;
-        _mainSprite.color = new Color(_mainSprite.color.r, _mainSprite.color.g / 2, _mainSprite.color.b / 2);
+        _mainSprite.sprite = _card.unhealthySprite;
 
         if(_currentHealth == 0)
         {
-            //_mainSprite.sprite = _card.deadSprite;
-            _mainSprite.color = new Color(_mainSprite.color.r, _mainSprite.color.g / 2, _mainSprite.color.b / 2);
-            
             OnDeath?.Invoke(this);
         }
     }

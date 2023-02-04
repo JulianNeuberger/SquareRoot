@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: EarthTerrain
   m_EditorClassIdentifier: 
   spriteTable:
-  - sprite: {fileID: 536091118, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
-    weight: 1
   - sprite: {fileID: 1103908157, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
     weight: 1
   - sprite: {fileID: -640732829, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+    weight: 1
+  - sprite: {fileID: 484630783, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
     weight: 15
   IsGatherable: 0

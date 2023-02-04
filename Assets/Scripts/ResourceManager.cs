@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
 using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -18,15 +17,15 @@ public class ResourceManager : MonoBehaviour
     public NitrateDisplay nitrateDisplay;
     public SugarDisplay sugarDisplay;
 
-    private int waterAmount = 5;
-    private int nitrateAmount = 1;
-    private int sugarAmount = 1;
+    [SerializeField] private int waterAmount = 5;
+    [SerializeField] private int nitrateAmount = 1;
+    [SerializeField] private int sugarAmount = 1;
 
-    private int waterIncome = 0;
-    private int nitrateIncome = 0;
+    public int WaterIncome { get; private set; }
+    public int NitrateIncome { get; private set; }
 
-    private int waterUpkeep = 0;
-    private int nitrateUpkeep = 0;
+    public int WaterUpkeep { get; private set; }
+    public int NitrateUpkeep { get; private set; }
     private int sugarUpkeep = 0;
 
     private void Start()
@@ -34,8 +33,6 @@ public class ResourceManager : MonoBehaviour
         waterDisplay.UpdateWaterAmount(waterAmount);
         nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
         sugarDisplay.UpdateSugarAmount(sugarAmount);
-    }
-
     public void PayWater(int amount)
     {
         if (amount < 0f) throw new ArgumentException("Trying to pay a negative amount!");
@@ -79,20 +76,20 @@ public class ResourceManager : MonoBehaviour
     {
         var resourceIncome = GatherAllResources();
 
-        waterIncome = (int)resourceIncome.GetValueOrDefault(waterTerrain, 0);
-        waterDisplay.UpdateWaterIncome(waterIncome);
+        WaterIncome = (int)resourceIncome.GetValueOrDefault(waterTerrain, 0);
+        waterDisplay.UpdateWaterIncome(WaterIncome);
 
-        nitrateIncome = (int)resourceIncome.GetValueOrDefault(nitrateTerrain, 0);
-        nitrateDisplay.UpdateNitrateIncome(nitrateIncome);
+        NitrateIncome = (int)resourceIncome.GetValueOrDefault(nitrateTerrain, 0);
+        nitrateDisplay.UpdateNitrateIncome(NitrateIncome);
     }
 
 
     public void ReceiveResourceIncome()
     {
-        waterAmount += waterIncome;
+        waterAmount += WaterIncome;
         waterDisplay.UpdateWaterAmount(waterAmount);
 
-        nitrateAmount += nitrateIncome;
+        nitrateAmount += NitrateIncome;
         nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
     }
 
@@ -207,11 +204,11 @@ public class ResourceManager : MonoBehaviour
             }
         }
 
-        waterUpkeep = (int)totalWaterUpkeep;
-        waterDisplay.UpdateWaterUpkeep(waterUpkeep);
+        WaterUpkeep = (int)totalWaterUpkeep;
+        waterDisplay.UpdateWaterUpkeep(WaterUpkeep);
 
-        nitrateUpkeep = (int)totalNitrateUpkeep;
-        nitrateDisplay.UpdateNitrateUpkeep(nitrateUpkeep);
+        NitrateUpkeep = (int)totalNitrateUpkeep;
+        nitrateDisplay.UpdateNitrateUpkeep(NitrateUpkeep);
 
         sugarUpkeep = (int)totalSugarUpkeep;
         sugarDisplay.UpdateSugarUpkeep(sugarUpkeep);
@@ -220,7 +217,7 @@ public class ResourceManager : MonoBehaviour
 
     public void PayUpkeep()
     {
-        waterAmount -= waterUpkeep;
+        waterAmount -= WaterUpkeep;
         if(waterAmount < 0)
         {
             Debug.Log("Water shortage!");
@@ -234,7 +231,7 @@ public class ResourceManager : MonoBehaviour
         }
         waterDisplay.UpdateWaterAmount(waterAmount);
 
-        nitrateAmount -= nitrateUpkeep;
+        nitrateAmount -= NitrateUpkeep;
         if (nitrateAmount < 0)
         {
             nitrateAmount = 0;
@@ -263,8 +260,6 @@ public class ResourceManager : MonoBehaviour
 
     public void DecreaseLeaveHealth()
     {
-        Debug.Log("Trying to decrease health of a leaf");
-
         var allActiveCardViewsGridPositions = cardGrid.GetAllGridPositionsWithActiveCardViews();
         var orderedActiveCardViewsGridPositions = allActiveCardViewsGridPositions.OrderByDescending(pos => pos.y).ThenBy(pos => pos.x);
 
