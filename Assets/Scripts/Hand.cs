@@ -161,6 +161,8 @@ public class Hand : MonoBehaviour
                 resourceManager.PayNitrate(_draggedCard.Card.nitrateCost);
                 resourceManager.PaySugar(_draggedCard.Card.sugarCost);
                 resourceManager.PayWater(_draggedCard.Card.waterCost);
+                resourceManager.UpdateUpkeep();
+                resourceManager.UpdateResourceIncome();
             }
         }
 
