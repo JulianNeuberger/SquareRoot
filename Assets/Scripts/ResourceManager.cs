@@ -26,13 +26,15 @@ public class ResourceManager : MonoBehaviour
 
     public int WaterUpkeep { get; private set; }
     public int NitrateUpkeep { get; private set; }
-    private int sugarUpkeep = 0;
+    public int sugarUpkeep { get; private set; }
 
     private void Start()
     {
         waterDisplay.UpdateWaterAmount(waterAmount);
         nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
         sugarDisplay.UpdateSugarAmount(sugarAmount);
+    }
+
     public void PayWater(int amount)
     {
         if (amount < 0f) throw new ArgumentException("Trying to pay a negative amount!");
