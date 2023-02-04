@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,32 +9,61 @@ public class RoundManager : MonoBehaviour
     [SerializeField] private Hand hand;
     [SerializeField] private Deck redrawPile;
     [SerializeField] private Deck discardPile;
+    [SerializeField] private CardGrid grid;
 
     [SerializeField] private int cardsPerTurn = 5;
 
+    [SerializeField] private TextMeshProUGUI deckDisplay;
+
+    private void Start()
+    {
+        StartGame();
+    }
+
+    public void StartGame()
+    {
+        DrawCards();
+        grid.PlaceStarter(grid.GridSize.x / 2);
+        deckDisplay.text = $"Deck: {redrawPile.CardsRemaining()}, Discard: {discardPile.CardsRemaining()}";
+    }
+    
     public void NextRound()
     {
         DiscardHandCards();
+        ReshuffleDeck();
         DrawCards();
         GatherResources();
         PayUpkeep();
+
+        deckDisplay.text = $"Deck: {redrawPile.CardsRemaining()}, Discard: {discardPile.CardsRemaining()}";
     }
 
     private void DiscardHandCards()
     {
-        foreach (var card in hand.cards)
+        foreach (var handCard in hand.Current)
         {
-            discardPile.PlaceCard(card);
+            Debug.Log($"Discarding card {handCard.Card.name}");
+            discardPile.PlaceCard(handCard.Card);
         }
 
         hand.Clear();
     }
 
+    private void ReshuffleDeck()
+    {
+        if (redrawPile.CardsRemaining() >= cardsPerTurn) return;
+        if (discardPile.CardsRemaining() <= 0) return;     
+        
+        redrawPile.AddManyCards(discardPile.Cards);
+        discardPile.Clear();
+    }
+
     private void DrawCards()
     {
-        for (var i = 0; i < cardsPerTurn; ++i)
+        var cardsToDraw = Math.Min(cardsPerTurn, redrawPile.CardsRemaining());
+        for (var i = 0; i < cardsToDraw; ++i)
         {
-            redrawPile.DrawCard();
+            hand.DealCard(redrawPile.DrawCard());
         }
     }
 
