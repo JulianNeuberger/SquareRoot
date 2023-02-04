@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class Card : ScriptableObject
 {
     public Sprite sprite;
+    public Sprite unhealthySprite;
+    public Sprite deadSprite;
 
     public TerrainType[] validTerrain;
 
@@ -23,6 +25,7 @@ public class Card : ScriptableObject
 
     public float waterUpkeep = 0f;
     public float nitrateUpkeep = 0f;
+    public int initialHealth = 1;
 
     public bool HasSocketAtWorldSideId(int worldSideId, int cardRotation)
     {
