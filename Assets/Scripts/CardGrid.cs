@@ -103,7 +103,8 @@ public class CardGrid : MonoBehaviour
         var gridCell = GetGridCell(gridPos);
         if (gridCell == null) return;
         if (gridCell.GetActiveCardView() == null) return;
-        
+
+        _gridPositionsWithActiveCardView.Remove(gridCell.GetGridPosition());
         _graph.DeleteNode(gridCell.GetActiveCardView());
         
         Destroy(gridCell.GetActiveCardView().gameObject);
@@ -117,6 +118,7 @@ public class CardGrid : MonoBehaviour
             
             var cell = GetGridCell(WorldCoordinatesToGridPosition(node.Value.transform.position));
             if (cell == null) continue;
+            _gridPositionsWithActiveCardView.Remove(cell.GetGridPosition());
             if (cell.GetActiveCardView() == null) continue;
             
             Destroy(node.Value.gameObject);
@@ -382,6 +384,7 @@ public class CardGrid : MonoBehaviour
         cardView.transform.position = GridPositionToWorldCoordinates(gridPos);
         cardView.SetRotation(rotation);
         cardView.SetCard(card);
+        cardView.OnDeath = _ => DeleteCardAt(gridPos);
         _grid[gridPos.x, gridPos.y].SetCardView(cardView);
         if (!_gridPositionsWithActiveCardView.Contains(gridPos))
         {

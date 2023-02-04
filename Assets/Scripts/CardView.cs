@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CardView : MonoBehaviour
 {
+    public Action<CardView> OnDeath;
+    
     [SerializeField] private Card _card;
     [SerializeField] private SpriteRenderer _mainSprite;
 
@@ -54,6 +57,8 @@ public class CardView : MonoBehaviour
         {
             //_mainSprite.sprite = _card.deadSprite;
             _mainSprite.color = new Color(_mainSprite.color.r, _mainSprite.color.g / 2, _mainSprite.color.b / 2);
+            
+            OnDeath?.Invoke(this);
         }
     }
 
