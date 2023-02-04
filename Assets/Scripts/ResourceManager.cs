@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class ResourceManager : MonoBehaviour
 
     private int waterAmount = 0;
     private int nitrateAmount = 0;
+    private int sugarAmount = 0;
 
     private int waterIncome = 0;
     private int nitrateIncome = 0;
@@ -53,6 +55,44 @@ public class ResourceManager : MonoBehaviour
         return nitrateUpkeep;
     }
 
+    public void PayWater(int amount)
+    {
+        if (amount < 0f) throw new ArgumentException("Trying to pay a negative amount!");
+        if (waterAmount - amount < 0f)
+            throw new ArgumentException($"Cant afford {amount} water, only have {waterAmount}");
+        waterAmount -= amount;
+    }
+    
+    public void PaySugar(int amount)
+    {
+        if (amount < 0f) throw new ArgumentException("Trying to pay a negative amount!");
+        if (waterAmount - amount < 0f)
+            throw new ArgumentException($"Cant afford {amount} sugar, only have {sugarAmount}");
+        sugarAmount-= amount;
+    }
+    
+    public void PayNitrate(int amount)
+    {
+        if (amount < 0f) throw new ArgumentException("Trying to pay a negative amount!");
+        if (waterAmount - amount < 0f)
+            throw new ArgumentException($"Cant afford {amount} nitrate, only have {nitrateAmount}");
+        nitrateAmount -= amount;
+    }
+
+    public void PayForCard(Card card)
+    {
+        PayNitrate(card.nitrateCost);
+        PaySugar(card.sugarCost);
+        PayWater(card.waterCost);
+    }
+
+    public bool CanPayForCard(Card card)
+    {
+        if (waterAmount - card.waterCost < 0f) return false;
+        if (sugarAmount - card.sugarCost < 0f) return false;
+        if (nitrateAmount - card.nitrateCost < 0f) return false;
+        return true;
+    }
 
     public void UpdateResourceIncome()
     {

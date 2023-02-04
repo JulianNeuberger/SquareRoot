@@ -13,10 +13,8 @@ MonoBehaviour:
   m_Name: Sapling
   m_EditorClassIdentifier: 
   sprite: {fileID: 594536078, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
-  hasSocketAtCardTopSide: 1
-  hasSocketAtCardRightSide: 0
-  hasSocketAtCardBottomSide: 1
-  hasSocketAtCardLeftSide: 0
+  validTerrain:
+  - {fileID: 11400000, guid: ed7a3595f23dd5344a680e264dc7fb5f, type: 2}
   attachableCardTypes:
   - {fileID: 11400000, guid: b82dac58bfc8c47409f8d2792a9426cd, type: 2}
   - {fileID: 11400000, guid: 3b00d86a09e3c87469c0f1cf8cef1ebc, type: 2}
@@ -28,6 +26,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fd1794bb3d3cc9d4a9b1a38c3107630c, type: 2}
   - {fileID: 11400000, guid: 63190a13cb753a641afbf9a04bc57e31, type: 2}
   - {fileID: 11400000, guid: e31c2775e02960340842119c3ffde10a, type: 2}
+  hasSocketAtCardTopSide: 1
+  hasSocketAtCardRightSide: 0
+  hasSocketAtCardBottomSide: 1
+  hasSocketAtCardLeftSide: 0
   gatherMultiplierOnResource: 0
   gatherMultiplierNextToResource: 0
   gatherableResources: []
+  waterUpkeep: 0
+  nitrateUpkeep: 0
+  sugarUpkeep: 0
+  nitrateCost: 0
+  sugarCost: 0
+  waterCost: 0

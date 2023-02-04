@@ -15,6 +15,7 @@ public class CardGrid : MonoBehaviour
 
     [SerializeField] private GridCell cellPrefab;
     [SerializeField] private CardView cardViewPrefab;
+    [SerializeField] private ResourceManager resourceManager;
 
     [SerializeField] private int earthLevel = 25;
 
@@ -288,16 +289,21 @@ public class CardGrid : MonoBehaviour
                 }
             }
         }
-
-
-        if (connectingSocketAvailable)
+        
+        if (!connectingSocketAvailable)
         {
-            Debug.Log($"Can place card! All checks passed and we found connecting sockets available.");
-            return true;
+            Debug.Log($"Can not place card here, did not find any available connecting sockets.");
+            
+            return false;
         }
 
-        Debug.Log($"Can not place card here, did not find any available connecting sockets.");
-        return false;
+        if (!resourceManager.CanPayForCard(card))
+        {
+            return false;
+        }
+        
+        Debug.Log($"Can place card! All checks passed and we found connecting sockets available.");
+        return true;
     }
 
 

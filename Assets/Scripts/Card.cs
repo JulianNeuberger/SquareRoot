@@ -1,28 +1,37 @@
-using UnityEngine;
 using System.Linq;
-using System.Collections.Generic;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "Card")]
 public class Card : ScriptableObject
 {
     public Sprite sprite;
 
+    [Header("Constraints")]
     public TerrainType[] validTerrain;
+    public Card[] attachableCardTypes;
 
+    [Header("Sockets")]
     public bool hasSocketAtCardTopSide;
     public bool hasSocketAtCardRightSide;
     public bool hasSocketAtCardBottomSide;
     public bool hasSocketAtCardLeftSide;
 
-    public Card[] attachableCardTypes;
-    
+
+    [Header("Gathering")]
     public float gatherMultiplierOnResource;
     public float gatherMultiplierNextToResource;
 
     public TerrainType[] gatherableResources;
 
+    [Header("Upkeep")]
     public float waterUpkeep = 0f;
     public float nitrateUpkeep = 0f;
+    public float sugarUpkeep;
+    
+    [Header("Cost")]
+    public int nitrateCost;
+    public int sugarCost;
+    public int waterCost;
 
     public bool HasSocketAtWorldSideId(int worldSideId, int cardRotation)
     {

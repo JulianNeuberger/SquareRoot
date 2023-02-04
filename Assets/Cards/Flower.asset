@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 252d61365a1f5da46b532c25e312fe7c, type: 3}
-  m_Name: Fruit
+  m_Name: Flower
   m_EditorClassIdentifier: 
-  sprite: {fileID: -160660832, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+  sprite: {fileID: -113700255, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
   validTerrain:
   - {fileID: 11400000, guid: ed7a3595f23dd5344a680e264dc7fb5f, type: 2}
   attachableCardTypes: []
@@ -23,9 +23,9 @@ MonoBehaviour:
   gatherMultiplierOnResource: 0
   gatherMultiplierNextToResource: 0
   gatherableResources: []
-  waterUpkeep: 0
-  nitrateUpkeep: 0
-  sugarUpkeep: 0
-  nitrateCost: 10
-  sugarCost: 10
-  waterCost: 10
+  waterUpkeep: 2
+  nitrateUpkeep: 2
+  sugarUpkeep: 2
+  nitrateCost: 0
+  sugarCost: 0
+  waterCost: 0

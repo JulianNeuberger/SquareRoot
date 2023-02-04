@@ -505,6 +505,10 @@ MonoBehaviour:
     amount: 5
   - card: {fileID: 11400000, guid: e31c2775e02960340842119c3ffde10a, type: 2}
     amount: 3
+  - card: {fileID: 11400000, guid: da2f67788947df248b7bc3f893e83dd7, type: 2}
+    amount: 1
+  - card: {fileID: 11400000, guid: cbaeb94fd2c565f40840d74cb5d06f9d, type: 2}
+    amount: 1
 --- !u!4 &1302663250
 Transform:
   m_ObjectHideFlags: 0
@@ -855,6 +859,7 @@ MonoBehaviour:
   maxGap: 1
   draggingOffset: {x: 1, y: -1.5, z: 0}
   grid: {fileID: 25653747}
+  resourceManager: {fileID: 1706257819}
   redrawPile: {fileID: 1302663249}
 --- !u!1 &1634306166
 GameObject:
@@ -1225,6 +1230,10 @@ PrefabInstance:
       propertyPath: nitrateTerrain
       value: 
       objectReference: {fileID: 11400000, guid: ebc5ca55e6646ee4ea9c63cd4d34945a, type: 2}
+    - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+      propertyPath: resourceManager
+      value: 
+      objectReference: {fileID: 1706257819}
     - target: {fileID: 1559707097975803044, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: m_RootOrder
       value: 2

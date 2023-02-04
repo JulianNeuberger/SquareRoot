@@ -15,6 +15,7 @@ public class Hand : MonoBehaviour
     [SerializeField] private Vector3 draggingOffset = new(1f, -1.5f, 0f);
 
     [SerializeField] private CardGrid grid;
+    [SerializeField] private ResourceManager resourceManager;
     
     public Deck redrawPile;
     public List<HandCard> Current => _currentCards;
@@ -154,7 +155,13 @@ public class Hand : MonoBehaviour
         if (grid.CanPlaceCard(gridPos, _draggedCard.Card, _draggedCardRotation))
         {
             var success = grid.TryPlaceCard(gridPos, _draggedCard.Card, _draggedCardRotation);
-            if(success) RemoveCard(_draggedCard);
+            if (success)
+            {
+                RemoveCard(_draggedCard);
+                resourceManager.PayNitrate(_draggedCard.Card.nitrateCost);
+                resourceManager.PaySugar(_draggedCard.Card.sugarCost);
+                resourceManager.PayWater(_draggedCard.Card.waterCost);
+            }
         }
 
         _draggedCard.Collider2D.enabled = true;
