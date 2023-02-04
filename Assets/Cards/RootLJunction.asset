@@ -13,24 +13,24 @@ MonoBehaviour:
   m_Name: RootLJunction
   m_EditorClassIdentifier: 
   sprite: {fileID: -464638237, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+  unhealthySprite: {fileID: 0}
+  deadSprite: {fileID: 0}
+  initialHealth: 1
   validTerrain:
   - {fileID: 11400000, guid: 666c4dce50c47a246b17571849249a1d, type: 2}
   - {fileID: 11400000, guid: ebc5ca55e6646ee4ea9c63cd4d34945a, type: 2}
   - {fileID: 11400000, guid: 85242d5b7ba437440a3c8cdb4745216c, type: 2}
-  hasSocketAtCardTopSide: 1
-  hasSocketAtCardRightSide: 1
-  hasSocketAtCardBottomSide: 0
-  hasSocketAtCardLeftSide: 0
   attachableCardTypes:
   - {fileID: 11400000, guid: 3b00d86a09e3c87469c0f1cf8cef1ebc, type: 2}
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
   - {fileID: 11400000, guid: 40e7e84e72349b54d905c03d86a54637, type: 2}
-  - {fileID: 11400000, guid: 2fc09d9e7c79be547aed2cbe7540dde6, type: 2}
-  - {fileID: 11400000, guid: fd1794bb3d3cc9d4a9b1a38c3107630c, type: 2}
-  - {fileID: 11400000, guid: 63190a13cb753a641afbf9a04bc57e31, type: 2}
-  - {fileID: 11400000, guid: e31c2775e02960340842119c3ffde10a, type: 2}
   - {fileID: 11400000}
+  - {fileID: 11400000, guid: 4c70f00f65c908a45b64506c2e372787, type: 2}
+  hasSocketAtCardTopSide: 1
+  hasSocketAtCardRightSide: 1
+  hasSocketAtCardBottomSide: 0
+  hasSocketAtCardLeftSide: 0
   gatherMultiplierOnResource: 1
   gatherMultiplierNextToResource: 0
   gatherableResources:
@@ -38,3 +38,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ebc5ca55e6646ee4ea9c63cd4d34945a, type: 2}
   waterUpkeep: 0
   nitrateUpkeep: 0
+  sugarUpkeep: 0
+  nitrateCost: 0
+  sugarCost: 0
+  waterCost: 0

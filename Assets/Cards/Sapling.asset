@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Sapling
   m_EditorClassIdentifier: 
   sprite: {fileID: 594536078, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+  unhealthySprite: {fileID: 0}
+  deadSprite: {fileID: 0}
+  initialHealth: 1
   validTerrain:
   - {fileID: 11400000, guid: ed7a3595f23dd5344a680e264dc7fb5f, type: 2}
   attachableCardTypes:
@@ -26,6 +29,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fd1794bb3d3cc9d4a9b1a38c3107630c, type: 2}
   - {fileID: 11400000, guid: 63190a13cb753a641afbf9a04bc57e31, type: 2}
   - {fileID: 11400000, guid: e31c2775e02960340842119c3ffde10a, type: 2}
+  - {fileID: 11400000, guid: cbaeb94fd2c565f40840d74cb5d06f9d, type: 2}
+  - {fileID: 11400000, guid: da2f67788947df248b7bc3f893e83dd7, type: 2}
   hasSocketAtCardTopSide: 1
   hasSocketAtCardRightSide: 0
   hasSocketAtCardBottomSide: 1

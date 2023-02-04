@@ -145,7 +145,6 @@ GameObject:
   - component: {fileID: 63851562}
   - component: {fileID: 63851565}
   - component: {fileID: 63851564}
-  - component: {fileID: 63851563}
   m_Layer: 5
   m_Name: NitrateIncomeTMP
   m_TagString: Untagged
@@ -173,22 +172,6 @@ RectTransform:
   m_AnchoredPosition: {x: -320, y: 230}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &63851563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 63851561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edf8d88e03a07e34090713f9d1eb9276, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nitrateAmountTmp: {fileID: 0}
-  nitrateIncomeTmp: {fileID: 0}
-  nitrateUpkeepTmp: {fileID: 0}
-  nitrateMessageTmp: {fileID: 0}
 --- !u!114 &63851564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -608,7 +591,6 @@ GameObject:
   - component: {fileID: 675120366}
   - component: {fileID: 675120369}
   - component: {fileID: 675120368}
-  - component: {fileID: 675120367}
   m_Layer: 5
   m_Name: NitrateMessageTMP
   m_TagString: Untagged
@@ -636,22 +618,6 @@ RectTransform:
   m_AnchoredPosition: {x: -40, y: 230}
   m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &675120367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 675120365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edf8d88e03a07e34090713f9d1eb9276, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nitrateAmountTmp: {fileID: 0}
-  nitrateIncomeTmp: {fileID: 0}
-  nitrateUpkeepTmp: {fileID: 0}
-  nitrateMessageTmp: {fileID: 0}
 --- !u!114 &675120368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1091,7 +1057,6 @@ GameObject:
   - component: {fileID: 765578653}
   - component: {fileID: 765578656}
   - component: {fileID: 765578655}
-  - component: {fileID: 765578654}
   m_Layer: 5
   m_Name: NitrateAmountTMP
   m_TagString: Untagged
@@ -1119,22 +1084,6 @@ RectTransform:
   m_AnchoredPosition: {x: -390, y: 230}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &765578654
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 765578652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edf8d88e03a07e34090713f9d1eb9276, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nitrateAmountTmp: {fileID: 0}
-  nitrateIncomeTmp: {fileID: 0}
-  nitrateUpkeepTmp: {fileID: 0}
-  nitrateMessageTmp: {fileID: 0}
 --- !u!114 &765578655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1427,6 +1376,10 @@ MonoBehaviour:
     amount: 5
   - card: {fileID: 11400000, guid: e31c2775e02960340842119c3ffde10a, type: 2}
     amount: 3
+  - card: {fileID: 11400000, guid: da2f67788947df248b7bc3f893e83dd7, type: 2}
+    amount: 1
+  - card: {fileID: 11400000, guid: cbaeb94fd2c565f40840d74cb5d06f9d, type: 2}
+    amount: 1
 --- !u!4 &1302663250
 Transform:
   m_ObjectHideFlags: 0
@@ -1899,6 +1852,7 @@ MonoBehaviour:
   maxGap: 1
   draggingOffset: {x: 1, y: -1.5, z: 0}
   grid: {fileID: 25653747}
+  resourceManager: {fileID: 1706257819}
   redrawPile: {fileID: 1302663249}
 --- !u!1 &1634306166
 GameObject:
@@ -2091,7 +2045,6 @@ GameObject:
   - component: {fileID: 1670047242}
   - component: {fileID: 1670047245}
   - component: {fileID: 1670047244}
-  - component: {fileID: 1670047243}
   m_Layer: 5
   m_Name: NitrateUpkeepTMP
   m_TagString: Untagged
@@ -2119,22 +2072,6 @@ RectTransform:
   m_AnchoredPosition: {x: -240, y: 230}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1670047243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1670047241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edf8d88e03a07e34090713f9d1eb9276, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nitrateAmountTmp: {fileID: 0}
-  nitrateIncomeTmp: {fileID: 0}
-  nitrateUpkeepTmp: {fileID: 0}
-  nitrateMessageTmp: {fileID: 0}
 --- !u!114 &1670047244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2261,12 +2198,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86941303752b9f04fa11a13660c513ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardGrid: {fileID: 25653747}
-  leaveCard: {fileID: 11400000, guid: b82dac58bfc8c47409f8d2792a9426cd, type: 2}
+  cardGrid: {fileID: 0}
+  leaveCard: {fileID: 0}
   waterTerrain: {fileID: 11400000, guid: 85242d5b7ba437440a3c8cdb4745216c, type: 2}
   nitrateTerrain: {fileID: 11400000, guid: ebc5ca55e6646ee4ea9c63cd4d34945a, type: 2}
-  waterDisplay: {fileID: 2078541015}
-  nitrateDisplay: {fileID: 1238767439}
+  waterDisplay: {fileID: 0}
+  nitrateDisplay: {fileID: 0}
 --- !u!4 &1706257820
 Transform:
   m_ObjectHideFlags: 0
@@ -2835,6 +2772,10 @@ PrefabInstance:
       propertyPath: nitrateTerrain
       value: 
       objectReference: {fileID: 11400000, guid: ebc5ca55e6646ee4ea9c63cd4d34945a, type: 2}
+    - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+      propertyPath: resourceManager
+      value: 
+      objectReference: {fileID: 1706257819}
     - target: {fileID: 1559707097975803044, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: m_RootOrder
       value: 2

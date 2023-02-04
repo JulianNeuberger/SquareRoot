@@ -13,20 +13,18 @@ MonoBehaviour:
   m_Name: RootEnd
   m_EditorClassIdentifier: 
   sprite: {fileID: 990726101, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+  unhealthySprite: {fileID: 0}
+  deadSprite: {fileID: 0}
+  initialHealth: 1
   validTerrain:
   - {fileID: 11400000, guid: 666c4dce50c47a246b17571849249a1d, type: 2}
   - {fileID: 11400000, guid: ebc5ca55e6646ee4ea9c63cd4d34945a, type: 2}
   - {fileID: 11400000, guid: 85242d5b7ba437440a3c8cdb4745216c, type: 2}
+  attachableCardTypes: []
   hasSocketAtCardTopSide: 0
   hasSocketAtCardRightSide: 1
   hasSocketAtCardBottomSide: 0
   hasSocketAtCardLeftSide: 0
-  attachableCardTypes:
-  - {fileID: 11400000, guid: 01f55ef142cb0a949b51b3473ed4724e, type: 2}
-  - {fileID: 11400000, guid: 01f55ef142cb0a949b51b3473ed4724e, type: 2}
-  - {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
-  - {fileID: 11400000, guid: 40e7e84e72349b54d905c03d86a54637, type: 2}
-  - {fileID: 11400000, guid: 3b00d86a09e3c87469c0f1cf8cef1ebc, type: 2}
   gatherMultiplierOnResource: 2
   gatherMultiplierNextToResource: 1
   gatherableResources:
@@ -34,3 +32,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 85242d5b7ba437440a3c8cdb4745216c, type: 2}
   waterUpkeep: 0
   nitrateUpkeep: 0
+  sugarUpkeep: 0
+  nitrateCost: 0
+  sugarCost: 0
+  waterCost: 0
