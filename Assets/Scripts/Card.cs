@@ -21,6 +21,9 @@ public class Card : ScriptableObject
 
     public TerrainType[] gatherableResources;
 
+    public float waterUpkeep = 0f;
+    public float nitrateUpkeep = 0f;
+
     public bool HasSocketAtWorldSideId(int worldSideId, int cardRotation)
     {
         //Debug.Log($"Card with name {this.name} executing HasSocketAtWorldSideId with worldSideId {worldSideId} and rotation {cardRotation}.");
