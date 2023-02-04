@@ -4,32 +4,32 @@ using UnityEngine;
 using TMPro;
 using System;
 
-public class NitrateAmountDisplay : MonoBehaviour
+public class NitrateDisplay : MonoBehaviour
 {
     private int nitrateAmount = 0;
     private int nitrateIncome = 0;
     private int nitrateUpkeep = 0;
     private bool nitrateShortageStatus = false;
-    private TextMeshProUGUI tmp;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        tmp = GetComponent<TextMeshProUGUI>();
-    }
+    public TextMeshProUGUI nitrateAmountTmp;
+    public TextMeshProUGUI nitrateIncomeTmp;
+    public TextMeshProUGUI nitrateUpkeepTmp;
+    public TextMeshProUGUI nitrateMessageTmp;
 
     // Update is called once per frame
     void Update()
     {
-        if(nitrateShortageStatus)
+        nitrateAmountTmp.text = $"{nitrateAmount}";
+        nitrateIncomeTmp.text = $"{nitrateIncome}";
+        nitrateUpkeepTmp.text = $"{nitrateUpkeep}";
+
+        if (nitrateShortageStatus)
         {
-            tmp.text = $"Nitrate: {nitrateAmount} + {nitrateIncome} - {nitrateUpkeep} | NITRATE SHORTAGE";
+            nitrateMessageTmp.text = "NITRATE SHORTAGE!";
         }
         else
         {
-            tmp.text = $"Nitrate: {nitrateAmount} + {nitrateIncome} - {nitrateUpkeep}";
+            nitrateMessageTmp.text = "";
         }
-        
     }
 
     public void UpdateNitrateAmount(int amount)
