@@ -27,6 +27,11 @@ public class Deck : MonoBehaviour
     public Card DrawCard()
     {
         var totalCards = contents.Select(e => e.amount).Sum();
+        if (totalCards <= 0)
+        {
+            throw new ArgumentException("Can't draw from a deck with no cards");
+        }
+        
         var threshold = 0f;
         var randomValue = Random.value;
         
@@ -40,7 +45,7 @@ public class Deck : MonoBehaviour
             return entry.card;
         }
 
-        throw new ArgumentException("Should not happen, something is wrong with random calculation.");
+        throw new ArgumentException($"Should not happen, something is wrong with random calculation, could not draw a card with threshold {threshold}.");
     }
 }
 
