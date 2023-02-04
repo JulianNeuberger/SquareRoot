@@ -43,8 +43,10 @@ public class RoundManager : MonoBehaviour
         DiscardHandCards();
         ReshuffleDeck();
         DrawCards();
-        GatherResources();
-        PayUpkeep();
+        resourceManager.UpdateResourceIncome();
+        resourceManager.UpdateUpkeep();
+        resourceManager.ReceiveResourceIncome();
+        resourceManager.PayUpkeep();
 
         deckDisplay.text = $"Deck: {redrawPile.CardsRemaining()}, Discard: {discardPile.CardsRemaining()}";
     }
@@ -76,16 +78,6 @@ public class RoundManager : MonoBehaviour
         {
             hand.DealCard(redrawPile.DrawCard());
         }
-    }
-
-    private void GatherResources()
-    {
-        resourceManager.GatherAllResources();
-    }
-
-    private void PayUpkeep()
-    {
-        // TODO
     }
 }
 

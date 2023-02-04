@@ -17,15 +17,21 @@ public class ResourceManager : MonoBehaviour
     public WaterDisplay waterDisplay;
     public NitrateDisplay nitrateDisplay;
 
-    private int waterAmount = 0;
-    private int nitrateAmount = 0;
-    private int sugarAmount = 0;
+    private int waterAmount = 5;
+    private int nitrateAmount = 1;
+    private int sugarAmount = 1;
 
     private int waterIncome = 0;
     private int nitrateIncome = 0;
 
     private int waterUpkeep = 0;
     private int nitrateUpkeep = 0;
+
+    private void Start()
+    {
+        waterDisplay.UpdateWaterAmount(waterAmount);
+        nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
+    }
 
 
     public int getWaterAmount()
@@ -119,7 +125,7 @@ public class ResourceManager : MonoBehaviour
     }
 
 
-    public Dictionary<TerrainType, float> GatherAllResources()
+    private Dictionary<TerrainType, float> GatherAllResources()
     {
         var gatheredResources = new Dictionary<TerrainType, float>();
 
@@ -216,9 +222,15 @@ public class ResourceManager : MonoBehaviour
 
         foreach (var gridPosition in allActiveCardViewsGridPositions)
         {
-            var card = cardGrid.GetGridCell(gridPosition).GetActiveCardView().GetCard();
-            totalWaterUpkeep += card.waterUpkeep;
-            totalNitrateUpkeep += card.nitrateUpkeep;
+            var cardView = cardGrid.GetGridCell(gridPosition).GetActiveCardView();
+            
+            //skip dead plant parts
+            if(cardView.GetCurrentHealth() != 0)
+            {
+                var card = cardView.GetCard();
+                totalWaterUpkeep += card.waterUpkeep;
+                totalNitrateUpkeep += card.nitrateUpkeep;
+            }
         }
 
         waterUpkeep = (int)totalWaterUpkeep;
@@ -282,6 +294,8 @@ public class ResourceManager : MonoBehaviour
         var firstLeafAlivePosition = leavesAlivePositions.First();
         Debug.Log($"Decreasing health of leaf at position {firstLeafAlivePosition}");
         cardGrid.GetGridCell(firstLeafAlivePosition).GetActiveCardView().DecreaseHealth();
+
+        UpdateUpkeep();
     }
 
 

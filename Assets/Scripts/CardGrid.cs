@@ -442,6 +442,8 @@ public class CardGrid : MonoBehaviour
         TryPlaceCard(new Vector2Int(gridPosX, earthLevel), sapling, rotation: 0, force: true);
         TryPlaceCard(new Vector2Int(gridPosX, earthLevel - 1), straightRoot, rotation: 0, force: true);
         TryPlaceCard(new Vector2Int(gridPosX, earthLevel + 1), leaf, rotation: 1, force: true);
+        resourceManager.UpdateUpkeep();
+        resourceManager.UpdateResourceIncome();
     }
 
     #endregion
