@@ -2,9 +2,12 @@ using System;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoundManager : MonoBehaviour
 {
+    [SerializeField] private Button endRoundButton;
+
     [SerializeField] private ResourceManager resourceManager;
     [SerializeField] private Hand hand;
     [SerializeField] private Deck redrawPile;
@@ -15,8 +18,16 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI deckDisplay;
 
+
     private void Start()
     {
+        endRoundButton.onClick.AddListener(() =>
+        {
+            Debug.Log("User clicked end round button, calling NextRound");
+            NextRound();
+        });
+
+
         StartGame();
     }
 
