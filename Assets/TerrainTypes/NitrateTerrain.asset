@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: NitrateTerrain
   m_EditorClassIdentifier: 
   spriteTable:
-  - sprite: {fileID: -1562481705, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
-    weight: 1
-  - sprite: {fileID: -1405182221, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
-    weight: 1
   - sprite: {fileID: 2054867290, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+    weight: 1
+  - sprite: {fileID: 385171651, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+    weight: 1
+  - sprite: {fileID: 42661687, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
     weight: 1
   IsGatherable: 1

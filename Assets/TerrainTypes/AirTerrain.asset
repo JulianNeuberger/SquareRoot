@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: AirTerrain
   m_EditorClassIdentifier: 
   spriteTable:
-  - sprite: {fileID: -160660832, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+  - sprite: {fileID: 569421193, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
     weight: 1
   IsGatherable: 0

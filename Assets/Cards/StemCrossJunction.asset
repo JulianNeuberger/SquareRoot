@@ -29,6 +29,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 01f55ef142cb0a949b51b3473ed4724e, type: 2}
   - {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
   - {fileID: 11400000, guid: 40e7e84e72349b54d905c03d86a54637, type: 2}
+  - {fileID: 11400000, guid: cbaeb94fd2c565f40840d74cb5d06f9d, type: 2}
   gatherMultiplierOnResource: 0
   gatherMultiplierNextToResource: 0
   gatherableResources: []
+  waterUpkeep: 0
+  nitrateUpkeep: 0

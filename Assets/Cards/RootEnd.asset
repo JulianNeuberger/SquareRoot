@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: RootEnd
   m_EditorClassIdentifier: 
   sprite: {fileID: 990726101, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+  validTerrain:
+  - {fileID: 11400000, guid: 666c4dce50c47a246b17571849249a1d, type: 2}
+  - {fileID: 11400000, guid: ebc5ca55e6646ee4ea9c63cd4d34945a, type: 2}
+  - {fileID: 11400000, guid: 85242d5b7ba437440a3c8cdb4745216c, type: 2}
   hasSocketAtCardTopSide: 0
   hasSocketAtCardRightSide: 1
   hasSocketAtCardBottomSide: 0
@@ -28,3 +32,5 @@ MonoBehaviour:
   gatherableResources:
   - {fileID: 11400000, guid: ebc5ca55e6646ee4ea9c63cd4d34945a, type: 2}
   - {fileID: 11400000, guid: 85242d5b7ba437440a3c8cdb4745216c, type: 2}
+  waterUpkeep: 0
+  nitrateUpkeep: 0
