@@ -3108,6 +3108,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: b82dac58bfc8c47409f8d2792a9426cd, type: 2}
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+      propertyPath: _camera
+      value: 
+      objectReference: {fileID: 963194227}
+    - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: sapling
       value: 
       objectReference: {fileID: 11400000, guid: 4c70f00f65c908a45b64506c2e372787, type: 2}

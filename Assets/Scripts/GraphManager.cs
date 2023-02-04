@@ -22,6 +22,15 @@ public class GraphManager<T> where T: class
         return newNode;
     }
 
+    public void DeleteNode(T value)
+    {
+        var node = GetNodeByValue(value);
+        if (node == Root) return;
+
+        node.Isolate();
+        Nodes.Remove(node);
+    }
+    
     public void Connect(T value, T other)
     {
         var firstNode = GetNodeByValue(value);
@@ -49,6 +58,14 @@ public class GraphManager<T> where T: class
         var target = GetNodeByValue(other);
         var found = DepthFirstSearch(start, new List<Node<T>>(), (n, _) => n == target);
         return found;
+    }
+
+    public List<Node<T>> GetNodesNotConnectedToRoot()
+    {
+        var connectedNodes = new List<Node<T>>();
+        DepthFirstSearch(Root, connectedNodes, (_, _) => false);
+
+        return Nodes.Where(node => !connectedNodes.Contains(node)).ToList();
     }
 
     private bool DepthFirstSearch(Node<T> node, List<Node<T>> visited, Func<Node<T>, List<Node<T>>, bool> predicate)

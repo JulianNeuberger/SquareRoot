@@ -17,6 +17,8 @@ public class CardGrid : MonoBehaviour
     [SerializeField] private CardView cardViewPrefab;
     [SerializeField] private ResourceManager resourceManager;
 
+    [SerializeField] private Camera _camera;
+
     [SerializeField] private int earthLevel = 25;
 
     [SerializeField] private TerrainType airTerrain;
@@ -41,6 +43,18 @@ public class CardGrid : MonoBehaviour
     protected void Awake()
     {
         PopulateGrid();
+    }
+
+    protected void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Delete))
+        {
+            var cardView = GetCardViewUnderMouse();
+            if (cardView == null) return;
+
+            var gridPos = WorldCoordinatesToGridPosition(cardView.transform.position);
+            DeleteCardAt(gridPos);
+        }
     }
 
     protected void OnDrawGizmosSelected()
@@ -83,11 +97,35 @@ public class CardGrid : MonoBehaviour
     {
         return _gridPositionsWithActiveCardView;
     }
+
+    public void DeleteCardAt(Vector2Int gridPos)
+    {
+        var gridCell = GetGridCell(gridPos);
+        if (gridCell == null) return;
+        if (gridCell.GetActiveCardView() == null) return;
+        
+        _graph.DeleteNode(gridCell.GetActiveCardView());
+        
+        Destroy(gridCell.GetActiveCardView().gameObject);
+        gridCell.SetCardView(null);
+
+        var toDelete = _graph.GetNodesNotConnectedToRoot();
+        Debug.Log($"Removing {toDelete.Count} nodes");
+        foreach (var node in toDelete)
+        {
+            _graph.DeleteNode(node.Value);
+            
+            var cell = GetGridCell(WorldCoordinatesToGridPosition(node.Value.transform.position));
+            if (cell == null) continue;
+            if (cell.GetActiveCardView() == null) continue;
+            
+            Destroy(node.Value.gameObject);
+            cell.SetCardView(null);
+        }
+    }
     
     public GridCell GetGridCell(Vector2Int gridPos)
     {
-        //Debug.Log($"GetGridCell with gridPos {gridPos}");
-
         if (gridPos.x < 0) return null;
         if (gridPos.x >= widthCells) return null;
         if (gridPos.y < 0) return null;
@@ -469,6 +507,16 @@ public class CardGrid : MonoBehaviour
     private GridCell GetNeighborLeft(Vector2Int gridPos)
     {
         return GetGridCell(new Vector2Int(gridPos.x - 1, gridPos.y));
+    }
+
+    private CardView GetCardViewUnderMouse()
+    {
+        var ray = _camera.ScreenPointToRay(Input.mousePosition);
+        var hit = Physics2D.Raycast(ray.origin, ray.direction, 10f);
+        if (!hit) return null;
+        
+        var target = hit.collider.gameObject;
+        return target.GetComponent<CardView>();
     }
 
     #endregion
