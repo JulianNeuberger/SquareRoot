@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class RoundManager : MonoBehaviour
@@ -10,28 +9,22 @@ public class RoundManager : MonoBehaviour
     [SerializeField] private Deck redrawPile;
     [SerializeField] private Deck discardPile;
 
+    [SerializeField] private int cardsPerTurn = 5;
+
     private void Awake()
     {
         resourceManager = GetComponent<ResourceManager>();
     }
-    
-    public void StartRound()
+
+    public void NextRound()
     {
-        var gatheredResources = resourceManager.GatherAllResources();
-
-        Debug.Log($"Gathered resources: {gatheredResources}");
-
-        // TODO Add gathered resources to spendable resource counts
-
-        // TODO Pay upkeep from the spendable resources
-        
-
-        // TODO Check for forced actions (e.g. not enough upkeep -> destroy plant parts)
-
-        
+        DiscardHandCards();
+        DrawCards();
+        GatherResources();
+        PayUpkeep();
     }
 
-    public void EndRound()
+    private void DiscardHandCards()
     {
         foreach (var card in hand.cards)
         {
@@ -39,5 +32,36 @@ public class RoundManager : MonoBehaviour
         }
         
         hand.Clear();
+    }
+
+    private void DrawCards()
+    {
+        for (var i = 0; i < cardsPerTurn; ++i)
+        {
+            redrawPile.DrawCard();            
+        }
+    }
+
+    private void GatherResources()
+    {
+        resourceManager.GatherAllResources();
+    }
+
+    private void PayUpkeep()
+    {
+        // TODO
+    }
+}
+
+[CustomEditor(typeof(RoundManager))]
+public class RoundManagerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        var roundManager = (RoundManager) target;
+        
+        roundManager.NextRound();
     }
 }
