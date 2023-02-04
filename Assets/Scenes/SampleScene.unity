@@ -327,7 +327,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1628414062}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10, y: -4.5, z: 1}
+  m_LocalPosition: {x: -5, y: -4.5, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -349,8 +349,9 @@ MonoBehaviour:
   handCardPrefab: {fileID: 8676305073433541483, guid: 4d620211e966bd442b6c788daf2071f1, type: 3}
   pixelsPerUnit: 32
   cardSize: 1
-  availableSpace: 20
+  availableSpace: 10
   height: 1
+  maxGap: 1
   cards:
   - {fileID: 11400000, guid: 74cca85b24e4ed04ba90053dbefc231d, type: 2}
   - {fileID: 11400000, guid: 4a5b0cc321de67f4daef664ed4749ed0, type: 2}
