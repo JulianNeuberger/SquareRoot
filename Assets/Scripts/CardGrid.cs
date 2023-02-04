@@ -24,11 +24,15 @@ public class CardGrid : MonoBehaviour
     [SerializeField] private TerrainType waterTerrain;
 
     [SerializeField] private Card straightRoot;
+    [SerializeField] private Card sapling;
+    [SerializeField] private Card leaf;
 
     private GridCell[,] _grid;
     private List<Vector2Int> _gridPositionsWithActiveCardView = new List<Vector2Int>();
     private GridCell _highlightedCell;
 
+    public Vector2Int GridSize => new Vector2Int(widthCells, heightCells);
+    
     #region UnityCallbacks
 
     protected void Awake()
@@ -360,10 +364,11 @@ public class CardGrid : MonoBehaviour
         return neighbors;
     }
 
-    public void PlaceStarter(Vector3 worldPos)
+    public void PlaceStarter(int gridPosX)
     {
-        var gridPos = WorldCoordinatesToGridPosition(worldPos);
-        TryPlaceCard(gridPos, straightRoot, rotation: 0, force: true);
+        TryPlaceCard(new Vector2Int(gridPosX, earthLevel), sapling, rotation: 0, force: true);
+        TryPlaceCard(new Vector2Int(gridPosX, earthLevel - 1), straightRoot, rotation: 0, force: true);
+        TryPlaceCard(new Vector2Int(gridPosX, earthLevel + 1), leaf, rotation: 1, force: true);
     }
 
     #endregion
@@ -445,7 +450,7 @@ class CardGridEditor : Editor
 
         if (GUILayout.Button("Place Starter at 0,0"))
         {
-            grid.PlaceStarter(new Vector3(0, 0, 0));
+            grid.PlaceStarter(grid.WorldCoordinatesToGridPosition(new Vector3(0, 0, 0)).x);
         }
     }
 }

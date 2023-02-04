@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Hand : MonoBehaviour
 {
@@ -17,8 +16,9 @@ public class Hand : MonoBehaviour
 
     [SerializeField] private CardGrid grid;
     
-    public List<Card> cards = new();
-
+    public Deck redrawPile;
+    public List<HandCard> Current => _currentCards;
+    
     private readonly List<HandCard> _currentCards = new();
     private HandCard _draggedCard;
     private int _draggedCardRotation;
@@ -195,7 +195,7 @@ public class HandEditor : Editor
         if (GUILayout.Button("Deal random card"))
         {
             var hand = (Hand) target;
-            var card = hand.cards[Random.Range(0, hand.cards.Count)];
+            var card = hand.redrawPile.DrawCard();
             hand.DealCard(card);
         }
     }
