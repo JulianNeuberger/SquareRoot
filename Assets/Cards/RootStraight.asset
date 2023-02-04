@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252d61365a1f5da46b532c25e312fe7c, type: 3}
   m_Name: RootStraight
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 773dfd24016eca141a1c3dc3124a11a8, type: 3}
+  sprite: {fileID: -1150833887, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
   hasSocketAtCardTopSide: 1
   hasSocketAtCardRightSide: 0
   hasSocketAtCardBottomSide: 1
