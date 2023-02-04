@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252d61365a1f5da46b532c25e312fe7c, type: 3}
   m_Name: Fruit
   m_EditorClassIdentifier: 
-  sprite: {fileID: -160660832, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+  sprite: {fileID: -113700255, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+  unhealthySprite: {fileID: 0}
+  deadSprite: {fileID: 0}
+  initialHealth: 1
   validTerrain:
   - {fileID: 11400000, guid: ed7a3595f23dd5344a680e264dc7fb5f, type: 2}
   attachableCardTypes: []

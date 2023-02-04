@@ -17,9 +17,9 @@ public class ResourceManager : MonoBehaviour
     public WaterDisplay waterDisplay;
     public NitrateDisplay nitrateDisplay;
 
-    private int waterAmount = 5;
-    private int nitrateAmount = 1;
-    private int sugarAmount = 1;
+    [SerializeField] private int waterAmount = 5;
+    [SerializeField] private int nitrateAmount = 1;
+    [SerializeField] private int sugarAmount = 1;
 
     private int waterIncome = 0;
     private int nitrateIncome = 0;
