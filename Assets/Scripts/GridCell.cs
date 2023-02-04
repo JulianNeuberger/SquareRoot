@@ -23,4 +23,10 @@ public class GridCell : MonoBehaviour
     {
         return _activeCardView;
     }
+
+    public void SetCardView(CardView card)
+    {
+        _activeCardView = card;
+        activeCardSprite.sprite = card.Card.sprite;
+    }
 }

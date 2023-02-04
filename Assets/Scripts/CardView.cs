@@ -10,7 +10,11 @@ public class CardView : MonoBehaviour
 
     private bool[] hasOccupiedSocketAtWorldSideId = new bool[4]; // stored in world coordinates
 
-    public Card Card => card;
+    public Card Card
+    {
+        get => card;
+        set => card = value;
+    }
 
     public Card GetCard()
     {
@@ -23,6 +27,7 @@ public class CardView : MonoBehaviour
         {
             return true;
         }
+
         return false;
     }
 }

@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &25653747 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+  m_PrefabInstance: {fileID: 1559707098897353143}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3520daddc494eb42a15828c8a465927, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,9 +363,11 @@ MonoBehaviour:
   availableSpace: 10
   height: 1
   maxGap: 1
+  grid: {fileID: 25653747}
   cards:
-  - {fileID: 11400000, guid: 74cca85b24e4ed04ba90053dbefc231d, type: 2}
-  - {fileID: 11400000, guid: 4a5b0cc321de67f4daef664ed4749ed0, type: 2}
+  - {fileID: 11400000, guid: 01f55ef142cb0a949b51b3473ed4724e, type: 2}
+  - {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
+  - {fileID: 11400000, guid: 40e7e84e72349b54d905c03d86a54637, type: 2}
 --- !u!1001 &1559707098897353143
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -362,6 +375,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+      propertyPath: straightRoot
+      value: 
+      objectReference: {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
+    - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+      propertyPath: cardViewPrefab
+      value: 
+      objectReference: {fileID: 2924243570290083577, guid: 9ba467843bd867145a975a44ed108fbe, type: 3}
     - target: {fileID: 1559707097975803044, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: m_RootOrder
       value: 2
