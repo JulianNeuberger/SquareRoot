@@ -92,7 +92,7 @@ public class CardGrid : MonoBehaviour
 
         foreach(var neighbor in neighbors)
         {
-            if (neighbor.GetActiveCardView().HasOpenSockets() && neighbor.GetActiveCardView().GetCard().CanAttachCardType(card.cardType))
+            if (neighbor.GetActiveCardView().HasOpenSockets() && neighbor.GetActiveCardView().GetCard().CanAttachCardType(card))
             {
                 return true;
             }

@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252d61365a1f5da46b532c25e312fe7c, type: 3}
   m_Name: Root
   m_EditorClassIdentifier: 
-  NumberOfSockets: 0
+  sprite: {fileID: 0}
+  cardType: 
+  numberOfSockets: 0
+  attachableCardTypes: []
+  gatherMultiplierOnResource: 0
+  gatherMultiplierNextToResource: 0

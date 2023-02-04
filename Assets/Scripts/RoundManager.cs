@@ -4,25 +4,28 @@ using UnityEngine;
 
 public class RoundManager : MonoBehaviour
 {
+
+    private ResourceManager resourceManager;
+
+    private void Awake()
+    {
+        resourceManager = GetComponent<ResourceManager>();
+    }
+
+
     public void StartRound()
     {
-        // TODO Gather resources
-        // TODO Pay upkeep
+        var gatheredResources = resourceManager.GatherAllResources();
+
+        // TODO Add gather resources to hand
+
+        // TODO Pay upkeep from hand
+
         // TODO Check for forced actions (e.g. not enough upkeep -> destry plant parts)
 
     }
 
-    //// Start is called before the first frame update
-    //void Start()
-    //{
-        
-    //}
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-        
-    //}
+    
 
 
 

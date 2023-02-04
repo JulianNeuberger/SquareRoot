@@ -18,9 +18,9 @@ public class ResourceManager : MonoBehaviour
 
     //}
 
-    public Dictionary<string, float> GatherAllResources()
+    public Dictionary<TerrainType, float> GatherAllResources()
     {
-        var gatheredResources = new Dictionary<string, float>();
+        var gatheredResources = new Dictionary<TerrainType, float>();
 
         var allActiveCardViewsGridPositions = _cardGrid.GetAllGridPositionsWithActiveCardViews();
         foreach(var gridPosition in allActiveCardViewsGridPositions)
@@ -42,31 +42,33 @@ public class ResourceManager : MonoBehaviour
         return gatheredResources;
     }
 
-    private Dictionary<string, float> GatherResourcesForCardViewAtPosition(int x, int y)
+    private Dictionary<TerrainType, float> GatherResourcesForCardViewAtPosition(int x, int y)
     {
-        var gatheredResources = new Dictionary<string, float>();
+        var gatheredResources = new Dictionary<TerrainType, float>();
 
         var gridCell = _cardGrid.GetGridCell(x, y);
         var gatherMultiplier = gridCell.GetActiveCardView().GetCard().gatherMultiplierOnResource;
-        foreach (var resource in gridCell.GetTerrain().Resources)
+
+        var terrain = gridCell.GetTerrain();
+        if (terrain.IsGatherable)
         {
-            gatheredResources.Add(resource, gatherMultiplier);
+            gatheredResources.Add(terrain, gatherMultiplier);
         }    
-        
         
         var neighborGridCells = _cardGrid.GetNeighbors(x, y);
         var gatherMultiplierNeighbors = gridCell.GetActiveCardView().GetCard().gatherMultiplierNextToResource;
         foreach (var neighbor in neighborGridCells)
         {
-            foreach(var resource in neighbor.GetTerrain().Resources)
+            var neighborTerrain = neighbor.GetTerrain();
+            if(neighborTerrain.IsGatherable)
             {
-                if (!gatheredResources.ContainsKey(resource))
+                if (!gatheredResources.ContainsKey(neighborTerrain))
                 {
-                    gatheredResources.Add(resource, gatherMultiplierNeighbors);
+                    gatheredResources.Add(neighborTerrain, gatherMultiplierNeighbors);
                 }
                 else
                 {
-                    gatheredResources[resource] = gatheredResources[resource] + gatherMultiplierNeighbors;
+                    gatheredResources[neighborTerrain] = gatheredResources[neighborTerrain] + gatherMultiplierNeighbors;
                 }
             }
         }
