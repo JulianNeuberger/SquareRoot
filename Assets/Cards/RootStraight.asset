@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: RootStraight
   m_EditorClassIdentifier: 
   sprite: {fileID: -1150833887, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
-  numberOfSockets: 0
+  hasSocketAtCardTopSide: 1
+  hasSocketAtCardRightSide: 0
+  hasSocketAtCardBottomSide: 1
+  hasSocketAtCardLeftSide: 0
   attachableCardTypes: []
   gatherMultiplierOnResource: 0
   gatherMultiplierNextToResource: 0

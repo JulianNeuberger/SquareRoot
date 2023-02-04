@@ -6,17 +6,10 @@ public class ResourceManager : MonoBehaviour
 {
     private CardGrid _cardGrid;
 
-    //// Start is called before the first frame update
-    //void Start()
-    //{
-
-    //}
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-
-    //}
+    private void Awake()
+    {
+        _cardGrid = GetComponent<CardGrid>();
+    }
 
     public Dictionary<TerrainType, float> GatherAllResources()
     {
@@ -50,7 +43,7 @@ public class ResourceManager : MonoBehaviour
         var gatherMultiplier = gridCell.GetActiveCardView().GetCard().gatherMultiplierOnResource;
 
         var terrain = gridCell.GetTerrain();
-        if (terrain.IsGatherable)
+        if (terrain.IsGatherable && gridCell.GetActiveCardView().GetCard().CanGatherResource(terrain))
         {
             gatheredResources.Add(terrain, gatherMultiplier);
         }    
@@ -59,16 +52,16 @@ public class ResourceManager : MonoBehaviour
         var gatherMultiplierNeighbors = gridCell.GetActiveCardView().GetCard().gatherMultiplierNextToResource;
         foreach (var neighbor in neighborGridCells)
         {
-            var neighborTerrain = neighbor.GetTerrain();
-            if(neighborTerrain.IsGatherable)
+            terrain = neighbor.GetTerrain();
+            if(terrain.IsGatherable && gridCell.GetActiveCardView().GetCard().CanGatherResource(terrain))
             {
-                if (!gatheredResources.ContainsKey(neighborTerrain))
+                if (!gatheredResources.ContainsKey(terrain))
                 {
-                    gatheredResources.Add(neighborTerrain, gatherMultiplierNeighbors);
+                    gatheredResources.Add(terrain, gatherMultiplierNeighbors);
                 }
                 else
                 {
-                    gatheredResources[neighborTerrain] = gatheredResources[neighborTerrain] + gatherMultiplierNeighbors;
+                    gatheredResources[terrain] = gatheredResources[terrain] + gatherMultiplierNeighbors;
                 }
             }
         }

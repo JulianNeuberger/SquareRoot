@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: RootLJunction
   m_EditorClassIdentifier: 
   sprite: {fileID: -464638237, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
-  numberOfSockets: 0
+  hasSocketAtCardTopSide: 1
+  hasSocketAtCardRightSide: 1
+  hasSocketAtCardBottomSide: 0
+  hasSocketAtCardLeftSide: 0
   attachableCardTypes: []
   gatherMultiplierOnResource: 0
   gatherMultiplierNextToResource: 0

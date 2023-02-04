@@ -17,6 +17,8 @@ public class RoundManager : MonoBehaviour
     {
         var gatheredResources = resourceManager.GatherAllResources();
 
+        Debug.Log($"Gathered resources: {gatheredResources}");
+
         // TODO Add gather resources to hand
 
         // TODO Pay upkeep from hand
