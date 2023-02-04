@@ -2,12 +2,16 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CardGrid : MonoBehaviour
 {
     [SerializeField] private float cellSize = 1f;
     [SerializeField] private int widthCells = 50;
     [SerializeField] private int heightCells = 50;
+
+    [SerializeField] private float nitrateChance = .1f;
+    [SerializeField] private float waterChance = .2f;
 
     [SerializeField] private GridCell cellPrefab;
     [SerializeField] private CardView cardViewPrefab;
@@ -16,6 +20,8 @@ public class CardGrid : MonoBehaviour
 
     [SerializeField] private TerrainType airTerrain;
     [SerializeField] private TerrainType earthTerrain;
+    [SerializeField] private TerrainType nitrateTerrain;
+    [SerializeField] private TerrainType waterTerrain;
 
     [SerializeField] private Card straightRoot;
 
@@ -78,7 +84,7 @@ public class CardGrid : MonoBehaviour
         worldPos -= transform.position;
         worldPos += new Vector3(cellSize / 2f, cellSize / 2f);
         var gridPos = new Vector2Int((int) (worldPos.x / cellSize), (int) (worldPos.y / cellSize));
-        
+
         //Debug.Log($"WorldCoordinatesToGridPosition: worldPos {worldPos} -> gridPos {gridPos}");
         return gridPos;
     }
@@ -140,7 +146,8 @@ public class CardGrid : MonoBehaviour
                 Debug.Log($"Found a neighbor above.");
                 if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(2))
                 {
-                    Debug.Log($"Can not place card here, card to place has no socket at top, but neighbor above has an open socket at bottom.");
+                    Debug.Log(
+                        $"Can not place card here, card to place has no socket at top, but neighbor above has an open socket at bottom.");
                     return false;
                 }
             }
@@ -176,7 +183,8 @@ public class CardGrid : MonoBehaviour
                 Debug.Log($"Found a neighbor right.");
                 if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(3))
                 {
-                    Debug.Log($"Can not place card here, card to place has no socket at right, but neighbor right has an open socket at left.");
+                    Debug.Log(
+                        $"Can not place card here, card to place has no socket at right, but neighbor right has an open socket at left.");
                     return false;
                 }
             }
@@ -212,7 +220,8 @@ public class CardGrid : MonoBehaviour
                 Debug.Log($"Found a neighbor below.");
                 if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(0))
                 {
-                    Debug.Log($"Can not place card here, card to place has no socket at bottom, but neighbor below has an open socket at top.");
+                    Debug.Log(
+                        $"Can not place card here, card to place has no socket at bottom, but neighbor below has an open socket at top.");
                     return false;
                 }
             }
@@ -248,23 +257,24 @@ public class CardGrid : MonoBehaviour
                 Debug.Log($"Found a neighbor left.");
                 if (neighborGridCell.GetActiveCardView().HasOpenSocketAtWorldSideId(1))
                 {
-                    Debug.Log($"Can not place card here, card to place has no socket at left, but neighbor left has an open socket at right.");
+                    Debug.Log(
+                        $"Can not place card here, card to place has no socket at left, but neighbor left has an open socket at right.");
                     return false;
                 }
             }
         }
 
 
-        if(connectingSocketAvailable)
+        if (connectingSocketAvailable)
         {
             Debug.Log($"Can place card! All checks passed and we found connecting sockets available.");
             return true;
         }
-        
+
         Debug.Log($"Can not place card here, did not find any available connecting sockets.");
         return false;
     }
-    
+
 
     /// <summary>
     /// tries to place a card at given grid position. Returns true if successful, false otherwise.
@@ -282,7 +292,7 @@ public class CardGrid : MonoBehaviour
             if (!CanPlaceCard(gridPos, card, rotation))
             {
                 return false;
-            }            
+            }
         }
 
         Debug.Log("Checks out, placing card!");
@@ -292,10 +302,11 @@ public class CardGrid : MonoBehaviour
         cardView.SetRotation(rotation);
         cardView.SetCard(card);
         _grid[gridPos.x, gridPos.y].SetCardView(cardView);
-        if(!_gridPositionsWithActiveCardView.Contains(gridPos))
+        if (!_gridPositionsWithActiveCardView.Contains(gridPos))
         {
             _gridPositionsWithActiveCardView.Add(gridPos);
         }
+
         return true;
     }
 
@@ -326,7 +337,7 @@ public class CardGrid : MonoBehaviour
 
         return neighbors;
     }
-    
+
     public void PlaceStarter(Vector3 worldPos)
     {
         var gridPos = WorldCoordinatesToGridPosition(worldPos);
@@ -351,6 +362,28 @@ public class CardGrid : MonoBehaviour
                 cell.transform.localPosition = new Vector3(x * cellSize, y * cellSize, 0f);
 
                 _grid[x, y] = cell;
+            }
+        }
+
+        for (var x = 0; x < widthCells; ++x)
+        {
+            for (var y = 0; y < heightCells; ++y)
+            {
+                if (_grid[x, y].GetTerrain() != earthTerrain) continue;
+                
+                var shouldSpawnNitrate = Random.value < nitrateChance;
+                if (shouldSpawnNitrate)
+                {
+                    _grid[x, y].SetTerrain(nitrateTerrain);
+                    continue;
+                }
+
+                var shouldSpawnWater = Random.value < waterChance;
+                if (shouldSpawnWater)
+                {
+                    _grid[x, y].SetTerrain(waterTerrain);
+                    continue;
+                }
             }
         }
     }
@@ -386,7 +419,7 @@ class CardGridEditor : Editor
         DrawDefaultInspector();
 
         var grid = (CardGrid) target;
-        
+
         if (GUILayout.Button("Place Starter at 0,0"))
         {
             grid.PlaceStarter(new Vector3(0, 0, 0));

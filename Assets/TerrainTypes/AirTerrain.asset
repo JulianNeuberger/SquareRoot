@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf4c77957af74904e87163899fe4253e, type: 3}
   m_Name: AirTerrain
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 37dba8f0e1fcc14489e498db059997ee, type: 3}
+  spriteTable:
+  - sprite: {fileID: -160660832, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+    weight: 1
+  IsGatherable: 0

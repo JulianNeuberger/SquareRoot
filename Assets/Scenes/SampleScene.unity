@@ -386,9 +386,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+      propertyPath: waterTerrain
+      value: 
+      objectReference: {fileID: 11400000, guid: 85242d5b7ba437440a3c8cdb4745216c, type: 2}
+    - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: cardViewPrefab
       value: 
       objectReference: {fileID: 2924243570290083577, guid: 9ba467843bd867145a975a44ed108fbe, type: 3}
+    - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+      propertyPath: nitrateTerrain
+      value: 
+      objectReference: {fileID: 11400000, guid: ebc5ca55e6646ee4ea9c63cd4d34945a, type: 2}
     - target: {fileID: 1559707097975803044, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: m_RootOrder
       value: 2

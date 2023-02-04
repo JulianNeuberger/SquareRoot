@@ -12,4 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf4c77957af74904e87163899fe4253e, type: 3}
   m_Name: EarthTerrain
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 97b863b261bcaa74fbaa3ff2fbe71f35, type: 3}
+  spriteTable:
+  - sprite: {fileID: -632641396, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+    weight: 1
+  - sprite: {fileID: 431846862, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+    weight: 1
+  - sprite: {fileID: 536091118, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+    weight: 15
+  IsGatherable: 0
