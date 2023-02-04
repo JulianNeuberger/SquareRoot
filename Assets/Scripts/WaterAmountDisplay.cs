@@ -9,6 +9,7 @@ public class WaterAmountDisplay : MonoBehaviour
     private int waterAmount = 0;
     private int waterIncome = 0;
     private int waterUpkeep = 0;
+    private bool waterShortageStatus = false;
     private TextMeshProUGUI tmp;
 
     // Start is called before the first frame update
@@ -20,7 +21,14 @@ public class WaterAmountDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        tmp.text = $"Water: {waterAmount} + {waterIncome} - {waterUpkeep}";
+        if(waterShortageStatus)
+        {
+            tmp.text = $"Water: {waterAmount} + {waterIncome} - {waterUpkeep} | WATER SHORTAGE!";
+        }
+        else
+        {
+            tmp.text = $"Water: {waterAmount} + {waterIncome} - {waterUpkeep}";
+        }
     }
 
     public void UpdateWaterAmount(int amount)
@@ -36,5 +44,10 @@ public class WaterAmountDisplay : MonoBehaviour
     public void UpdateWaterUpkeep(int upkeep)
     {
         waterUpkeep = upkeep;
+    }
+
+    public void UpdateWaterShortageStatus(bool shortageStatus)
+    {
+        waterShortageStatus = shortageStatus;
     }
 }

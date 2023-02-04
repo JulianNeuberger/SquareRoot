@@ -9,6 +9,7 @@ public class NitrateAmountDisplay : MonoBehaviour
     private int nitrateAmount = 0;
     private int nitrateIncome = 0;
     private int nitrateUpkeep = 0;
+    private bool nitrateShortageStatus = false;
     private TextMeshProUGUI tmp;
 
     // Start is called before the first frame update
@@ -20,7 +21,15 @@ public class NitrateAmountDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        tmp.text = $"Nitrate: {nitrateAmount} + {nitrateIncome} - {nitrateUpkeep}";
+        if(nitrateShortageStatus)
+        {
+            tmp.text = $"Nitrate: {nitrateAmount} + {nitrateIncome} - {nitrateUpkeep} | NITRATE SHORTAGE";
+        }
+        else
+        {
+            tmp.text = $"Nitrate: {nitrateAmount} + {nitrateIncome} - {nitrateUpkeep}";
+        }
+        
     }
 
     public void UpdateNitrateAmount(int amount)
@@ -36,5 +45,10 @@ public class NitrateAmountDisplay : MonoBehaviour
     public void UpdateNitrateUpkeep(int upkeep)
     {
         nitrateUpkeep = upkeep;
+    }
+
+    public void UpdateNitrateShortageStatus(bool shortageStatus)
+    {
+        nitrateShortageStatus = shortageStatus;
     }
 }

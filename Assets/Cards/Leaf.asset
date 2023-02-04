@@ -27,3 +27,5 @@ MonoBehaviour:
   gatherMultiplierOnResource: 0
   gatherMultiplierNextToResource: 0
   gatherableResources: []
+  waterUpkeep: 1
+  nitrateUpkeep: 0

@@ -189,9 +189,31 @@ public class ResourceManager : MonoBehaviour
     public void PayUpkeep()
     {
         waterAmount -= waterUpkeep;
+        if(waterAmount < 0)
+        {
+            waterAmount = 0;
+            waterAmountDisplay.UpdateWaterShortageStatus(true);
+            //TODO: Do something to have consequences (leaves withering?)
+        }
+        else
+        {
+            waterAmountDisplay.UpdateWaterShortageStatus(false);
+        }
+
         waterAmountDisplay.UpdateWaterAmount(waterAmount);
 
         nitrateAmount -= nitrateUpkeep;
+        if(nitrateAmount < 0)
+        {
+            nitrateAmount = 0;
+            nitrateAmountDisplay.UpdateNitrateShortageStatus(true);
+            //TODO: Do something to have consequences (?)
+        }
+        else
+        {
+            nitrateAmountDisplay.UpdateNitrateShortageStatus(false);
+        }
+
         nitrateAmountDisplay.UpdateNitrateAmount(nitrateAmount);
     }
 
