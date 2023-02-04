@@ -7,6 +7,7 @@ public class GridCell : MonoBehaviour
 {
     private CardView _activeCardView;
     private TerrainType _terrain;
+    private Vector2Int _gridPosition;
 
     [SerializeField] private SpriteRenderer backgroundSprite;
 
@@ -47,5 +48,15 @@ public class GridCell : MonoBehaviour
     public void SetCardView(CardView card)
     {
         _activeCardView = card;
+    }
+
+    public void StoreGridPosition(Vector2Int gridPos)
+    {
+        _gridPosition = gridPos;
+    }
+
+    public Vector2Int GetGridPosition()
+    {
+        return _gridPosition;
     }
 }

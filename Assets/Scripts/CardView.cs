@@ -29,7 +29,7 @@ public class CardView : MonoBehaviour
 
     public bool HasOpenSocketAtWorldSideId(int worldSideId)
     {
-        Debug.Log($"HasOpenSocketAtWorldSideId: Rotation of CardView is {_rotation}");
+        //Debug.Log($"HasOpenSocketAtWorldSideId: Rotation of CardView is {_rotation}");
         if(_card.HasSocketAtWorldSideId(worldSideId, _rotation) && !hasOccupiedSocketAtWorldSideId[worldSideId])
         {
             return true;
