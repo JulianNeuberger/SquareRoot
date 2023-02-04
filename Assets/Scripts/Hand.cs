@@ -55,6 +55,8 @@ public class Hand : MonoBehaviour
         if (!_currentCards.Contains(card)) return;
         _currentCards.Remove(card);
 
+        Destroy(card.gameObject);
+
         LayoutCards();
     }
 
@@ -123,7 +125,8 @@ public class Hand : MonoBehaviour
         var worldPos = _camera.ScreenToWorldPoint(Input.mousePosition);
         var gridPos = grid.WorldCoordinatesToGridPosition(worldPos);
 
-        if (grid.CanPlaceCard(gridPos, _draggedCard.Card))
+        // TODO: Use rotation
+        if (grid.CanPlaceCard(gridPos, _draggedCard.Card, 0))
         {
             Debug.Log("Can place card");
             var success = grid.TryPlaceCard(gridPos, _draggedCard.Card, 0);
