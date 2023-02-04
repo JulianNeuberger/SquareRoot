@@ -24,8 +24,8 @@ public class HandCard : MonoBehaviour
 
     public void SetSortingOrder(int index)
     {
-        mainSprite.sortingOrder = index;
-        borderSprite.sortingOrder = index;
+        mainSprite.sortingOrder = index * 2;
+        borderSprite.sortingOrder = index * 2 - 1;
     }
 
     public void RotateSprite(Vector3 eulers)

@@ -35,6 +35,17 @@ public class GridCell : MonoBehaviour
         backgroundSprite.sprite = useSprite;
     }
 
+    public void SetHighlighted(bool highlighted, Color highlightColor)
+    {
+        if (!highlighted)
+        {
+            backgroundSprite.color = Color.white;
+            return;
+        }
+        
+        backgroundSprite.color = highlightColor;
+    }
+
     public TerrainType GetTerrain()
     {
         return _terrain;

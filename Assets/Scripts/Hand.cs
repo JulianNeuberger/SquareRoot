@@ -13,6 +13,8 @@ public class Hand : MonoBehaviour
     [SerializeField] private float height = 3f;
     [SerializeField] private float maxGap = 1f;
 
+    [SerializeField] private Vector3 draggingOffset = new(1f, -1.5f, 0f);
+
     [SerializeField] private CardGrid grid;
     
     public List<Card> cards = new();
@@ -40,6 +42,16 @@ public class Hand : MonoBehaviour
         HandleCardDragEnded();
     }
 
+    public void Clear()
+    {
+        foreach (var handCard in _currentCards)
+        {
+            Destroy(handCard.gameObject);
+        }
+        
+        _currentCards.Clear();
+    }
+    
     public void DealCard(Card card)
     {
         var handCard = Instantiate(handCardPrefab, transform);
@@ -51,8 +63,8 @@ public class Hand : MonoBehaviour
 
         LayoutCards();
     }
-
-    private void RemoveCard(HandCard card)
+    
+    public void RemoveCard(HandCard card)
     {
         if (!_currentCards.Contains(card)) return;
         _currentCards.Remove(card);
@@ -104,7 +116,6 @@ public class Hand : MonoBehaviour
         var cardStartedDragging = GetDraggedHandCard();
         if (cardStartedDragging == null) return;
 
-        Debug.Log("Drag started");
         _draggedCard = cardStartedDragging;
         _draggedCard.Collider2D.enabled = false;
     }
@@ -115,8 +126,11 @@ public class Hand : MonoBehaviour
 
         var worldPos = _camera.ScreenToWorldPoint(Input.mousePosition);
         worldPos.z = 0f;
-        _draggedCard.transform.position = worldPos;
-        // TODO: animate if card cant be dropped here
+        _draggedCard.transform.position = worldPos + draggingOffset;
+
+        var gridPos = grid.WorldCoordinatesToGridPosition(worldPos);
+        var canPlace = grid.CanPlaceCard(gridPos, _draggedCard.Card, _draggedCardRotation);
+        grid.HighlightCell(gridPos, canPlace ? Color.green : Color.red);
     }
 
     private void HandleCardDragRotate()
@@ -139,18 +153,16 @@ public class Hand : MonoBehaviour
 
         if (grid.CanPlaceCard(gridPos, _draggedCard.Card, _draggedCardRotation))
         {
-            Debug.Log("Can place card");
             var success = grid.TryPlaceCard(gridPos, _draggedCard.Card, _draggedCardRotation);
             if(success) RemoveCard(_draggedCard);
-            
         }
-        Debug.Log("Dropped");
 
         _draggedCard.Collider2D.enabled = true;
         _draggedCard = null;
         _draggedCardRotation = 0;
 
-
+        grid.ResetHighlight();
+        
         LayoutCards();
     }
     

@@ -27,6 +27,7 @@ public class CardGrid : MonoBehaviour
 
     private GridCell[,] _grid;
     private List<Vector2Int> _gridPositionsWithActiveCardView = new List<Vector2Int>();
+    private GridCell _highlightedCell;
 
     #region UnityCallbacks
 
@@ -63,8 +64,7 @@ public class CardGrid : MonoBehaviour
     {
         return _gridPositionsWithActiveCardView;
     }
-
-
+    
     public GridCell GetGridCell(Vector2Int gridPos)
     {
         //Debug.Log($"GetGridCell with gridPos {gridPos}");
@@ -97,6 +97,27 @@ public class CardGrid : MonoBehaviour
         return worldPos;
     }
 
+    public void HighlightCell(Vector2Int cellPos, Color color)
+    {
+        var cell = GetGridCell(cellPos);
+
+        if (cell != _highlightedCell)
+        {
+            if(_highlightedCell != null) _highlightedCell.SetHighlighted(false, Color.white);
+        }
+        
+        _highlightedCell = cell;
+        if (cell == null) return;
+        
+        _highlightedCell.SetHighlighted(true, color);        
+    }
+
+    public void ResetHighlight()
+    {
+        if (_highlightedCell == null) return;
+        _highlightedCell.SetHighlighted(false, Color.white);
+        _highlightedCell = null;
+    }
 
     public bool CanPlaceCard(Vector2Int gridPos, Card card, int rotation)
     {
