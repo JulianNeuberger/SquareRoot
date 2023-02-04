@@ -5,6 +5,10 @@ using UnityEngine;
 public class Card : ScriptableObject
 {
     public Sprite sprite;
+    public Sprite unhealthySprite;
+    public Sprite deadSprite;
+    
+    public int initialHealth = 1;
 
     [Header("Constraints")]
     public TerrainType[] validTerrain;

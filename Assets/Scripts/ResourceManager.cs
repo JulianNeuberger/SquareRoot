@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 public class ResourceManager : MonoBehaviour
 {
-    public CardGrid _cardGrid;
+    public CardGrid cardGrid;
+
+    public Card leaveCard;
 
     public TerrainType waterTerrain;
     public TerrainType nitrateTerrain;
@@ -120,7 +123,7 @@ public class ResourceManager : MonoBehaviour
     {
         var gatheredResources = new Dictionary<TerrainType, float>();
 
-        var allActiveCardViewsGridPositions = _cardGrid.GetAllGridPositionsWithActiveCardViews();
+        var allActiveCardViewsGridPositions = cardGrid.GetAllGridPositionsWithActiveCardViews();
         Debug.Log($"GatherAllResources: Received {allActiveCardViewsGridPositions.Count} active card views throughout the grid");
 
         foreach(var gridPosition in allActiveCardViewsGridPositions)
@@ -160,11 +163,11 @@ public class ResourceManager : MonoBehaviour
 
     private Dictionary<TerrainType, float> GatherResourcesForCardViewAtPosition(Vector2Int pos)
     {
-        Debug.Log($"GatherResourcesForCardViewAtPosition {pos}, cardType is {_cardGrid.GetGridCell(pos).GetActiveCardView().GetCard().name}");
+        Debug.Log($"GatherResourcesForCardViewAtPosition {pos}, cardType is {cardGrid.GetGridCell(pos).GetActiveCardView().GetCard().name}");
 
         var gatheredResources = new Dictionary<TerrainType, float>();
 
-        var gridCell = _cardGrid.GetGridCell(pos);
+        var gridCell = cardGrid.GetGridCell(pos);
         var gatherMultiplier = gridCell.GetActiveCardView().GetCard().gatherMultiplierOnResource;
         var terrain = gridCell.GetTerrain();
         Debug.Log($"{pos} On cell: gatherMultiplier is {gatherMultiplier}, terrain is {terrain}");
@@ -175,7 +178,7 @@ public class ResourceManager : MonoBehaviour
             Debug.Log($"{pos} On cell: Added {gatherMultiplier} of {terrain}");
         }    
         
-        var neighborGridCells = _cardGrid.GetNeighbors(pos);
+        var neighborGridCells = cardGrid.GetNeighbors(pos);
 
         Debug.Log($"Got {neighborGridCells.Count} neighbors to gather from");
         var gatherMultiplierNeighbors = gridCell.GetActiveCardView().GetCard().gatherMultiplierNextToResource;
@@ -205,7 +208,7 @@ public class ResourceManager : MonoBehaviour
 
     public void UpdateUpkeep()
     {
-        var allActiveCardViewsGridPositions = _cardGrid.GetAllGridPositionsWithActiveCardViews();
+        var allActiveCardViewsGridPositions = cardGrid.GetAllGridPositionsWithActiveCardViews();
         Debug.Log($"UpdateUpkeep: Received {allActiveCardViewsGridPositions.Count} active card views throughout the grid");
 
         float totalWaterUpkeep = 0;
@@ -213,7 +216,7 @@ public class ResourceManager : MonoBehaviour
 
         foreach (var gridPosition in allActiveCardViewsGridPositions)
         {
-            var card = _cardGrid.GetGridCell(gridPosition).GetActiveCardView().GetCard();
+            var card = cardGrid.GetGridCell(gridPosition).GetActiveCardView().GetCard();
             totalWaterUpkeep += card.waterUpkeep;
             totalNitrateUpkeep += card.nitrateUpkeep;
         }
@@ -231,9 +234,10 @@ public class ResourceManager : MonoBehaviour
         waterAmount -= waterUpkeep;
         if(waterAmount < 0)
         {
+            Debug.Log("Water shortage!");
             waterAmount = 0;
             waterAmountDisplay.UpdateWaterShortageStatus(true);
-            //TODO: Do something to have consequences (leaves withering?)
+            DecreaseLeaveHealth();
         }
         else
         {
@@ -255,6 +259,29 @@ public class ResourceManager : MonoBehaviour
         }
 
         nitrateAmountDisplay.UpdateNitrateAmount(nitrateAmount);
+    }
+
+    public void DecreaseLeaveHealth()
+    {
+        Debug.Log("Trying to decrease health of a leaf");
+
+        var allActiveCardViewsGridPositions = cardGrid.GetAllGridPositionsWithActiveCardViews();
+        var orderedActiveCardViewsGridPositions = allActiveCardViewsGridPositions.OrderByDescending(pos => pos.y).ThenBy(pos => pos.x);
+
+        var leavesAlivePositions = orderedActiveCardViewsGridPositions
+            .Where(pos => cardGrid.GetGridCell(pos).GetActiveCardView().GetCard() == leaveCard)
+            .Where(pos => cardGrid.GetGridCell(pos).GetActiveCardView().GetCurrentHealth() > 0);
+
+        if(!leavesAlivePositions.Any())
+        {
+            Debug.Log("Did not find any leaf alive, can not decrease health!");
+            //TODO: TRIGGER GAME LOSE?
+            return;
+        }
+
+        var firstLeafAlivePosition = leavesAlivePositions.First();
+        Debug.Log($"Decreasing health of leaf at position {firstLeafAlivePosition}");
+        cardGrid.GetGridCell(firstLeafAlivePosition).GetActiveCardView().DecreaseHealth();
     }
 
 
