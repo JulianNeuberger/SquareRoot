@@ -194,6 +194,7 @@ public class Hand : MonoBehaviour
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(Hand))]
 public class HandEditor : Editor
 {
@@ -209,3 +210,4 @@ public class HandEditor : Editor
         }
     }
 }
+#endif

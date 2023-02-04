@@ -528,6 +528,7 @@ public class CardGrid : MonoBehaviour
     #endregion
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(CardGrid))]
 class CardGridEditor : Editor
 {
@@ -543,3 +544,4 @@ class CardGridEditor : Editor
         }
     }
 }
+#endif

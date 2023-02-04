@@ -81,6 +81,7 @@ public class RoundManager : MonoBehaviour
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(RoundManager))]
 public class RoundManagerEditor : Editor
 {
@@ -95,3 +96,4 @@ public class RoundManagerEditor : Editor
         }
     }
 }
+#endif
