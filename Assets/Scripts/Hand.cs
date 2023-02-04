@@ -13,6 +13,8 @@ public class Hand : MonoBehaviour
     [SerializeField] private float height = 3f;
     [SerializeField] private float maxGap = 1f;
 
+    [SerializeField] private CardGrid grid;
+    
     public List<Card> cards = new();
 
     private readonly List<HandCard> _currentCards = new();
@@ -26,6 +28,7 @@ public class Hand : MonoBehaviour
         // we could also set the camera somehow, to allow this component to be a child of anything other than a cam
         // but then we would have to update its position in each update accordingly!
         if (_camera == null) throw new ArgumentException("Hand has to be a child of the camera for now.");
+        if (grid == null) throw new ArgumentException("CardGrid not set!");
     }
     
     protected void Update()
@@ -47,7 +50,7 @@ public class Hand : MonoBehaviour
         LayoutCards();
     }
 
-    public void PlayCard(HandCard card)
+    private void RemoveCard(HandCard card)
     {
         if (!_currentCards.Contains(card)) return;
         _currentCards.Remove(card);
@@ -99,14 +102,13 @@ public class Hand : MonoBehaviour
 
         Debug.Log("Drag started");
         _draggedCard = cardStartedDragging;
+        _draggedCard.Collider2D.enabled = false;
     }
 
     private void HandleCardDragOngoing()
     {
         if (_draggedCard == null) return;
 
-        Debug.Log("Drag ongoing");
-        
         var worldPos = _camera.ScreenToWorldPoint(Input.mousePosition);
         worldPos.z = 0f;
         _draggedCard.transform.position = worldPos;
@@ -117,9 +119,19 @@ public class Hand : MonoBehaviour
     {
         if (!Input.GetMouseButtonUp(0)) return;
         
-        // TODO: get grid cell for current pointer world pos
-        // TODO: check if grid allows card here
+        var worldPos = _camera.ScreenToWorldPoint(Input.mousePosition);
+        var gridPos = grid.WorldCoordinatesToGridPosition(worldPos);
+
+        if (grid.CanPlaceCard(gridPos, _draggedCard.Card))
+        {
+            Debug.Log("Can place card");
+            var success = grid.TryPlaceCard(gridPos, _draggedCard.Card, 0);
+            if(success) RemoveCard(_draggedCard);
+            
+        }
         Debug.Log("Dropped");
+
+        _draggedCard.Collider2D.enabled = true;
         _draggedCard = null;
         
         LayoutCards();

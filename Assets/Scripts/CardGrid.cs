@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class CardGrid : MonoBehaviour
     [SerializeField] private int heightCells = 50;
 
     [SerializeField] private GridCell cellPrefab;
+    [SerializeField] private CardView cardViewPrefab;
 
     [SerializeField] private int earthLevel = 25;
 
@@ -72,6 +74,13 @@ public class CardGrid : MonoBehaviour
         return gridPos;
     }
 
+    public Vector3 GridPositionToWorldCoordinates(Vector2Int gridPos)
+    {
+        var worldPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        worldPos += new Vector3(gridPos.x * cellSize, gridPos.y * cellSize);
+        return worldPos;
+    }
+
     public bool CanPlaceCard(Vector2Int gridPos, Card card)
     {
         if (_grid[gridPos.x, gridPos.y].GetActiveCardView() != null)
@@ -84,13 +93,31 @@ public class CardGrid : MonoBehaviour
 
         foreach (var neighbor in neighbors)
         {
-            if (neighbor.GetActiveCardView().HasOpenSockets() && neighbor.GetActiveCardView().GetCard().CanAttachCardType(card))
-            {
-                return true;
-            }
+            if (neighbor.GetActiveCardView() == null) continue;
+            if (!neighbor.GetActiveCardView().HasOpenSockets()) continue;
+            if (!neighbor.GetActiveCardView().GetCard().CanAttachCardType(card)) continue;
+
+            return true;
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// tries to place a card at given grid position. Returns true if successful, false otherwise.
+    /// </summary>
+    public bool TryPlaceCard(Vector2Int gridPos, Card card, int rotation)
+    {
+        if (rotation < 0) throw new ArgumentException("Rotation must be between 0 and 3 (inclusive)");
+        if (rotation > 3) throw new ArgumentException("Rotation must be between 0 and 3 (inclusive)");
+        
+        if (!CanPlaceCard(gridPos, card)) return false;
+
+        var cardView = Instantiate(cardViewPrefab, transform);
+        cardView.transform.position = GridPositionToWorldCoordinates(gridPos);
+        _grid[gridPos.x, gridPos.y].SetCardView(cardView);
+        
+        return true;
     }
 
     public List<GridCell> GetNeighbors(Vector2Int gridPos)
