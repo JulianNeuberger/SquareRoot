@@ -7,6 +7,7 @@ using System;
 public class WaterAmountDisplay : MonoBehaviour
 {
     private int waterAmount = 0;
+    private int waterIncome = 0;
     private int waterUpkeep = 0;
     private TextMeshProUGUI tmp;
 
@@ -19,20 +20,17 @@ public class WaterAmountDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(waterUpkeep >= 0)
-        {
-            tmp.text = $"Water: {waterAmount} + {waterUpkeep}";
-        }
-        else
-        {
-            tmp.text = $"Water: {waterAmount} - {Math.Abs(waterUpkeep)}";
-        }
-
+        tmp.text = $"Water: {waterAmount} + {waterIncome} - {waterUpkeep}";
     }
 
     public void UpdateWaterAmount(int amount)
     {
         waterAmount = amount;
+    }
+
+    public void UpdateWaterIncome(int income)
+    {
+        waterIncome = income;
     }
 
     public void UpdateWaterUpkeep(int upkeep)

@@ -16,6 +16,9 @@ public class ResourceManager : MonoBehaviour
     private int waterAmount = 0;
     private int nitrateAmount = 0;
 
+    private int waterIncome = 0;
+    private int nitrateIncome = 0;
+
     private int waterUpkeep = 0;
     private int nitrateUpkeep = 0;
 
@@ -25,11 +28,20 @@ public class ResourceManager : MonoBehaviour
         return waterAmount;
     }
 
-    public int getNitrateAmoun()
+    public int getNitrateAmount()
     {
         return nitrateAmount;
     }
 
+    public int getWaterIncome()
+    {
+        return waterIncome;
+    }
+
+    public int getNitrateIncome()
+    {
+        return nitrateIncome;
+    }
 
     public int getWaterUpkeep()
     {
@@ -42,14 +54,34 @@ public class ResourceManager : MonoBehaviour
     }
 
 
+    public void UpdateResourceIncome()
+    {
+        var resourceIncome = GatherAllResources();
+
+        waterIncome = (int)resourceIncome.GetValueOrDefault(waterTerrain, 0);
+        waterAmountDisplay.UpdateWaterIncome(waterIncome);
+
+        nitrateIncome = (int)resourceIncome.GetValueOrDefault(nitrateTerrain, 0);
+        nitrateAmountDisplay.UpdateNitrateIncome(nitrateIncome);
+    }
+
+
+    public void ReceiveResourceIncome()
+    {
+        waterAmount += waterIncome;
+        waterAmountDisplay.UpdateWaterAmount(waterAmount);
+
+        nitrateAmount += nitrateIncome;
+        nitrateAmountDisplay.UpdateNitrateAmount(nitrateAmount);
+    }
+
 
     public Dictionary<TerrainType, float> GatherAllResources()
     {
         var gatheredResources = new Dictionary<TerrainType, float>();
 
         var allActiveCardViewsGridPositions = _cardGrid.GetAllGridPositionsWithActiveCardViews();
-
-        Debug.Log($"Received {allActiveCardViewsGridPositions.Count} active card views throughout the grid");
+        Debug.Log($"GatherAllResources: Received {allActiveCardViewsGridPositions.Count} active card views throughout the grid");
 
         foreach(var gridPosition in allActiveCardViewsGridPositions)
         {
@@ -82,18 +114,9 @@ public class ResourceManager : MonoBehaviour
         }
         Debug.Log($"===== ===== ===== =====");
 
-        Debug.Log($"Water amount before: {waterAmount}");
-        waterAmount += (int)gatheredResources.GetValueOrDefault(waterTerrain, 0);
-        waterAmountDisplay.UpdateWaterAmount(waterAmount);
-        Debug.Log($"Water amount after: {waterAmount}");
-
-        Debug.Log($"Nitrate amount before: {nitrateAmount}");
-        nitrateAmount += (int)gatheredResources.GetValueOrDefault(nitrateTerrain, 0);
-        nitrateAmountDisplay.UpdateNitrateAmount(nitrateAmount);
-        Debug.Log($"Nitrate amount after: {nitrateAmount}");
-
         return gatheredResources;
     }
+
 
     private Dictionary<TerrainType, float> GatherResourcesForCardViewAtPosition(Vector2Int pos)
     {
@@ -139,10 +162,39 @@ public class ResourceManager : MonoBehaviour
         return gatheredResources;
     }
 
+
     public void UpdateUpkeep()
     {
+        var allActiveCardViewsGridPositions = _cardGrid.GetAllGridPositionsWithActiveCardViews();
+        Debug.Log($"UpdateUpkeep: Received {allActiveCardViewsGridPositions.Count} active card views throughout the grid");
 
+        float totalWaterUpkeep = 0;
+        float totalNitrateUpkeep = 0;
+
+        foreach (var gridPosition in allActiveCardViewsGridPositions)
+        {
+            var card = _cardGrid.GetGridCell(gridPosition).GetActiveCardView().GetCard();
+            totalWaterUpkeep += card.waterUpkeep;
+            totalNitrateUpkeep += card.nitrateUpkeep;
+        }
+
+        waterUpkeep = (int)totalWaterUpkeep;
+        waterAmountDisplay.UpdateWaterUpkeep(waterUpkeep);
+
+        nitrateUpkeep = (int)totalNitrateUpkeep;
+        nitrateAmountDisplay.UpdateNitrateUpkeep(nitrateUpkeep);
     }
+
+
+    public void PayUpkeep()
+    {
+        waterAmount -= waterUpkeep;
+        waterAmountDisplay.UpdateWaterAmount(waterAmount);
+
+        nitrateAmount -= nitrateUpkeep;
+        nitrateAmountDisplay.UpdateNitrateAmount(nitrateAmount);
+    }
+
 
     [CustomEditor(typeof(ResourceManager))]
     public class ResourceEditor : Editor
@@ -151,10 +203,28 @@ public class ResourceManager : MonoBehaviour
         {
             DrawDefaultInspector();
 
-            if (GUILayout.Button("Gather Resources"))
+            if (GUILayout.Button("Update Resource Income"))
             {
                 var resourceManager = (ResourceManager) target;
-                resourceManager.GatherAllResources();
+                resourceManager.UpdateResourceIncome();
+            }
+
+            if (GUILayout.Button("Receive Resource Income"))
+            {
+                var resourceManager = (ResourceManager)target;
+                resourceManager.ReceiveResourceIncome();
+            }
+
+            if (GUILayout.Button("Update Upkeep"))
+            {
+                var resourceManager = (ResourceManager)target;
+                resourceManager.UpdateUpkeep();
+            }
+
+            if (GUILayout.Button("Pay Upkeep"))
+            {
+                var resourceManager = (ResourceManager)target;
+                resourceManager.PayUpkeep();
             }
         }
     }

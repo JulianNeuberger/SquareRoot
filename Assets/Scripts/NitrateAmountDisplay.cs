@@ -7,6 +7,7 @@ using System;
 public class NitrateAmountDisplay : MonoBehaviour
 {
     private int nitrateAmount = 0;
+    private int nitrateIncome = 0;
     private int nitrateUpkeep = 0;
     private TextMeshProUGUI tmp;
 
@@ -19,19 +20,17 @@ public class NitrateAmountDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (nitrateUpkeep >= 0)
-        {
-            tmp.text = $"Nitrate: {nitrateAmount} + {nitrateUpkeep}";
-        }
-        else
-        {
-            tmp.text = $"Nitrate: {nitrateAmount} - {Math.Abs(nitrateUpkeep)}";
-        }
+        tmp.text = $"Nitrate: {nitrateAmount} + {nitrateIncome} - {nitrateUpkeep}";
     }
 
     public void UpdateNitrateAmount(int amount)
     {
         nitrateAmount = amount;
+    }
+
+    public void UpdateNitrateIncome(int income)
+    {
+        nitrateIncome = income;
     }
 
     public void UpdateNitrateUpkeep(int upkeep)
