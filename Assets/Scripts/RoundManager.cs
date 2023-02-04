@@ -19,16 +19,13 @@ public class RoundManager : MonoBehaviour
 
         Debug.Log($"Gathered resources: {gatheredResources}");
 
-        // TODO Add gather resources to hand
+        // TODO Add gathered resources to spendable resource counts
 
-        // TODO Pay upkeep from hand
+        // TODO Pay upkeep from the spendable resources
 
-        // TODO Check for forced actions (e.g. not enough upkeep -> destry plant parts)
+        // TODO Check for forced actions (e.g. not enough upkeep -> destroy plant parts)
 
     }
-
-    
-
 
 
 }
