@@ -483,27 +483,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contents:
   - card: {fileID: 11400000, guid: b82dac58bfc8c47409f8d2792a9426cd, type: 2}
-    amount: 0
+    amount: 6
   - card: {fileID: 11400000, guid: 3b00d86a09e3c87469c0f1cf8cef1ebc, type: 2}
-    amount: 0
+    amount: 5
   - card: {fileID: 11400000, guid: c0198354da9511c4c812c83648584bff, type: 2}
-    amount: 0
+    amount: 10
   - card: {fileID: 11400000, guid: 01f55ef142cb0a949b51b3473ed4724e, type: 2}
-    amount: 0
+    amount: 6
   - card: {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
-    amount: 0
+    amount: 7
   - card: {fileID: 11400000, guid: 40e7e84e72349b54d905c03d86a54637, type: 2}
-    amount: 0
+    amount: 6
   - card: {fileID: 11400000, guid: 4c70f00f65c908a45b64506c2e372787, type: 2}
-    amount: 0
+    amount: 3
   - card: {fileID: 11400000, guid: 2fc09d9e7c79be547aed2cbe7540dde6, type: 2}
-    amount: 0
+    amount: 4
   - card: {fileID: 11400000, guid: fd1794bb3d3cc9d4a9b1a38c3107630c, type: 2}
-    amount: 0
+    amount: 2
   - card: {fileID: 11400000, guid: 63190a13cb753a641afbf9a04bc57e31, type: 2}
-    amount: 0
+    amount: 5
   - card: {fileID: 11400000, guid: e31c2775e02960340842119c3ffde10a, type: 2}
-    amount: 0
+    amount: 3
 --- !u!4 &1302663250
 Transform:
   m_ObjectHideFlags: 0
@@ -760,23 +760,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contents:
   - card: {fileID: 11400000, guid: b82dac58bfc8c47409f8d2792a9426cd, type: 2}
-    amount: 18
+    amount: 25
   - card: {fileID: 11400000, guid: 3b00d86a09e3c87469c0f1cf8cef1ebc, type: 2}
-    amount: 18
+    amount: 25
   - card: {fileID: 11400000, guid: 01f55ef142cb0a949b51b3473ed4724e, type: 2}
-    amount: 18
+    amount: 25
   - card: {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
-    amount: 18
+    amount: 25
   - card: {fileID: 11400000, guid: 40e7e84e72349b54d905c03d86a54637, type: 2}
-    amount: 18
+    amount: 25
   - card: {fileID: 11400000, guid: 2fc09d9e7c79be547aed2cbe7540dde6, type: 2}
-    amount: 18
+    amount: 25
   - card: {fileID: 11400000, guid: fd1794bb3d3cc9d4a9b1a38c3107630c, type: 2}
-    amount: 18
+    amount: 25
   - card: {fileID: 11400000, guid: 63190a13cb753a641afbf9a04bc57e31, type: 2}
-    amount: 18
+    amount: 25
   - card: {fileID: 11400000, guid: e31c2775e02960340842119c3ffde10a, type: 2}
-    amount: 18
+    amount: 25
 --- !u!4 &1634306168
 Transform:
   m_ObjectHideFlags: 0
@@ -973,7 +973,7 @@ MonoBehaviour:
   waterTerrain: {fileID: 11400000, guid: 85242d5b7ba437440a3c8cdb4745216c, type: 2}
   nitrateTerrain: {fileID: 11400000, guid: ebc5ca55e6646ee4ea9c63cd4d34945a, type: 2}
   waterAmountDisplay: {fileID: 1650265662}
-  nitrateAmountDisplay: {fileID: 0}
+  nitrateAmountDisplay: {fileID: 1554940329}
 --- !u!4 &1706257820
 Transform:
   m_ObjectHideFlags: 0
@@ -1018,6 +1018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 190b95bd0eee52446aacabe2d3ef8022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resourceManager: {fileID: 1706257819}
   hand: {fileID: 1628414064}
   redrawPile: {fileID: 1302663249}
   discardPile: {fileID: 1634306167}

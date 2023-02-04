@@ -3,18 +3,12 @@ using UnityEngine;
 
 public class RoundManager : MonoBehaviour
 {
-
-    private ResourceManager resourceManager;
+    [SerializeField] private ResourceManager resourceManager;
     [SerializeField] private Hand hand;
     [SerializeField] private Deck redrawPile;
     [SerializeField] private Deck discardPile;
 
     [SerializeField] private int cardsPerTurn = 5;
-
-    private void Awake()
-    {
-        resourceManager = GetComponent<ResourceManager>();
-    }
 
     public void NextRound()
     {
@@ -30,7 +24,7 @@ public class RoundManager : MonoBehaviour
         {
             discardPile.PlaceCard(card);
         }
-        
+
         hand.Clear();
     }
 
@@ -38,7 +32,7 @@ public class RoundManager : MonoBehaviour
     {
         for (var i = 0; i < cardsPerTurn; ++i)
         {
-            redrawPile.DrawCard();            
+            redrawPile.DrawCard();
         }
     }
 
@@ -60,8 +54,10 @@ public class RoundManagerEditor : Editor
     {
         DrawDefaultInspector();
 
-        var roundManager = (RoundManager) target;
-        
-        roundManager.NextRound();
+        if (GUILayout.Button("Next Round"))
+        {
+            var roundManager = (RoundManager) target;
+            roundManager.NextRound();
+        }
     }
 }
