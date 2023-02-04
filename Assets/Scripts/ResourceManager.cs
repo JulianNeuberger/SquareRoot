@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -15,21 +16,43 @@ public class ResourceManager : MonoBehaviour
 
     public WaterDisplay waterDisplay;
     public NitrateDisplay nitrateDisplay;
+    public SugarDisplay sugarDisplay;
 
     [SerializeField] private int waterAmount = 5;
     [SerializeField] private int nitrateAmount = 1;
     [SerializeField] private int sugarAmount = 1;
+
+    
 
     public int WaterIncome { get; private set; }
     public int NitrateIncome { get; private set; }
 
     public int WaterUpkeep { get; private set; }
     public int NitrateUpkeep { get; private set; }
+    public int sugarUpkeep { get; private set; }
 
     private void Start()
     {
-        waterDisplay.UpdateWaterAmount(waterAmount);
-        nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
+        UpdateAmountsDisplay();
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown("w"))
+        {
+            waterAmount++;
+            UpdateAmountsDisplay();
+        }
+        if (Input.GetKeyDown("n"))
+        {
+            nitrateAmount++;
+            UpdateAmountsDisplay();
+        }
+        if (Input.GetKeyDown("s"))
+        {
+            sugarAmount++;
+            UpdateAmountsDisplay();
+        }
     }
 
     public void PayWater(int amount)
@@ -71,6 +94,20 @@ public class ResourceManager : MonoBehaviour
         return true;
     }
 
+    public bool ExchangeResourcesAtLeaf()
+    {
+        if (waterAmount < 1) return false;
+        if (nitrateAmount < 1) return false;
+        
+        waterAmount--;
+        nitrateAmount--;
+        sugarAmount++;
+        
+        UpdateAmountsDisplay();
+        
+        return true;
+    }
+
     public void UpdateResourceIncome()
     {
         var resourceIncome = GatherAllResources();
@@ -86,10 +123,9 @@ public class ResourceManager : MonoBehaviour
     public void ReceiveResourceIncome()
     {
         waterAmount += WaterIncome;
-        waterDisplay.UpdateWaterAmount(waterAmount);
-
         nitrateAmount += NitrateIncome;
-        nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
+
+        UpdateAmountsDisplay();
     }
 
 
@@ -187,6 +223,7 @@ public class ResourceManager : MonoBehaviour
 
         float totalWaterUpkeep = 0;
         float totalNitrateUpkeep = 0;
+        float totalSugarUpkeep = 0;
 
         foreach (var gridPosition in allActiveCardViewsGridPositions)
         {
@@ -198,6 +235,7 @@ public class ResourceManager : MonoBehaviour
                 var card = cardView.GetCard();
                 totalWaterUpkeep += card.waterUpkeep;
                 totalNitrateUpkeep += card.nitrateUpkeep;
+                totalSugarUpkeep += card.sugarUpkeep;
             }
         }
 
@@ -206,6 +244,9 @@ public class ResourceManager : MonoBehaviour
 
         NitrateUpkeep = (int)totalNitrateUpkeep;
         nitrateDisplay.UpdateNitrateUpkeep(NitrateUpkeep);
+
+        sugarUpkeep = (int)totalSugarUpkeep;
+        sugarDisplay.UpdateSugarUpkeep(sugarUpkeep);
     }
 
 
@@ -223,11 +264,9 @@ public class ResourceManager : MonoBehaviour
         {
             waterDisplay.UpdateWaterShortageStatus(false);
         }
-
-        waterDisplay.UpdateWaterAmount(waterAmount);
-
+        
         nitrateAmount -= NitrateUpkeep;
-        if(nitrateAmount < 0)
+        if (nitrateAmount < 0)
         {
             nitrateAmount = 0;
             nitrateDisplay.UpdateNitrateShortageStatus(true);
@@ -237,8 +276,20 @@ public class ResourceManager : MonoBehaviour
         {
             nitrateDisplay.UpdateNitrateShortageStatus(false);
         }
+        
+        sugarAmount -= sugarUpkeep;
+        if (sugarAmount < 0)
+        {
+            sugarAmount = 0;
+            sugarDisplay.UpdateSugarShortageStatus(true);
+            //TODO: Do something to have consequences (?)
+        }
+        else
+        {
+            sugarDisplay.UpdateSugarShortageStatus(false);
+        }
 
-        nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
+        UpdateAmountsDisplay();
     }
 
     public void DecreaseLeaveHealth()
@@ -264,37 +315,45 @@ public class ResourceManager : MonoBehaviour
         UpdateUpkeep();
     }
 
-
-    [CustomEditor(typeof(ResourceManager))]
-    public class ResourceEditor : Editor
+    private void UpdateAmountsDisplay()
     {
-        public override void OnInspectorGUI()
+        waterDisplay.UpdateWaterAmount(waterAmount);
+        nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
+        sugarDisplay.UpdateSugarAmount(sugarAmount);
+    }
+}
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(ResourceManager))]
+public class ResourceEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        if (GUILayout.Button("Update Resource Income"))
         {
-            DrawDefaultInspector();
+            var resourceManager = (ResourceManager)target;
+            resourceManager.UpdateResourceIncome();
+        }
 
-            if (GUILayout.Button("Update Resource Income"))
-            {
-                var resourceManager = (ResourceManager) target;
-                resourceManager.UpdateResourceIncome();
-            }
+        if (GUILayout.Button("Receive Resource Income"))
+        {
+            var resourceManager = (ResourceManager)target;
+            resourceManager.ReceiveResourceIncome();
+        }
 
-            if (GUILayout.Button("Receive Resource Income"))
-            {
-                var resourceManager = (ResourceManager)target;
-                resourceManager.ReceiveResourceIncome();
-            }
+        if (GUILayout.Button("Update Upkeep"))
+        {
+            var resourceManager = (ResourceManager)target;
+            resourceManager.UpdateUpkeep();
+        }
 
-            if (GUILayout.Button("Update Upkeep"))
-            {
-                var resourceManager = (ResourceManager)target;
-                resourceManager.UpdateUpkeep();
-            }
-
-            if (GUILayout.Button("Pay Upkeep"))
-            {
-                var resourceManager = (ResourceManager)target;
-                resourceManager.PayUpkeep();
-            }
+        if (GUILayout.Button("Pay Upkeep"))
+        {
+            var resourceManager = (ResourceManager)target;
+            resourceManager.PayUpkeep();
         }
     }
 }
+#endif
