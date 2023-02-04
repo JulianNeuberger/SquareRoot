@@ -12,5 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf4c77957af74904e87163899fe4253e, type: 3}
   m_Name: WaterTerrain
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
+  spriteTable:
+  - sprite: {fileID: 385171651, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+    weight: 1
+  - sprite: {fileID: 42661687, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+    weight: 1
+  - sprite: {fileID: -852709068, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
+    weight: 1
   IsGatherable: 0
