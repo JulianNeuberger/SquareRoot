@@ -48,10 +48,10 @@ public class CardGrid : MonoBehaviour
 
     #region PublicInterface
 
-    public List<(int, int)> GetAllGridPositionsWithActiveCardViews()
+    public List<Vector2Int> GetAllGridPositionsWithActiveCardViews()
     {
         // TODO IMPLEMENT
-        return new List<(int, int)>();
+        return new List<Vector2Int>();
     }
 
     public GridCell GetGridCell(Vector2Int gridPos)
@@ -85,7 +85,6 @@ public class CardGrid : MonoBehaviour
         foreach (var neighbor in neighbors)
         {
             if (neighbor.GetActiveCardView().HasOpenSockets() && neighbor.GetActiveCardView().GetCard().CanAttachCardType(card))
-                neighbor.GetActiveCardView().GetCard().CanAttachCardType(card.cardType))
             {
                 return true;
             }

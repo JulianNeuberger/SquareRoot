@@ -25,7 +25,7 @@ public class ResourceManager : MonoBehaviour
         var allActiveCardViewsGridPositions = _cardGrid.GetAllGridPositionsWithActiveCardViews();
         foreach(var gridPosition in allActiveCardViewsGridPositions)
         {
-            var gatheredResourcesOfCardView = GatherResourcesForCardViewAtPosition(gridPosition.Item1, gridPosition.Item2);
+            var gatheredResourcesOfCardView = GatherResourcesForCardViewAtPosition(gridPosition);
             foreach(var resource in gatheredResourcesOfCardView.Keys)
             {
                 if(!gatheredResources.ContainsKey(resource))
@@ -42,11 +42,11 @@ public class ResourceManager : MonoBehaviour
         return gatheredResources;
     }
 
-    private Dictionary<TerrainType, float> GatherResourcesForCardViewAtPosition(int x, int y)
+    private Dictionary<TerrainType, float> GatherResourcesForCardViewAtPosition(Vector2Int pos)
     {
         var gatheredResources = new Dictionary<TerrainType, float>();
 
-        var gridCell = _cardGrid.GetGridCell(x, y);
+        var gridCell = _cardGrid.GetGridCell(pos);
         var gatherMultiplier = gridCell.GetActiveCardView().GetCard().gatherMultiplierOnResource;
 
         var terrain = gridCell.GetTerrain();
@@ -55,7 +55,7 @@ public class ResourceManager : MonoBehaviour
             gatheredResources.Add(terrain, gatherMultiplier);
         }    
         
-        var neighborGridCells = _cardGrid.GetNeighbors(x, y);
+        var neighborGridCells = _cardGrid.GetNeighbors(pos);
         var gatherMultiplierNeighbors = gridCell.GetActiveCardView().GetCard().gatherMultiplierNextToResource;
         foreach (var neighbor in neighborGridCells)
         {
