@@ -32,6 +32,8 @@ public class CardGrid : MonoBehaviour
     private List<Vector2Int> _gridPositionsWithActiveCardView = new List<Vector2Int>();
     private GridCell _highlightedCell;
 
+    private GraphManager<CardView> _graph;
+
     public Vector2Int GridSize => new Vector2Int(widthCells, heightCells);
     
     #region UnityCallbacks
@@ -59,6 +61,18 @@ public class CardGrid : MonoBehaviour
         var start = worldPos + offset;
         var end = worldPos + offset + new Vector3(widthCells * cellSize, 0, 0);
         Gizmos.DrawLine(start, end);
+
+        if(_graph != null)
+        {
+            Gizmos.color = Color.yellow;
+            foreach (var node in _graph.Nodes)
+            {
+                foreach (var neighbour in node.neighbors)
+                {
+                    Gizmos.DrawLine(node.Value.transform.position, neighbour.Value.transform.position);
+                }
+            }
+        }
     }
 
     #endregion
@@ -326,16 +340,31 @@ public class CardGrid : MonoBehaviour
             }
         }
 
-        Debug.Log("Checks out, placing card!");
         var cardView = Instantiate(cardViewPrefab, transform);
         cardView.transform.position = GridPositionToWorldCoordinates(gridPos);
-        Debug.Log($"Setting rotation of new card to {rotation}");
         cardView.SetRotation(rotation);
         cardView.SetCard(card);
         _grid[gridPos.x, gridPos.y].SetCardView(cardView);
         if (!_gridPositionsWithActiveCardView.Contains(gridPos))
         {
             _gridPositionsWithActiveCardView.Add(gridPos);
+        }
+
+        if (_graph == null)
+        {
+            // assume the first plant part is the root
+            _graph = new GraphManager<CardView>(cardView);
+        }
+        else
+        {
+            // add this plant to the connected plant parts
+            _graph.AddNode(cardView);
+
+            foreach(var neighbour in GetNeighbors(gridPos))
+            {
+                if (neighbour.GetActiveCardView() == null) continue;
+                _graph.Connect(cardView, neighbour.GetActiveCardView());
+            }
         }
 
         return true;
