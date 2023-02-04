@@ -376,6 +376,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+      propertyPath: straightRoot
+      value: 
+      objectReference: {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
+    - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: cardViewPrefab
       value: 
       objectReference: {fileID: 2924243570290083577, guid: 9ba467843bd867145a975a44ed108fbe, type: 3}

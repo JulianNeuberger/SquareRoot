@@ -118,6 +118,7 @@ public class Hand : MonoBehaviour
     private void HandleCardDragEnded()
     {
         if (!Input.GetMouseButtonUp(0)) return;
+        if (!_draggedCard) return;
         
         var worldPos = _camera.ScreenToWorldPoint(Input.mousePosition);
         var gridPos = grid.WorldCoordinatesToGridPosition(worldPos);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class CardGrid : MonoBehaviour
@@ -15,6 +16,8 @@ public class CardGrid : MonoBehaviour
 
     [SerializeField] private TerrainType airTerrain;
     [SerializeField] private TerrainType earthTerrain;
+
+    [SerializeField] private Card straightRoot;
 
     private GridCell[,] _grid;
 
@@ -83,8 +86,10 @@ public class CardGrid : MonoBehaviour
 
     public bool CanPlaceCard(Vector2Int gridPos, Card card)
     {
-        if (_grid[gridPos.x, gridPos.y].GetActiveCardView() != null)
+        var activeCard = _grid[gridPos.x, gridPos.y].GetActiveCardView();
+        if (activeCard != null)
         {
+            Debug.Log($"Can not place card here, there is already a {activeCard.name} here!");
             // there is already an active card here
             return false;
         }
@@ -100,21 +105,33 @@ public class CardGrid : MonoBehaviour
             return true;
         }
 
+        Debug.Log($"Can not place card here, none of the {neighbors.Count} neighbours have a valid socket.");
         return false;
     }
 
     /// <summary>
     /// tries to place a card at given grid position. Returns true if successful, false otherwise.
+    /// If force is set, we dont check if the card can be placed, useful to spawn the starter plant.
     /// </summary>
-    public bool TryPlaceCard(Vector2Int gridPos, Card card, int rotation)
+    public bool TryPlaceCard(Vector2Int gridPos, Card card, int rotation, bool force = false)
     {
+        Debug.Log("Try placing card...");
         if (rotation < 0) throw new ArgumentException("Rotation must be between 0 and 3 (inclusive)");
         if (rotation > 3) throw new ArgumentException("Rotation must be between 0 and 3 (inclusive)");
-        
-        if (!CanPlaceCard(gridPos, card)) return false;
 
+        Debug.Log("Rotation ok");
+        if (!force)
+        {
+            if (!CanPlaceCard(gridPos, card))
+            {
+                return false;
+            }            
+        }
+
+        Debug.Log("Checks out, placing card!");
         var cardView = Instantiate(cardViewPrefab, transform);
         cardView.transform.position = GridPositionToWorldCoordinates(gridPos);
+        cardView.Card = card;
         _grid[gridPos.x, gridPos.y].SetCardView(cardView);
         
         return true;
@@ -150,6 +167,12 @@ public class CardGrid : MonoBehaviour
 
         return neighbors;
     }
+    
+    public void PlaceStarter(Vector3 worldPos)
+    {
+        var gridPos = WorldCoordinatesToGridPosition(worldPos);
+        TryPlaceCard(gridPos, straightRoot, rotation: 0, force: true);
+    }
 
     #endregion
 
@@ -174,4 +197,20 @@ public class CardGrid : MonoBehaviour
     }
 
     #endregion
+}
+
+[CustomEditor(typeof(CardGrid))]
+class CardGridEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        var grid = (CardGrid) target;
+        
+        if (GUILayout.Button("Place Starter at 0,0"))
+        {
+            grid.PlaceStarter(new Vector3(0, 0, 0));
+        }
+    }
 }
