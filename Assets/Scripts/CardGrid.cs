@@ -72,7 +72,7 @@ public class CardGrid : MonoBehaviour
         return gridPos;
     }
 
-    public bool CanPlaceCard(Vector2Int gridPos, Card card)
+    public bool CanPlaceCard(Vector2Int gridPos, Card card, int rotation)
     {
         if (_grid[gridPos.x, gridPos.y].GetActiveCardView() != null)
         {
@@ -80,14 +80,133 @@ public class CardGrid : MonoBehaviour
             return false;
         }
 
-        var neighbors = GetNeighbors(gridPos);
+        bool connectingSocketAvailable = false;
 
-        foreach (var neighbor in neighbors)
+
+        //card to place has socket at top side -> if there is a neighbor card above that one needs to have open socket at its bottom
+        if (card.HasSocketAtWorldSideId(0, rotation))
         {
-            if (neighbor.GetActiveCardView().HasOpenSockets() && neighbor.GetActiveCardView().GetCard().CanAttachCardType(card))
+            if (GetNeighborAbove(gridPos) != null && GetNeighborAbove(gridPos).GetActiveCardView() != null)
             {
-                return true;
+                if (GetNeighborAbove(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(2))
+                {
+                    //neighboring card has open socket to connect to
+                    connectingSocketAvailable = true;
+                }
+                else
+                {
+                    //card to place has socket, but neighbor card does not
+                    return false;
+                }
             }
+        }
+        //card to place has no socket at top side -> if there is a neighbor card above that one must not have an open socket at its bottom
+        else
+        {
+            if (GetNeighborAbove(gridPos) != null && GetNeighborAbove(gridPos).GetActiveCardView() != null)
+            {
+                if (GetNeighborAbove(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(2))
+                {
+                    //card to place has no open socket, but neighbor card does
+                    return false;
+                }
+            }
+        }
+
+        //card to place has socket at right side -> if there is a neighbor card right that one needs to have open socket at its left
+        if (card.HasSocketAtWorldSideId(1, rotation))
+        {
+            if (GetNeighborRight(gridPos) != null && GetNeighborRight(gridPos).GetActiveCardView() != null)
+            {
+                if (GetNeighborRight(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(3))
+                {
+                    //neighboring card has open socket to connect to
+                    connectingSocketAvailable = true;
+                }
+                else
+                {
+                    //card to place has socket, but neighbor card does not
+                    return false;
+                }
+            }
+        }
+        //card to place has no socket at right side -> if there is a neighbor card right that one must not have an open socket at its left
+        else
+        {
+            if (GetNeighborRight(gridPos) != null && GetNeighborRight(gridPos).GetActiveCardView() != null)
+            {
+                if (GetNeighborRight(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(3))
+                {
+                    //card to place has no open socket, but neighbor card does
+                    return false;
+                }
+            }
+        }
+
+        //card to place has socket at bottom side -> if there is a neighbor card below that one needs to have open socket at its top
+        if (card.HasSocketAtWorldSideId(2, rotation))
+        {
+            if (GetNeighborBelow(gridPos) != null && GetNeighborBelow(gridPos).GetActiveCardView() != null)
+            {
+                if (GetNeighborBelow(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(0))
+                {
+                    //neighboring card has open socket to connect to
+                    connectingSocketAvailable = true;
+                }
+                else
+                {
+                    //card to place has socket, but neighbor card does not
+                    return false;
+                }
+            }
+        }
+        //card to place has no socket at bottom side -> if there is a neighbor card below that one must not have an open socket at its top
+        else
+        {
+            if (GetNeighborBelow(gridPos) != null && GetNeighborBelow(gridPos).GetActiveCardView() != null)
+            {
+                if (GetNeighborBelow(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(0))
+                {
+                    //card to place has no open socket, but neighbor card does
+                    return false;
+                }
+            }
+        }
+
+        //card to place has socket at left side -> if there is a neighbor card left that one needs to have open socket at its right
+        if (card.HasSocketAtWorldSideId(3, rotation))
+        {
+            if (GetNeighborLeft(gridPos) != null && GetNeighborLeft(gridPos).GetActiveCardView() != null)
+            {
+                if (GetNeighborLeft(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(1))
+                {
+                    //neighboring card has open socket to connect to
+                    connectingSocketAvailable = true;
+                }
+                else
+                {
+                    //card to place has socket, but neighbor card does not
+                    return false;
+                }
+            }
+        }
+        //card to place has no socket at left side -> if there is a neighbor card left that one must not have an open socket at its right
+        else
+        {
+            if (GetNeighborLeft(gridPos) != null && GetNeighborLeft(gridPos).GetActiveCardView() != null)
+            {
+                if (GetNeighborLeft(gridPos).GetActiveCardView().HasOpenSocketAtWorldSideId(1))
+                {
+                    //card to place has no open socket, but neighbor card does
+                    return false;
+                }
+            }
+        }
+
+
+        if(connectingSocketAvailable)
+        {
+            return true;
         }
 
         return false;
@@ -97,28 +216,24 @@ public class CardGrid : MonoBehaviour
     {
         var neighbors = new List<GridCell>();
 
-        var gridCellLeft = GetGridCell(new Vector2Int(gridPos.x - 1, gridPos.y));
-        if (gridCellLeft != null)
+        if (GetNeighborAbove(gridPos) != null)
         {
-            neighbors.Add(gridCellLeft);
+            neighbors.Add(GetNeighborAbove(gridPos));
         }
 
-        var gridCellBelow = GetGridCell(new Vector2Int(gridPos.x, gridPos.y - 1));
-        if (gridCellBelow != null)
+        if (GetNeighborRight(gridPos) != null)
         {
-            neighbors.Add(gridCellBelow);
+            neighbors.Add(GetNeighborRight(gridPos));
         }
 
-        var gridCellRight = GetGridCell(new Vector2Int(gridPos.x + 1, gridPos.y));
-        if (gridCellRight != null)
+        if (GetNeighborBelow(gridPos) != null)
         {
-            neighbors.Add(gridCellRight);
+            neighbors.Add(GetNeighborBelow(gridPos));
         }
 
-        var gridCellAbove = GetGridCell(new Vector2Int(gridPos.x, gridPos.y + 1));
-        if (gridCellAbove != null)
+        if (GetNeighborLeft(gridPos) != null)
         {
-            neighbors.Add(gridCellAbove);
+            neighbors.Add(GetNeighborLeft(gridPos));
         }
 
         return neighbors;
@@ -144,6 +259,26 @@ public class CardGrid : MonoBehaviour
                 _grid[x, y] = cell;
             }
         }
+    }
+
+    private GridCell GetNeighborAbove(Vector2Int gridPos)
+    {
+        return GetGridCell(new Vector2Int(gridPos.x, gridPos.y + 1));
+    }
+
+    private GridCell GetNeighborRight(Vector2Int gridPos)
+    {
+        return GetGridCell(new Vector2Int(gridPos.x + 1, gridPos.y));
+    }
+
+    private GridCell GetNeighborBelow(Vector2Int gridPos)
+    {
+        return GetGridCell(new Vector2Int(gridPos.x, gridPos.y - 1));
+    }
+
+    private GridCell GetNeighborLeft(Vector2Int gridPos)
+    {
+        return GetGridCell(new Vector2Int(gridPos.x - 1, gridPos.y));
     }
 
     #endregion
