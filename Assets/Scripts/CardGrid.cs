@@ -42,13 +42,15 @@ public class CardGrid : MonoBehaviour
     [SerializeField] private Card flower;
     [SerializeField] private Card fruit;
 
-    [SerializeField] private GameObject leafExchangeButtonContainer;
     [SerializeField] private Button leafExchangeButton;
-    private CardView _leafSelectedForExchange;
+    [SerializeField] private Button deleteButton;
+    [SerializeField] private Canvas cardActionButtons;
+    private CardView _selectedCardView;
 
     private GridCell[,] _grid;
     private List<Vector2Int> _gridPositionsWithActiveCardView = new List<Vector2Int>();
     private GridCell _highlightedCell;
+    private bool _isOverButton;
 
     private GraphManager<CardView> _graph;
 
@@ -70,10 +72,23 @@ public class CardGrid : MonoBehaviour
             if (success)
             {
                 _audioManager.PlayExchangeAtLeafSound();
-                _leafSelectedForExchange.Use();
+                _selectedCardView.Use();
             }
 
-            leafExchangeButtonContainer.SetActive(false);
+            leafExchangeButton.gameObject.SetActive(false);
+            deleteButton.gameObject.SetActive(false);
+            
+            OnPointerLeaveButton();
+        });
+        deleteButton.onClick.AddListener(() =>
+        {
+            Debug.Log("delete clicked");
+            ExecuteDelete(_selectedCardView);
+            
+            leafExchangeButton.gameObject.SetActive(false);
+            deleteButton.gameObject.SetActive(false);
+            
+            OnPointerLeaveButton();
         });
     }
 
@@ -83,12 +98,10 @@ public class CardGrid : MonoBehaviour
         {
             var cardView = GetCardViewUnderMouse();
             if (cardView == null) return;
-
-            var gridPos = WorldCoordinatesToGridPosition(cardView.transform.position);
-            DeleteCardAt(gridPos);
+            ExecuteDelete(cardView);
         }
 
-        HandleLeafClicked();
+        HandleCardViewClicked();
     }
 
     protected void OnDrawGizmosSelected()
@@ -135,10 +148,10 @@ public class CardGrid : MonoBehaviour
 
     public void SpawnNewResources()
     {
-        for(int i = 0; i < nitrateSpawnsPerRound; i++)
+        for (int i = 0; i < nitrateSpawnsPerRound; i++)
         {
             //randomly select earth grid cell to try place new nitrate
-            var gridPos = new Vector2Int((int)Random.Range(0, widthCells), (int)Random.Range(0, earthLevel));
+            var gridPos = new Vector2Int((int) Random.Range(0, widthCells), (int) Random.Range(0, earthLevel));
             var gridCell = GetGridCell(gridPos);
             if (gridCell.GetTerrain() == earthTerrain)
             {
@@ -150,7 +163,7 @@ public class CardGrid : MonoBehaviour
         for (int i = 0; i < waterSpawnsPerRound; i++)
         {
             //randomly select earth grid cell to try place new nitrate
-            var gridPos = new Vector2Int((int)Random.Range(0, widthCells), (int)Random.Range(0, earthLevel));
+            var gridPos = new Vector2Int((int) Random.Range(0, widthCells), (int) Random.Range(0, earthLevel));
             var gridCell = GetGridCell(gridPos);
             if (gridCell.GetTerrain() == earthTerrain)
             {
@@ -168,10 +181,13 @@ public class CardGrid : MonoBehaviour
         if (gridCell == null) return;
         if (gridCell.GetActiveCardView() == null) return;
 
-        if(gridCell.GetActiveCardView() == _leafSelectedForExchange)
+        if (gridCell.GetActiveCardView() == _selectedCardView)
         {
-            leafExchangeButtonContainer.SetActive(false);
+            cardActionButtons.gameObject.SetActive(false);
+            leafExchangeButton.gameObject.SetActive(false);
+            deleteButton.gameObject.SetActive(false);
         }
+
         _gridPositionsWithActiveCardView.Remove(gridCell.GetGridPosition());
         _graph.DeleteNode(gridCell.GetActiveCardView());
 
@@ -199,6 +215,7 @@ public class CardGrid : MonoBehaviour
             Destroy(node.Value.gameObject);
             cell.SetCardView(null);
         }
+
         resourceManager.UpdateResourceIncome();
         resourceManager.UpdateUpkeep();
     }
@@ -542,11 +559,11 @@ public class CardGrid : MonoBehaviour
 
     public void ReduceMinedResourceReservoirAmounts(List<Vector2Int> minedPositions)
     {
-        foreach(var position in minedPositions)
+        foreach (var position in minedPositions)
         {
             var gridCell = GetGridCell(position);
             var depleted = gridCell.reduceResourceReservoir();
-            if(depleted)
+            if (depleted)
             {
                 gridCell.SetTerrain(earthTerrain, 0);
             }
@@ -564,13 +581,20 @@ public class CardGrid : MonoBehaviour
         {
             for (var y = -card.visionRange - additionalVisibility; y <= card.visionRange + additionalVisibility; ++y)
             {
-                if (x == 0 && y == 0) continue;
-
                 var dir = new Vector2Int(x, y);
                 var visibleCell = GetGridCell(pos + dir);
                 if (visibleCell == null) continue;
 
-                var distance = dir.magnitude;
+                float distance;
+                if (x == 0 && y == 0)
+                {
+                    distance = 1f;
+                }
+                else
+                {
+                    distance = dir.magnitude;
+                }
+                
                 var visibility = card.visionRange / distance;
                 visibility *= visibility;
                 visibleCell.VisibilityCounter += Mathf.Clamp01(visibility) * direction;
@@ -578,28 +602,33 @@ public class CardGrid : MonoBehaviour
         }
     }
 
-    private void HandleLeafClicked()
+    private void HandleCardViewClicked()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!Input.GetMouseButtonDown(0)) return;
+
+        if (_isOverButton) return;
+        
+        var cardView = GetCardViewUnderMouse();
+        if (cardView == null)
         {
-            var cardView = GetCardViewUnderMouse();
-            if (cardView == null || cardView.GetCard() != leaf || !cardView.CanBeUsed())
-            {
-                leafExchangeButtonContainer.SetActive(false);
-                return;
-            }
-
-            _audioManager.PlayClickOnUsableLeafSound();
-            _leafSelectedForExchange = cardView;
-
-            var gridPos = WorldCoordinatesToGridPosition(cardView.transform.position);
-            var screenPos = _camera.WorldToScreenPoint(cardView.transform.position);
-
-            Debug.Log($"Leaf clicked at position {gridPos}. Setting button to world position of cardView {cardView.transform.position} which is screen point {screenPos}");
-
-            leafExchangeButtonContainer.transform.position = screenPos;
-            leafExchangeButtonContainer.SetActive(true);
+            cardActionButtons.gameObject.SetActive(false);
+            return;
         }
+
+        _selectedCardView = cardView;
+        
+        cardActionButtons.transform.position = cardView.transform.position + new Vector3(1.5f, 0, 0);
+        cardActionButtons.gameObject.SetActive(true);
+        leafExchangeButton.gameObject.SetActive(true);
+        deleteButton.gameObject.SetActive(true);
+
+        if (cardView.GetCard() != leaf || !cardView.CanBeUsed())
+        {
+            leafExchangeButton.gameObject.SetActive(false);
+            return;
+        }
+
+        _audioManager.PlayClickOnUsableLeafSound();
     }
 
     private void PopulateGrid()
@@ -688,6 +717,22 @@ public class CardGrid : MonoBehaviour
 
         var target = hit.collider.gameObject;
         return target.GetComponent<CardView>();
+    }
+
+    public void OnPointerEnteredButton()
+    {
+        _isOverButton = true;
+    }
+    
+    public void OnPointerLeaveButton()
+    {
+        _isOverButton = false;
+    }
+
+    private void ExecuteDelete(CardView cardView)
+    {
+        var gridPos = WorldCoordinatesToGridPosition(cardView.transform.position);
+        DeleteCardAt(gridPos);
     }
 
     #endregion
