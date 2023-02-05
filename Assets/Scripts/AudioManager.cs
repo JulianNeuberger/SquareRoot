@@ -18,6 +18,11 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource leafFalling;
     [SerializeField] private AudioSource notEnoughResources;
 
+    private void Start()
+    {
+        ambientMusic.Play();
+    }
+
 
     public void PlayCardStartDragSound()
     {
