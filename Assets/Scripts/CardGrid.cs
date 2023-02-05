@@ -50,6 +50,7 @@ public class CardGrid : MonoBehaviour
     private GridCell[,] _grid;
     private List<Vector2Int> _gridPositionsWithActiveCardView = new List<Vector2Int>();
     private GridCell _highlightedCell;
+    private bool _isOverButton;
 
     private GraphManager<CardView> _graph;
 
@@ -76,10 +77,18 @@ public class CardGrid : MonoBehaviour
 
             leafExchangeButton.gameObject.SetActive(false);
             deleteButton.gameObject.SetActive(false);
+            
+            OnPointerLeaveButton();
         });
         deleteButton.onClick.AddListener(() =>
         {
+            Debug.Log("delete clicked");
             ExecuteDelete(_selectedCardView);
+            
+            leafExchangeButton.gameObject.SetActive(false);
+            deleteButton.gameObject.SetActive(false);
+            
+            OnPointerLeaveButton();
         });
     }
 
@@ -572,13 +581,20 @@ public class CardGrid : MonoBehaviour
         {
             for (var y = -card.visionRange - additionalVisibility; y <= card.visionRange + additionalVisibility; ++y)
             {
-                if (x == 0 && y == 0) continue;
-
                 var dir = new Vector2Int(x, y);
                 var visibleCell = GetGridCell(pos + dir);
                 if (visibleCell == null) continue;
 
-                var distance = dir.magnitude;
+                float distance;
+                if (x == 0 && y == 0)
+                {
+                    distance = 1f;
+                }
+                else
+                {
+                    distance = dir.magnitude;
+                }
+                
                 var visibility = card.visionRange / distance;
                 visibility *= visibility;
                 visibleCell.VisibilityCounter += Mathf.Clamp01(visibility) * direction;
@@ -590,6 +606,8 @@ public class CardGrid : MonoBehaviour
     {
         if (!Input.GetMouseButtonDown(0)) return;
 
+        if (_isOverButton) return;
+        
         var cardView = GetCardViewUnderMouse();
         if (cardView == null)
         {
@@ -682,6 +700,16 @@ public class CardGrid : MonoBehaviour
 
         var target = hit.collider.gameObject;
         return target.GetComponent<CardView>();
+    }
+
+    public void OnPointerEnteredButton()
+    {
+        _isOverButton = true;
+    }
+    
+    public void OnPointerLeaveButton()
+    {
+        _isOverButton = false;
     }
 
     private void ExecuteDelete(CardView cardView)
