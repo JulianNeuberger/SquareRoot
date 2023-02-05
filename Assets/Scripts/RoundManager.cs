@@ -1,10 +1,8 @@
 using System;
-using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Scene = UnityEditor.SearchService.Scene;
 
 public class RoundManager : MonoBehaviour
 {
