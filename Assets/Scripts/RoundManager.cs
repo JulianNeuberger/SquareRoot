@@ -33,6 +33,15 @@ public class RoundManager : MonoBehaviour
         StartGame();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Debug.Log("User pressed enter, calling NextRound");
+            NextRound();
+        }
+    }
+
     public void StartGame()
     {
         DrawCards();
