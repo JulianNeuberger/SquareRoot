@@ -23,6 +23,9 @@ public class HandCard : MonoBehaviour
 
     [HideInInspector] public RectTransform rectTransform;
 
+    private bool _isCurrentlyRed = false;
+    private Color _originalSpriteColor;
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -34,9 +37,12 @@ public class HandCard : MonoBehaviour
         set => SetCard(value);
     }
 
-    public void RotateSprite(Vector3 eulers)
+    public void FlashRed()
     {
-        mainSprite.transform.Rotate(eulers);
+        _originalSpriteColor = mainSprite.color;
+        mainSprite.color = new Color(1, 0.2f, 0.2f);
+        _isCurrentlyRed = true;
+        Invoke(nameof(ResetColor), 0.2f);
     }
 
     private void SetCard(Card newCard)
@@ -83,5 +89,11 @@ public class HandCard : MonoBehaviour
     {
         var container = Instantiate(effectContainer, effectsPanel);
         Instantiate(tradeIcon, container);
+    }
+
+    private void ResetColor()
+    {
+        mainSprite.color = _originalSpriteColor;
+        _isCurrentlyRed = false;
     }
 }

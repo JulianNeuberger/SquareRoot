@@ -18,6 +18,8 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI deckDisplay;
 
+    [SerializeField] private AudioManager audioManager;
+
 
     private void Start()
     {
@@ -40,6 +42,7 @@ public class RoundManager : MonoBehaviour
     
     public void NextRound()
     {
+        audioManager.PlayEndRoundSound();
         UnUseAllCardViews();
         DiscardHandCards();
         ReshuffleDeck();

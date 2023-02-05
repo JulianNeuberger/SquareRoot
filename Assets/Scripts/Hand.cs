@@ -23,6 +23,7 @@ public class Hand : MonoBehaviour
     [SerializeField] private ResourceManager resourceManager;
     
     [SerializeField] private Camera camera;
+    [SerializeField] private AudioManager audioManager;
 
     [SerializeField] private RectTransform drawer;
     [SerializeField] private float drawerHideSeconds = .5f;
@@ -99,13 +100,23 @@ public class Hand : MonoBehaviour
         if (!Input.GetMouseButtonDown(0)) return;
 
         var cardStartedDragging = GetDraggedHandCard();
-        Debug.Log($"cardStartedDraggin: {cardStartedDragging}.");
+        
+        //Debug.Log($"cardStartedDraggin: {cardStartedDragging}.");
         if (cardStartedDragging == null) return;
+
+
+        if (!resourceManager.CanPayForCard(cardStartedDragging.Card))
+        {
+            audioManager.PlayNotEnoughResourcesSound();
+            cardStartedDragging.FlashRed();
+            return;
+        }
 
         _draggedCard = cardStartedDragging;
         
         ghost.sprite = cardStartedDragging.Card.sprite;
         ghost.enabled = true;
+        audioManager.PlayCardStartDragSound();
 
         _drawerHideStarted = Time.time;
         _drawerTargetPos = _drawerStartPos + new Vector2(0f, drawerHideDistance);
@@ -134,6 +145,7 @@ public class Hand : MonoBehaviour
 
         var rotationAngles = new Vector3(0, 0, -90);
         ghost.transform.Rotate(rotationAngles);
+        audioManager.PlayCardRotateSound();
     }
 
     private void HandleCardDragEnded()
@@ -150,17 +162,21 @@ public class Hand : MonoBehaviour
             if (success)
             {
                 RemoveCard(_draggedCard);
-                resourceManager.PayNitrate(_draggedCard.Card.nitrateCost);
-                resourceManager.PaySugar(_draggedCard.Card.sugarCost);
-                resourceManager.PayWater(_draggedCard.Card.waterCost);
+                resourceManager.PayForCard(_draggedCard.Card);
                 resourceManager.UpdateUpkeep();
                 resourceManager.UpdateResourceIncome();
+                audioManager.PlayCardPlacementSound();
             }
+        }
+        else
+        {
+            audioManager.PlayCardReturnToHandSound();
         }
 
         _draggedCard = null;
         _draggedCardRotation = 0;
 
+        ghost.transform.rotation = Quaternion.identity;
         ghost.enabled = false;
         
         _drawerHideStarted = Time.time;
@@ -171,13 +187,13 @@ public class Hand : MonoBehaviour
     
     private HandCard GetDraggedHandCard()
     {
-        Debug.Log($"Event system: '{EventSystem.current}'");
+        //Debug.Log($"Event system: '{EventSystem.current}'");
         var pointerData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
         var hits = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, hits);
         if (hits.Count == 0)
         {
-            Debug.Log("No hits");
+            //Debug.Log("No hits");
             return null;
         }
 
