@@ -16,8 +16,6 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField] private int cardsPerTurn = 5;
 
-    [SerializeField] private TextMeshProUGUI deckDisplay;
-
     [SerializeField] private AudioManager audioManager;
 
 
@@ -46,7 +44,6 @@ public class RoundManager : MonoBehaviour
     {
         DrawCards();
         grid.PlaceStarter(grid.GridSize.x / 2);
-        deckDisplay.text = $"Deck: {redrawPile.CardsRemaining()}, Discard: {discardPile.CardsRemaining()}";
     }
     
     public void NextRound()
@@ -61,8 +58,6 @@ public class RoundManager : MonoBehaviour
         resourceManager.ReceiveResourceIncome();
         resourceManager.PayUpkeep();
         grid.SpawnNewResources();
-
-        deckDisplay.text = $"Deck: {redrawPile.CardsRemaining()}, Discard: {discardPile.CardsRemaining()}";
     }
 
 

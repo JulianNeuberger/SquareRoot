@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class Deck : MonoBehaviour
@@ -9,7 +10,13 @@ public class Deck : MonoBehaviour
     [SerializeField] private List<DeckEntry> contents = new();
 
     public List<DeckEntry> Cards => contents;
-    
+    public UnityEvent<Deck> deckChanged;
+
+    private void Start()
+    {
+        deckChanged?.Invoke(this);
+    }
+
     public int CardsRemaining()
     {
         return contents.Select(e => e.amount).Sum();
@@ -18,6 +25,7 @@ public class Deck : MonoBehaviour
     public void Clear()
     {
         contents.Clear();
+        deckChanged?.Invoke(this);
     }
     
     public void AddManyCards(List<DeckEntry> cards)
@@ -26,11 +34,13 @@ public class Deck : MonoBehaviour
         {
             AddCard(entry.card, entry.amount);
         }
+        deckChanged?.Invoke(this);
     }
     
     public void PlaceCard(Card card)
     {
         AddCard(card, 1);
+        deckChanged?.Invoke(this);
     }
     
     public Card DrawCard()
@@ -51,6 +61,7 @@ public class Deck : MonoBehaviour
             if (!(randomValue < threshold)) continue;
             
             entry.amount -= 1;
+            deckChanged?.Invoke(this);
             return entry.card;
         }
 
