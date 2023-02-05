@@ -2,7 +2,9 @@ using System;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Scene = UnityEditor.SearchService.Scene;
 
 public class RoundManager : MonoBehaviour
 {
@@ -17,6 +19,8 @@ public class RoundManager : MonoBehaviour
     [SerializeField] private int cardsPerTurn = 5;
 
     [SerializeField] private AudioManager audioManager;
+    [SerializeField] private GameObject hud;
+    [SerializeField] private GameObject title;
 
 
     private void Start()
@@ -26,9 +30,6 @@ public class RoundManager : MonoBehaviour
             Debug.Log("User clicked end round button, calling NextRound");
             NextRound();
         });
-
-
-        StartGame();
     }
 
     private void Update()
@@ -44,6 +45,23 @@ public class RoundManager : MonoBehaviour
     {
         DrawCards();
         grid.PlaceStarter(grid.GridSize.x / 2);
+        hud.SetActive(true);
+        title.SetActive(false);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void OpenMenu()
+    {
+        hud.SetActive(false);
+    }
+
+    public void CloseMenu()
+    {
+        hud.SetActive(true);
     }
     
     public void NextRound()
