@@ -124,9 +124,7 @@ public class Hand : MonoBehaviour
             if (success)
             {
                 RemoveCard(_draggedCard);
-                resourceManager.PayNitrate(_draggedCard.Card.nitrateCost);
-                resourceManager.PaySugar(_draggedCard.Card.sugarCost);
-                resourceManager.PayWater(_draggedCard.Card.waterCost);
+                resourceManager.PayForCard(_draggedCard.Card);
                 resourceManager.UpdateUpkeep();
                 resourceManager.UpdateResourceIncome();
             }
@@ -135,6 +133,7 @@ public class Hand : MonoBehaviour
         _draggedCard = null;
         _draggedCardRotation = 0;
 
+        ghost.transform.rotation = Quaternion.identity;
         ghost.enabled = false;
 
         grid.ResetHighlight();

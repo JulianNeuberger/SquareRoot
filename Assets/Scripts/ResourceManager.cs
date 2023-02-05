@@ -84,6 +84,7 @@ public class ResourceManager : MonoBehaviour
         PayNitrate(card.nitrateCost);
         PaySugar(card.sugarCost);
         PayWater(card.waterCost);
+        UpdateAmountsDisplay();
     }
 
     public bool CanPayForCard(Card card)
