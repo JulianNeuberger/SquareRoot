@@ -162,6 +162,8 @@ public class CardGrid : MonoBehaviour
 
     public void DeleteCardAt(Vector2Int gridPos)
     {
+        Debug.Log($"Deleting card at {gridPos}");
+
         var gridCell = GetGridCell(gridPos);
         if (gridCell == null) return;
         if (gridCell.GetActiveCardView() == null) return;
@@ -174,13 +176,13 @@ public class CardGrid : MonoBehaviour
         _graph.DeleteNode(gridCell.GetActiveCardView());
 
         UpdateVisibility(gridCell.GetActiveCardView().GetCard(), gridCell.GetGridPosition(), -1);
-
         discardPile.PlaceCard(gridCell.GetActiveCardView().GetCard());
         Destroy(gridCell.GetActiveCardView().gameObject);
         gridCell.SetCardView(null);
 
         var toDelete = _graph.GetNodesNotConnectedToRoot();
         Debug.Log($"Removing {toDelete.Count} nodes");
+
         foreach (var node in toDelete)
         {
             _graph.DeleteNode(node.Value);
@@ -190,9 +192,10 @@ public class CardGrid : MonoBehaviour
             _gridPositionsWithActiveCardView.Remove(cell.GetGridPosition());
             if (cell.GetActiveCardView() == null) continue;
 
-            UpdateVisibility(cell.GetActiveCardView().GetCard(), cell.GetGridPosition(), -1);
+            Debug.Log($"Deleting node not connected to root, cell is at pos {cell.GetGridPosition()}");
 
-            discardPile.PlaceCard(gridCell.GetActiveCardView().GetCard());
+            UpdateVisibility(cell.GetActiveCardView().GetCard(), cell.GetGridPosition(), -1);
+            discardPile.PlaceCard(cell.GetActiveCardView().GetCard());
             Destroy(node.Value.gameObject);
             cell.SetCardView(null);
         }
