@@ -128,6 +128,10 @@ public class CardGrid : MonoBehaviour
         if (gridCell == null) return;
         if (gridCell.GetActiveCardView() == null) return;
 
+        if(gridCell.GetActiveCardView() == _leafSelectedForExchange)
+        {
+            leafExchangeButtonContainer.SetActive(false);
+        }
         _gridPositionsWithActiveCardView.Remove(gridCell.GetGridPosition());
         _graph.DeleteNode(gridCell.GetActiveCardView());
         

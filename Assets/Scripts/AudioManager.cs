@@ -16,13 +16,13 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource notifyShortage;
     [SerializeField] private AudioSource leafWithering;
     [SerializeField] private AudioSource leafFalling;
+    [SerializeField] private AudioSource notEnoughResources;
 
 
     public void PlayCardStartDragSound()
     {
         cardStartDrag.PlayOneShot(cardStartDrag.clip);
     }
-
     public void PlayCardPlacementSound()
     {
         cardPlacement.PlayOneShot(cardPlacement.clip);
@@ -66,5 +66,10 @@ public class AudioManager : MonoBehaviour
     public void PlayLeafFallingSound()
     {
         leafFalling.PlayOneShot(leafFalling.clip);
+    }
+
+    public void PlayNotEnoughResourcesSound()
+    {
+        notEnoughResources.PlayOneShot(notEnoughResources.clip);
     }
 }

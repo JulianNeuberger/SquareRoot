@@ -100,8 +100,17 @@ public class Hand : MonoBehaviour
         if (!Input.GetMouseButtonDown(0)) return;
 
         var cardStartedDragging = GetDraggedHandCard();
-        Debug.Log($"cardStartedDraggin: {cardStartedDragging}.");
+        
+        //Debug.Log($"cardStartedDraggin: {cardStartedDragging}.");
         if (cardStartedDragging == null) return;
+
+
+        if (!resourceManager.CanPayForCard(cardStartedDragging.Card))
+        {
+            audioManager.PlayNotEnoughResourcesSound();
+            cardStartedDragging.FlashRed();
+            return;
+        }
 
         _draggedCard = cardStartedDragging;
         
@@ -178,13 +187,13 @@ public class Hand : MonoBehaviour
     
     private HandCard GetDraggedHandCard()
     {
-        Debug.Log($"Event system: '{EventSystem.current}'");
+        //Debug.Log($"Event system: '{EventSystem.current}'");
         var pointerData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
         var hits = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, hits);
         if (hits.Count == 0)
         {
-            Debug.Log("No hits");
+            //Debug.Log("No hits");
             return null;
         }
 
