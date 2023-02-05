@@ -15,7 +15,7 @@ public class Hand : MonoBehaviour
     [SerializeField] private float height = 3f;
     [SerializeField] private float maxGap = 1f;
 
-    [SerializeField] private Image ghost;
+    [SerializeField] private SpriteRenderer ghost;
     
     [SerializeField] private Vector3 draggingOffset = new(1f, -1.5f, 0f);
 
@@ -25,6 +25,14 @@ public class Hand : MonoBehaviour
     [SerializeField] private Camera camera;
     [SerializeField] private AudioManager audioManager;
 
+    [SerializeField] private RectTransform drawer;
+    [SerializeField] private float drawerHideSeconds = .5f;
+    [SerializeField] private float drawerHideDistance = -30f;
+
+    private float _drawerHideStarted = 0f;
+    private Vector2 _drawerStartPos;
+    private Vector2 _drawerTargetPos;
+    
     public Deck redrawPile;
     public List<HandCard> Current => _currentCards;
     
@@ -35,6 +43,8 @@ public class Hand : MonoBehaviour
     protected void Start()
     {
         if (grid == null) throw new ArgumentException("CardGrid not set!");
+
+        _drawerStartPos = drawer.position;
     }
     
     protected void Update()
@@ -43,6 +53,8 @@ public class Hand : MonoBehaviour
         HandleCardDragOngoing();
         HandleCardDragRotate();
         HandleCardDragEnded();
+        
+        HandleDrawerHide();
     }
 
     public void Clear()
@@ -72,6 +84,17 @@ public class Hand : MonoBehaviour
         Destroy(card.gameObject);
     }
 
+    private void HandleDrawerHide()
+    {
+        var t = (Time.time - _drawerHideStarted) / drawerHideSeconds;
+        if (t >= 1f)
+        {
+            drawer.position = _drawerTargetPos;
+            return;
+        }
+        drawer.position = Vector3.Lerp(drawer.position, _drawerTargetPos, t);
+    }
+
     private void HandleCardDragStarted()
     {
         if (!Input.GetMouseButtonDown(0)) return;
@@ -85,16 +108,19 @@ public class Hand : MonoBehaviour
         ghost.sprite = cardStartedDragging.Card.sprite;
         ghost.enabled = true;
         audioManager.PlayCardStartDragSound();
+
+        _drawerHideStarted = Time.time;
+        _drawerTargetPos = _drawerStartPos + new Vector2(0f, drawerHideDistance);
     }
 
     private void HandleCardDragOngoing()
     {
         if (_draggedCard == null) return;
 
-        ghost.transform.position = Input.mousePosition;
-        
         var worldPos = camera.ScreenToWorldPoint(Input.mousePosition);
         worldPos.z = 0f;
+        
+        ghost.transform.position = worldPos;
         var gridPos = grid.WorldCoordinatesToGridPosition(worldPos);
         var canPlace = grid.CanPlaceCard(gridPos, _draggedCard.Card, _draggedCardRotation);
         grid.HighlightCell(gridPos, canPlace ? Color.green : Color.red);
@@ -143,6 +169,9 @@ public class Hand : MonoBehaviour
 
         ghost.transform.rotation = Quaternion.identity;
         ghost.enabled = false;
+        
+        _drawerHideStarted = Time.time;
+        _drawerTargetPos = _drawerStartPos;
 
         grid.ResetHighlight();
     }
