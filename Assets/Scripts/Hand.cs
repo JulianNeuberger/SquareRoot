@@ -61,8 +61,6 @@ public class Hand : MonoBehaviour
         handCard.Card = card;
         handCard.transform.SetSiblingIndex(transform.childCount - 1);
         _currentCards.Add(handCard);
-
-        LayoutCards();
     }
     
     public void RemoveCard(HandCard card)
@@ -71,45 +69,6 @@ public class Hand : MonoBehaviour
         _currentCards.Remove(card);
 
         Destroy(card.gameObject);
-
-        LayoutCards();
-    }
-
-    private void LayoutCards()
-    {
-        var gap = 0f;
-        if (_currentCards.Count > 1)
-        {
-            // more than one card on hand, there will be gaps, but how large?
-            var gapSpace = availableSpace - _currentCards.Count * cardSize;
-            gap = gapSpace / (_currentCards.Count - 1);
-            gap = Mathf.Min(maxGap, gap);
-        }
-
-        var margin = 0f;
-        // how much space do the cards themselves take up and what remains?
-        var remainingSpace = availableSpace - _currentCards.Count * cardSize;
-        if (_currentCards.Count > 1)
-        {
-            // account for gaps
-            remainingSpace -= gap * (_currentCards.Count - 1);
-        }
-        
-        // the rest is margin
-        margin = remainingSpace / 2f;
-
-        for (var i = 0; i < _currentCards.Count; ++i)
-        {
-            var pos = new Vector3(i * cardSize, 0f, 0f);
-            pos += new Vector3(cardSize / 2f, 0, 0f);
-            pos += new Vector3(margin, 0f, 0f);
-            // account for gaps, after the first card
-            if (i > 0) pos += new Vector3(i * gap, 0f, 0f);
-            
-            Debug.Log(pos);
-            
-            _currentCards[i].rectTransform.anchoredPosition = pos;
-        }
     }
 
     private void HandleCardDragStarted()
@@ -179,8 +138,6 @@ public class Hand : MonoBehaviour
         ghost.enabled = false;
 
         grid.ResetHighlight();
-        
-        LayoutCards();
     }
     
     private HandCard GetDraggedHandCard()
