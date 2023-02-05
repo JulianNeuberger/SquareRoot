@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using System.Linq;
 
 public class CardGrid : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class CardGrid : MonoBehaviour
     [SerializeField] private GridCell cellPrefab;
     [SerializeField] private CardView cardViewPrefab;
     [SerializeField] private ResourceManager resourceManager;
+    [SerializeField] private Deck redrawPile;
+    [SerializeField] private Deck discardPile;
 
     [SerializeField] private Camera _camera;
     [SerializeField] private AudioManager _audioManager;
@@ -36,6 +39,8 @@ public class CardGrid : MonoBehaviour
     [SerializeField] private Card straightRoot;
     [SerializeField] private Card sapling;
     [SerializeField] private Card leaf;
+    [SerializeField] private Card flower;
+    [SerializeField] private Card fruit;
 
     [SerializeField] private GameObject leafExchangeButtonContainer;
     [SerializeField] private Button leafExchangeButton;
@@ -170,6 +175,7 @@ public class CardGrid : MonoBehaviour
 
         UpdateVisibility(gridCell.GetActiveCardView().GetCard(), gridCell.GetGridPosition(), -1);
 
+        discardPile.PlaceCard(gridCell.GetActiveCardView().GetCard());
         Destroy(gridCell.GetActiveCardView().gameObject);
         gridCell.SetCardView(null);
 
@@ -186,6 +192,7 @@ public class CardGrid : MonoBehaviour
 
             UpdateVisibility(cell.GetActiveCardView().GetCard(), cell.GetGridPosition(), -1);
 
+            discardPile.PlaceCard(gridCell.GetActiveCardView().GetCard());
             Destroy(node.Value.gameObject);
             cell.SetCardView(null);
         }
@@ -246,6 +253,17 @@ public class CardGrid : MonoBehaviour
             Debug.Log(
                 $"Can not place card here, card {card.name} can not be placed on terrain {GetGridCell(gridPos).GetTerrain().name}.");
             return false;
+        }
+
+        if(card == fruit)
+        {
+            var activePositions = GetAllGridPositionsWithActiveCardViews();
+            var activeCardViews = activePositions.Select(pos => GetGridCell(pos).GetActiveCardView());
+            if(!activeCardViews.Where(cardView => cardView.GetCard() == flower).Any())
+            {
+                Debug.Log($"Currently don't have any flower placed, can not place fruit card!");
+                return false;
+            }
         }
 
         bool connectingSocketAvailable = false;
@@ -463,6 +481,11 @@ public class CardGrid : MonoBehaviour
                 if (neighbour.GetActiveCardView() == null) continue;
                 _graph.Connect(cardView, neighbour.GetActiveCardView());
             }
+        }
+
+        if(card == flower)
+        {
+            redrawPile.PlaceCard(fruit);
         }
 
         return true;

@@ -4271,7 +4271,7 @@ MonoBehaviour:
   - card: {fileID: 11400000, guid: da2f67788947df248b7bc3f893e83dd7, type: 2}
     amount: 1
   - card: {fileID: 11400000, guid: cbaeb94fd2c565f40840d74cb5d06f9d, type: 2}
-    amount: 1
+    amount: 0
 --- !u!4 &1302663250
 Transform:
   m_ObjectHideFlags: 0
