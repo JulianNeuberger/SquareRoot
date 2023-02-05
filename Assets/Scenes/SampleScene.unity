@@ -644,7 +644,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.21481323, y: -0.109298706}
+  m_AnchoredPosition: {x: 0.21478271, y: -0.109313965}
   m_SizeDelta: {x: -5.1536, y: -5.1091}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &263459574
@@ -2753,7 +2753,7 @@ MonoBehaviour:
   gateLeft: -5
   gateRight: 5
   gateTop: 5
-  gateBottom: -5
+  gateBottom: -10
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3197,31 +3197,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contents:
   - card: {fileID: 11400000, guid: b82dac58bfc8c47409f8d2792a9426cd, type: 2}
-    amount: 6
-  - card: {fileID: 11400000, guid: 3b00d86a09e3c87469c0f1cf8cef1ebc, type: 2}
-    amount: 5
-  - card: {fileID: 11400000, guid: c0198354da9511c4c812c83648584bff, type: 2}
-    amount: 10
-  - card: {fileID: 11400000, guid: 01f55ef142cb0a949b51b3473ed4724e, type: 2}
-    amount: 6
-  - card: {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
-    amount: 7
-  - card: {fileID: 11400000, guid: 40e7e84e72349b54d905c03d86a54637, type: 2}
-    amount: 6
-  - card: {fileID: 11400000, guid: 4c70f00f65c908a45b64506c2e372787, type: 2}
-    amount: 3
-  - card: {fileID: 11400000, guid: 2fc09d9e7c79be547aed2cbe7540dde6, type: 2}
     amount: 4
+  - card: {fileID: 11400000, guid: 3b00d86a09e3c87469c0f1cf8cef1ebc, type: 2}
+    amount: 7
+  - card: {fileID: 11400000, guid: c0198354da9511c4c812c83648584bff, type: 2}
+    amount: 6
+  - card: {fileID: 11400000, guid: 01f55ef142cb0a949b51b3473ed4724e, type: 2}
+    amount: 10
+  - card: {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
+    amount: 14
+  - card: {fileID: 11400000, guid: 40e7e84e72349b54d905c03d86a54637, type: 2}
+    amount: 8
+  - card: {fileID: 11400000, guid: 4c70f00f65c908a45b64506c2e372787, type: 2}
+    amount: 1
+  - card: {fileID: 11400000, guid: 2fc09d9e7c79be547aed2cbe7540dde6, type: 2}
+    amount: 2
   - card: {fileID: 11400000, guid: fd1794bb3d3cc9d4a9b1a38c3107630c, type: 2}
     amount: 2
   - card: {fileID: 11400000, guid: 63190a13cb753a641afbf9a04bc57e31, type: 2}
-    amount: 5
+    amount: 2
   - card: {fileID: 11400000, guid: e31c2775e02960340842119c3ffde10a, type: 2}
-    amount: 3
+    amount: 2
   - card: {fileID: 11400000, guid: da2f67788947df248b7bc3f893e83dd7, type: 2}
     amount: 1
   - card: {fileID: 11400000, guid: cbaeb94fd2c565f40840d74cb5d06f9d, type: 2}
-    amount: 1
+    amount: 0
   deckChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6055,6 +6055,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: b82dac58bfc8c47409f8d2792a9426cd, type: 2}
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+      propertyPath: fruit
+      value: 
+      objectReference: {fileID: 11400000, guid: cbaeb94fd2c565f40840d74cb5d06f9d, type: 2}
+    - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+      propertyPath: flower
+      value: 
+      objectReference: {fileID: 11400000, guid: da2f67788947df248b7bc3f893e83dd7, type: 2}
+    - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: _camera
       value: 
       objectReference: {fileID: 963194227}
@@ -6062,6 +6070,14 @@ PrefabInstance:
       propertyPath: sapling
       value: 
       objectReference: {fileID: 11400000, guid: 4c70f00f65c908a45b64506c2e372787, type: 2}
+    - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+      propertyPath: redrawPile
+      value: 
+      objectReference: {fileID: 1302663249}
+    - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+      propertyPath: discardPile
+      value: 
+      objectReference: {fileID: 1634306167}
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: waterChance
       value: 0.08
@@ -6084,7 +6100,7 @@ PrefabInstance:
       objectReference: {fileID: 1342379443}
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: nitrateChance
-      value: 0.04
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: cardViewPrefab

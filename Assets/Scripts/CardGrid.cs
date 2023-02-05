@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using System.Linq;
 
 public class CardGrid : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class CardGrid : MonoBehaviour
     [SerializeField] private GridCell cellPrefab;
     [SerializeField] private CardView cardViewPrefab;
     [SerializeField] private ResourceManager resourceManager;
+    [SerializeField] private Deck redrawPile;
+    [SerializeField] private Deck discardPile;
 
     [SerializeField] private Camera _camera;
     [SerializeField] private AudioManager _audioManager;
@@ -36,6 +39,8 @@ public class CardGrid : MonoBehaviour
     [SerializeField] private Card straightRoot;
     [SerializeField] private Card sapling;
     [SerializeField] private Card leaf;
+    [SerializeField] private Card flower;
+    [SerializeField] private Card fruit;
 
     [SerializeField] private Button leafExchangeButton;
     [SerializeField] private Button deleteButton;
@@ -161,6 +166,8 @@ public class CardGrid : MonoBehaviour
 
     public void DeleteCardAt(Vector2Int gridPos)
     {
+        Debug.Log($"Deleting card at {gridPos}");
+
         var gridCell = GetGridCell(gridPos);
         if (gridCell == null) return;
         if (gridCell.GetActiveCardView() == null) return;
@@ -176,12 +183,13 @@ public class CardGrid : MonoBehaviour
         _graph.DeleteNode(gridCell.GetActiveCardView());
 
         UpdateVisibility(gridCell.GetActiveCardView().GetCard(), gridCell.GetGridPosition(), -1);
-
+        discardPile.PlaceCard(gridCell.GetActiveCardView().GetCard());
         Destroy(gridCell.GetActiveCardView().gameObject);
         gridCell.SetCardView(null);
 
         var toDelete = _graph.GetNodesNotConnectedToRoot();
         Debug.Log($"Removing {toDelete.Count} nodes");
+
         foreach (var node in toDelete)
         {
             _graph.DeleteNode(node.Value);
@@ -191,8 +199,10 @@ public class CardGrid : MonoBehaviour
             _gridPositionsWithActiveCardView.Remove(cell.GetGridPosition());
             if (cell.GetActiveCardView() == null) continue;
 
-            UpdateVisibility(cell.GetActiveCardView().GetCard(), cell.GetGridPosition(), -1);
+            Debug.Log($"Deleting node not connected to root, cell is at pos {cell.GetGridPosition()}");
 
+            UpdateVisibility(cell.GetActiveCardView().GetCard(), cell.GetGridPosition(), -1);
+            discardPile.PlaceCard(cell.GetActiveCardView().GetCard());
             Destroy(node.Value.gameObject);
             cell.SetCardView(null);
         }
@@ -254,6 +264,17 @@ public class CardGrid : MonoBehaviour
             Debug.Log(
                 $"Can not place card here, card {card.name} can not be placed on terrain {GetGridCell(gridPos).GetTerrain().name}.");
             return false;
+        }
+
+        if(card == fruit)
+        {
+            var activePositions = GetAllGridPositionsWithActiveCardViews();
+            var activeCardViews = activePositions.Select(pos => GetGridCell(pos).GetActiveCardView());
+            if(!activeCardViews.Where(cardView => cardView.GetCard() == flower).Any())
+            {
+                Debug.Log($"Currently don't have any flower placed, can not place fruit card!");
+                return false;
+            }
         }
 
         bool connectingSocketAvailable = false;
@@ -473,6 +494,11 @@ public class CardGrid : MonoBehaviour
             }
         }
 
+        if(card == flower)
+        {
+            redrawPile.PlaceCard(fruit);
+        }
+
         return true;
     }
 
@@ -511,6 +537,13 @@ public class CardGrid : MonoBehaviour
         TryPlaceCard(new Vector2Int(gridPosX, earthLevel), sapling, rotation: 0, force: true);
         TryPlaceCard(new Vector2Int(gridPosX, earthLevel - 1), straightRoot, rotation: 0, force: true);
         TryPlaceCard(new Vector2Int(gridPosX, earthLevel + 1), leaf, rotation: 1, force: true);
+
+        //place initial nitrate
+
+        var initialNitratePos = new Vector2Int(gridPosX + (int)Random.Range(-3, 3), earthLevel -(int)Random.Range(2, 5));
+        _grid[initialNitratePos.x, initialNitratePos.y].SetTerrain(nitrateTerrain, initialNitrateReservoirAmount);
+        Debug.Log($"Placed initial nitrate at {initialNitratePos}");
+
         resourceManager.UpdateUpkeep();
         resourceManager.UpdateResourceIncome();
     }

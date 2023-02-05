@@ -12,7 +12,7 @@ public class CameraManager : MonoBehaviour
     public float gateLeft = -5;
     public float gateRight = 5;
     public float gateTop = 5;
-    public float gateBottom = -7;
+    public float gateBottom = -15;
 
     // Update is called once per frame
     void LateUpdate()
