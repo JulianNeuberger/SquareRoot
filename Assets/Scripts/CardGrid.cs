@@ -11,8 +11,13 @@ public class CardGrid : MonoBehaviour
     [SerializeField] private int widthCells = 50;
     [SerializeField] private int heightCells = 50;
 
-    [SerializeField] private float nitrateChance = .1f;
-    [SerializeField] private float waterChance = .2f;
+    [SerializeField] private float nitrateChance = .05f;
+    [SerializeField] private float waterChance = .1f;
+    [SerializeField] private int nitrateSpawnsPerRound = 1;
+    [SerializeField] private int waterSpawnsPerRound = 3;
+
+    [SerializeField] private int initialNitrateReservoirAmount = 10;
+    [SerializeField] private int initialWaterReservoirAmount = 5;
 
     [SerializeField] private GridCell cellPrefab;
     [SerializeField] private CardView cardViewPrefab;
@@ -78,7 +83,6 @@ public class CardGrid : MonoBehaviour
             DeleteCardAt(gridPos);
         }
 
-
         HandleLeafClicked();
     }
 
@@ -121,6 +125,34 @@ public class CardGrid : MonoBehaviour
     public List<Vector2Int> GetAllGridPositionsWithActiveCardViews()
     {
         return _gridPositionsWithActiveCardView;
+    }
+
+
+    public void SpawnNewResources()
+    {
+        for(int i = 0; i < nitrateSpawnsPerRound; i++)
+        {
+            //randomly select earth grid cell to try place new nitrate
+            var gridPos = new Vector2Int((int)Random.Range(0, widthCells), (int)Random.Range(0, earthLevel));
+            var gridCell = GetGridCell(gridPos);
+            if (gridCell.GetTerrain() == earthTerrain)
+            {
+                gridCell.SetTerrain(nitrateTerrain, initialNitrateReservoirAmount);
+                Debug.Log($"Spawned new nitrate at {gridPos}");
+            }
+        }
+
+        for (int i = 0; i < waterSpawnsPerRound; i++)
+        {
+            //randomly select earth grid cell to try place new nitrate
+            var gridPos = new Vector2Int((int)Random.Range(0, widthCells), (int)Random.Range(0, earthLevel));
+            var gridCell = GetGridCell(gridPos);
+            if (gridCell.GetTerrain() == earthTerrain)
+            {
+                gridCell.SetTerrain(waterTerrain, initialWaterReservoirAmount);
+                Debug.Log($"Spawned new water at {gridPos}");
+            }
+        }
     }
 
     public void DeleteCardAt(Vector2Int gridPos)
@@ -475,6 +507,19 @@ public class CardGrid : MonoBehaviour
         resourceManager.UpdateResourceIncome();
     }
 
+    public void ReduceMinedResourceReservoirAmounts(List<Vector2Int> minedPositions)
+    {
+        foreach(var position in minedPositions)
+        {
+            var gridCell = GetGridCell(position);
+            var depleted = gridCell.reduceResourceReservoir();
+            if(depleted)
+            {
+                gridCell.SetTerrain(earthTerrain, 0);
+            }
+        }
+    }
+
     #endregion
 
     #region PrivateMethods
@@ -535,7 +580,7 @@ public class CardGrid : MonoBehaviour
                 var terrainType = y < earthLevel ? earthTerrain : airTerrain;
                 var cell = Instantiate(cellPrefab, transform);
                 cell.StoreGridPosition(new Vector2Int(x, y));
-                cell.SetTerrain(terrainType);
+                cell.SetTerrain(terrainType, 0);
                 cell.transform.localPosition = new Vector3(x * cellSize, y * cellSize, 0f);
 
                 _grid[x, y] = cell;
@@ -551,14 +596,14 @@ public class CardGrid : MonoBehaviour
                 var shouldSpawnNitrate = Random.value < nitrateChance;
                 if (shouldSpawnNitrate)
                 {
-                    _grid[x, y].SetTerrain(nitrateTerrain);
+                    _grid[x, y].SetTerrain(nitrateTerrain, initialNitrateReservoirAmount);
                     continue;
                 }
 
                 var shouldSpawnWater = Random.value < waterChance;
                 if (shouldSpawnWater)
                 {
-                    _grid[x, y].SetTerrain(waterTerrain);
+                    _grid[x, y].SetTerrain(waterTerrain, initialWaterReservoirAmount);
                     continue;
                 }
             }

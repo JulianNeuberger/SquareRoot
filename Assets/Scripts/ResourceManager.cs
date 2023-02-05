@@ -24,7 +24,7 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private int nitrateAmount = 1;
     [SerializeField] private int sugarAmount = 1;
 
-    
+    private List<Vector2Int> _gridPositionsOfCurrentlyMinedResources;
 
     public int WaterIncome { get; private set; }
     public int NitrateIncome { get; private set; }
@@ -32,6 +32,7 @@ public class ResourceManager : MonoBehaviour
     public int WaterUpkeep { get; private set; }
     public int NitrateUpkeep { get; private set; }
     public int sugarUpkeep { get; private set; }
+
 
     private void Start()
     {
@@ -129,11 +130,15 @@ public class ResourceManager : MonoBehaviour
         nitrateAmount += NitrateIncome;
 
         UpdateAmountsDisplay();
+
+        cardGrid.ReduceMinedResourceReservoirAmounts(_gridPositionsOfCurrentlyMinedResources);
     }
 
 
     private Dictionary<TerrainType, float> GatherAllResources()
     {
+        _gridPositionsOfCurrentlyMinedResources = new List<Vector2Int>();
+
         var gatheredResources = new Dictionary<TerrainType, float>();
 
         var allActiveCardViewsGridPositions = cardGrid.GetAllGridPositionsWithActiveCardViews();
@@ -187,6 +192,7 @@ public class ResourceManager : MonoBehaviour
 
         if (terrain.IsGatherable && gridCell.GetActiveCardView().GetCard().CanGatherResource(terrain))
         {
+            _gridPositionsOfCurrentlyMinedResources.Add(pos);
             gatheredResources.Add(terrain, gatherMultiplier);
             //Debug.Log($"{pos} On cell: Added {gatherMultiplier} of {terrain}");
         }    
