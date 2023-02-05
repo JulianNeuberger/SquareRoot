@@ -2917,10 +2917,10 @@ MonoBehaviour:
   fastScrollSpeed: 5
   slowScrollDistance: 30
   fastScrollDistance: 10
-  gateLeft: -5
+  gateLeft: -8
   gateRight: 5
-  gateTop: 5
-  gateBottom: -10
+  gateTop: 8
+  gateBottom: -15
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6605,7 +6605,7 @@ PrefabInstance:
       objectReference: {fileID: 1634306167}
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: waterChance
-      value: 0.08
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: deleteButton
@@ -6647,6 +6647,10 @@ PrefabInstance:
       propertyPath: leafExchangeButton
       value: 
       objectReference: {fileID: 1945986066}
+    - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
+      propertyPath: waterSpawnsPerRound
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: leafExchangeButtonContainer
       value: 

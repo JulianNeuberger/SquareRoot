@@ -655,14 +655,31 @@ public class CardGrid : MonoBehaviour
             {
                 if (_grid[x, y].GetTerrain() != earthTerrain) continue;
 
-                var shouldSpawnNitrate = Random.value < nitrateChance;
+                //chances at higher third of ground
+                var nitrateChanceAtGroundLevel = nitrateChance * 2;
+                var waterChanceAtGroundLevel = waterChance / 2;
+
+                //chances at lower third of ground
+                if (y < earthLevel/3)
+                {
+                    nitrateChanceAtGroundLevel = nitrateChance / 2;
+                    waterChanceAtGroundLevel = waterChance * 2;
+                }
+                //chances at mid third of ground
+                else if(y < 2*earthLevel/3)
+                {
+                    nitrateChanceAtGroundLevel = nitrateChance;
+                    waterChanceAtGroundLevel = waterChance;
+                }
+
+                var shouldSpawnNitrate = Random.value < nitrateChanceAtGroundLevel;
                 if (shouldSpawnNitrate)
                 {
                     _grid[x, y].SetTerrain(nitrateTerrain, initialNitrateReservoirAmount);
                     continue;
                 }
 
-                var shouldSpawnWater = Random.value < waterChance;
+                var shouldSpawnWater = Random.value < waterChanceAtGroundLevel;
                 if (shouldSpawnWater)
                 {
                     _grid[x, y].SetTerrain(waterTerrain, initialWaterReservoirAmount);
