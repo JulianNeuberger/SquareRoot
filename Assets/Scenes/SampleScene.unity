@@ -4369,8 +4369,8 @@ MonoBehaviour:
   sugarDisplay: {fileID: 1874857150}
   audioManager: {fileID: 1342379443}
   waterAmount: 5
-  nitrateAmount: 1
-  sugarAmount: 5
+  nitrateAmount: 2
+  sugarAmount: 7
 --- !u!4 &1706257820
 Transform:
   m_ObjectHideFlags: 0
@@ -6144,7 +6144,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 4c70f00f65c908a45b64506c2e372787, type: 2}
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: waterChance
-      value: 0.04
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: straightRoot
@@ -6160,7 +6160,7 @@ PrefabInstance:
       objectReference: {fileID: 1342379443}
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: nitrateChance
-      value: 0.01
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 1559707097975803043, guid: bf0f9e1000ede0f45b713e118af3873d, type: 3}
       propertyPath: cardViewPrefab
