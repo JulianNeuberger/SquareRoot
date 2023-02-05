@@ -10,6 +10,7 @@ public class GridCell : MonoBehaviour
     private TerrainType _terrain;
     private Vector2Int _gridPosition;
     private float _visibility;
+    private int _terrainResourceAmount;
     
     public float VisibilityCounter
     {
@@ -29,9 +30,11 @@ public class GridCell : MonoBehaviour
         UpdateVisibility();
     }
 
-    public void SetTerrain(TerrainType type)
+    public void SetTerrain(TerrainType type, int initialTerrainResourceAmount)
     {
         _terrain = type;
+        _terrainResourceAmount = initialTerrainResourceAmount;
+
         var totalWeights = _terrain.SpriteTable.Select(e => e.weight).Sum();
 
         var randomValue = Random.value;
@@ -78,6 +81,20 @@ public class GridCell : MonoBehaviour
     public Vector2Int GetGridPosition()
     {
         return _gridPosition;
+    }
+
+    //returns true if resource reservoir now depleted
+    public bool reduceResourceReservoir()
+    {
+        if(_terrainResourceAmount > 0)
+        {
+            _terrainResourceAmount--;
+            if(_terrainResourceAmount == 0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void UpdateVisibility()

@@ -51,6 +51,7 @@ public class RoundManager : MonoBehaviour
         resourceManager.UpdateUpkeep();
         resourceManager.ReceiveResourceIncome();
         resourceManager.PayUpkeep();
+        grid.SpawnNewResources();
 
         deckDisplay.text = $"Deck: {redrawPile.CardsRemaining()}, Discard: {discardPile.CardsRemaining()}";
     }
