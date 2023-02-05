@@ -68,7 +68,7 @@ public class ResourceManager : MonoBehaviour
     public void PaySugar(int amount)
     {
         if (amount < 0f) throw new ArgumentException("Trying to pay a negative amount!");
-        if (waterAmount - amount < 0f)
+        if (sugarAmount - amount < 0f)
             throw new ArgumentException($"Cant afford {amount} sugar, only have {sugarAmount}");
         sugarAmount-= amount;
     }
@@ -76,7 +76,7 @@ public class ResourceManager : MonoBehaviour
     public void PayNitrate(int amount)
     {
         if (amount < 0f) throw new ArgumentException("Trying to pay a negative amount!");
-        if (waterAmount - amount < 0f)
+        if (nitrateAmount - amount < 0f)
             throw new ArgumentException($"Cant afford {amount} nitrate, only have {nitrateAmount}");
         nitrateAmount -= amount;
     }

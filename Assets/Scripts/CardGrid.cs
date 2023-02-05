@@ -157,6 +157,8 @@ public class CardGrid : MonoBehaviour
             Destroy(node.Value.gameObject);
             cell.SetCardView(null);
         }
+        resourceManager.UpdateResourceIncome();
+        resourceManager.UpdateUpkeep();
     }
 
     public GridCell GetGridCell(Vector2Int gridPos)
