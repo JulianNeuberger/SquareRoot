@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 252d61365a1f5da46b532c25e312fe7c, type: 3}
-  m_Name: StemStraight
+  m_Name: SaplingBranching
   m_EditorClassIdentifier: 
   sprite: {fileID: -1403645725, guid: 31429ae57df07e44db6197b707a4b72f, type: 3}
   unhealthySprite: {fileID: 0}
   deadSprite: {fileID: 0}
+  visionRange: 1
   initialHealth: 1
   validTerrain:
   - {fileID: 11400000, guid: ed7a3595f23dd5344a680e264dc7fb5f, type: 2}
@@ -32,9 +33,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4cea114a0d0a96846a5b253b5287da38, type: 2}
   - {fileID: 11400000, guid: 40e7e84e72349b54d905c03d86a54637, type: 2}
   hasSocketAtCardTopSide: 1
-  hasSocketAtCardRightSide: 0
+  hasSocketAtCardRightSide: 1
   hasSocketAtCardBottomSide: 1
-  hasSocketAtCardLeftSide: 0
+  hasSocketAtCardLeftSide: 1
   gatherMultiplierOnResource: 0
   gatherMultiplierNextToResource: 0
   gatherableResources: []
