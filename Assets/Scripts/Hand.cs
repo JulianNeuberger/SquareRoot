@@ -28,7 +28,7 @@ public class Hand : MonoBehaviour
     [SerializeField] private float drawerHideSeconds = .5f;
     [SerializeField] private float drawerHideDistance = -30f;
 
-    private float _drawerHideStarted = 0f;
+    private float _drawerHideStarted = float.MaxValue;
     private Vector2 _drawerStartPos;
     private Vector2 _drawerTargetPos;
     
