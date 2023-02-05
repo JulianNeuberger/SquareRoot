@@ -215,4 +215,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundSprite: {fileID: 1885954681108243999}
-  activeCardSprite: {fileID: 1885954680155045483}
+  air: {fileID: 11400000, guid: ed7a3595f23dd5344a680e264dc7fb5f, type: 2}

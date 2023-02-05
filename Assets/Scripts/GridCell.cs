@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,8 +9,25 @@ public class GridCell : MonoBehaviour
     private CardView _activeCardView;
     private TerrainType _terrain;
     private Vector2Int _gridPosition;
+    private float _visibility;
+    
+    public float VisibilityCounter
+    {
+        get => _visibility;
+        set
+        {
+            _visibility = value;
+            UpdateVisibility();
+        }
+    }
 
     [SerializeField] private SpriteRenderer backgroundSprite;
+    [SerializeField] private TerrainType air;
+    
+    private void Awake()
+    {
+        UpdateVisibility();
+    }
 
     public void SetTerrain(TerrainType type)
     {
@@ -33,17 +51,8 @@ public class GridCell : MonoBehaviour
         if (useSprite == null) throw new ArgumentException("Should not happen");
         
         backgroundSprite.sprite = useSprite;
-    }
-
-    public void SetHighlighted(bool highlighted, Color highlightColor)
-    {
-        if (!highlighted)
-        {
-            backgroundSprite.color = Color.white;
-            return;
-        }
         
-        backgroundSprite.color = highlightColor;
+        UpdateVisibility();
     }
 
     public TerrainType GetTerrain()
@@ -69,5 +78,22 @@ public class GridCell : MonoBehaviour
     public Vector2Int GetGridPosition()
     {
         return _gridPosition;
+    }
+
+    private void UpdateVisibility()
+    {
+        if (_terrain == air)
+        {
+            backgroundSprite.color = Color.white;
+            return;
+        }
+        
+        var color = Color.white;
+        if (_visibility < 1f)
+        {
+            color = Color.Lerp(Color.black, Color.white, Mathf.Clamp01(_visibility));
+        }
+
+        backgroundSprite.color = color;
     }
 }
