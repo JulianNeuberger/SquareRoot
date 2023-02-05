@@ -1668,6 +1668,7 @@ GameObject:
   - component: {fileID: 774944021}
   - component: {fileID: 774944023}
   - component: {fileID: 774944024}
+  - component: {fileID: 774944025}
   m_Layer: 0
   m_Name: HandCardDisplay
   m_TagString: Untagged
@@ -1684,7 +1685,7 @@ Canvas:
   m_GameObject: {fileID: 774944020}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 588873330}
   m_PlaneDistance: 100
   m_PixelPerfect: 1
@@ -1742,12 +1743,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 774944020}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 32
   m_ScaleFactor: 2
   m_ReferenceResolution: {x: 320, y: 180}
@@ -1758,6 +1759,26 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
+--- !u!114 &774944025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774944020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a606edde47e2b6649ad6501ae60f95d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseHeight: 180
+  baseWidth: 320
+  widestElement: 320
+  rectTransform: {fileID: 774944022}
+  scaler: {fileID: 774944024}
+  res: ac010000f9020000
+  newheight: 0
+  newwidth: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
