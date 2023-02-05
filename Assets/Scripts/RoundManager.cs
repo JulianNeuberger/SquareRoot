@@ -21,6 +21,7 @@ public class RoundManager : MonoBehaviour
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private GameObject hud;
     [SerializeField] private GameObject title;
+    [SerializeField] private GameObject tutorial;
 
 
     private void Start()
@@ -56,11 +57,13 @@ public class RoundManager : MonoBehaviour
 
     public void OpenMenu()
     {
+        tutorial.SetActive(true);
         hud.SetActive(false);
     }
 
     public void CloseMenu()
     {
+        tutorial.SetActive(false);
         hud.SetActive(true);
     }
     
