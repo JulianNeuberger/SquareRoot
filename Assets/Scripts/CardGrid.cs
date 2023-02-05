@@ -548,10 +548,14 @@ public class CardGrid : MonoBehaviour
         TryPlaceCard(new Vector2Int(gridPosX, earthLevel + 1), leaf, rotation: 1, force: true);
 
         //place initial nitrate
-
-        var initialNitratePos = new Vector2Int(gridPosX + (int)Random.Range(-3, 3), earthLevel -(int)Random.Range(2, 5));
+        var initialNitratePos = new Vector2Int(gridPosX + (int)Random.Range(-2.5f, 2.5f), earthLevel -(int)Random.Range(2.5f, 4.5f));
         _grid[initialNitratePos.x, initialNitratePos.y].SetTerrain(nitrateTerrain, initialNitrateReservoirAmount);
         Debug.Log($"Placed initial nitrate at {initialNitratePos}");
+
+        //place initial water
+        var initialWaterPos = new Vector2Int(gridPosX + (int)Random.Range(-1.5f, 1.5f), earthLevel - (int)Random.Range(2.5f, 4.5f));
+        _grid[initialWaterPos.x, initialWaterPos.y].SetTerrain(waterTerrain, initialWaterReservoirAmount);
+        Debug.Log($"Placed initial water at {initialWaterPos}");
 
         resourceManager.UpdateUpkeep();
         resourceManager.UpdateResourceIncome();
