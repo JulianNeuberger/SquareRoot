@@ -7,6 +7,7 @@ public class Card : ScriptableObject
     public Sprite sprite;
     public Sprite unhealthySprite;
     public Sprite deadSprite;
+    public int visionRange = 1;
     
     public int initialHealth = 1;
 

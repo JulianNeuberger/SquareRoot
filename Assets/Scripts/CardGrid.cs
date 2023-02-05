@@ -42,7 +42,7 @@ public class CardGrid : MonoBehaviour
     private GraphManager<CardView> _graph;
 
     public Vector2Int GridSize => new Vector2Int(widthCells, heightCells);
-    
+
     #region UnityCallbacks
 
     protected void Awake()
@@ -56,10 +56,11 @@ public class CardGrid : MonoBehaviour
         {
             Debug.Log("User clicked on leaf exchange button, exchanging resources");
             var success = resourceManager.ExchangeResourcesAtLeaf();
-            if(success)
+            if (success)
             {
                 _leafSelectedForExchange.Use();
             }
+
             leafExchangeButtonContainer.SetActive(false);
         });
     }
@@ -98,7 +99,7 @@ public class CardGrid : MonoBehaviour
         var end = worldPos + offset + new Vector3(widthCells * cellSize, 0, 0);
         Gizmos.DrawLine(start, end);
 
-        if(_graph != null)
+        if (_graph != null)
         {
             Gizmos.color = Color.yellow;
             foreach (var node in _graph.Nodes)
@@ -128,7 +129,9 @@ public class CardGrid : MonoBehaviour
 
         _gridPositionsWithActiveCardView.Remove(gridCell.GetGridPosition());
         _graph.DeleteNode(gridCell.GetActiveCardView());
-        
+
+        UpdateVisibility(gridCell.GetActiveCardView().GetCard(), gridCell.GetGridPosition(), -1);
+
         Destroy(gridCell.GetActiveCardView().gameObject);
         gridCell.SetCardView(null);
 
@@ -137,17 +140,19 @@ public class CardGrid : MonoBehaviour
         foreach (var node in toDelete)
         {
             _graph.DeleteNode(node.Value);
-            
+
             var cell = GetGridCell(WorldCoordinatesToGridPosition(node.Value.transform.position));
             if (cell == null) continue;
             _gridPositionsWithActiveCardView.Remove(cell.GetGridPosition());
             if (cell.GetActiveCardView() == null) continue;
-            
+
+            UpdateVisibility(cell.GetActiveCardView().GetCard(), cell.GetGridPosition(), -1);
+
             Destroy(node.Value.gameObject);
             cell.SetCardView(null);
         }
     }
-    
+
     public GridCell GetGridCell(Vector2Int gridPos)
     {
         if (gridPos.x < 0) return null;
@@ -178,28 +183,6 @@ public class CardGrid : MonoBehaviour
         return worldPos;
     }
 
-    public void HighlightCell(Vector2Int cellPos, Color color)
-    {
-        var cell = GetGridCell(cellPos);
-
-        if (cell != _highlightedCell)
-        {
-            if(_highlightedCell != null) _highlightedCell.SetHighlighted(false, Color.white);
-        }
-        
-        _highlightedCell = cell;
-        if (cell == null) return;
-        
-        _highlightedCell.SetHighlighted(true, color);        
-    }
-
-    public void ResetHighlight()
-    {
-        if (_highlightedCell == null) return;
-        _highlightedCell.SetHighlighted(false, Color.white);
-        _highlightedCell = null;
-    }
-
     public bool CanPlaceCard(Vector2Int gridPos, Card card, int rotation)
     {
         //Debug.Log($"Trying to place card {card.name} with rotation {rotation} at pos {gridPos}");
@@ -213,13 +196,15 @@ public class CardGrid : MonoBehaviour
 
         if (GetGridCell(gridPos).GetActiveCardView() != null)
         {
-            Debug.Log($"Can not place card here, there is already a {GetGridCell(gridPos).GetActiveCardView().name} here!");
+            Debug.Log(
+                $"Can not place card here, there is already a {GetGridCell(gridPos).GetActiveCardView().name} here!");
             return false;
         }
 
-        if(!card.CanPlaceOnTerrain(GetGridCell(gridPos).GetTerrain()))
+        if (!card.CanPlaceOnTerrain(GetGridCell(gridPos).GetTerrain()))
         {
-            Debug.Log($"Can not place card here, card {card.name} can not be placed on terrain {GetGridCell(gridPos).GetTerrain().name}.");
+            Debug.Log(
+                $"Can not place card here, card {card.name} can not be placed on terrain {GetGridCell(gridPos).GetTerrain().name}.");
             return false;
         }
 
@@ -241,7 +226,8 @@ public class CardGrid : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"Can not place card here, card to place has socket at top, but neighbor above has no attachable open socket at bottom.");
+                    Debug.Log(
+                        $"Can not place card here, card to place has socket at top, but neighbor above has no attachable open socket at bottom.");
                     return false;
                 }
             }
@@ -278,7 +264,8 @@ public class CardGrid : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"Can not place card here, card to place has socket at right, but neighbor right has no attachable open socket at left.");
+                    Debug.Log(
+                        $"Can not place card here, card to place has socket at right, but neighbor right has no attachable open socket at left.");
                     return false;
                 }
             }
@@ -315,7 +302,8 @@ public class CardGrid : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"Can not place card here, card to place has socket at bottom, but neighbor below has no attachable open socket at top.");
+                    Debug.Log(
+                        $"Can not place card here, card to place has socket at bottom, but neighbor below has no attachable open socket at top.");
                     return false;
                 }
             }
@@ -352,7 +340,8 @@ public class CardGrid : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"Can not place card here, card to place has socket at left, but neighbor left has no attachable open socket at right.");
+                    Debug.Log(
+                        $"Can not place card here, card to place has socket at left, but neighbor left has no attachable open socket at right.");
                     return false;
                 }
             }
@@ -372,13 +361,13 @@ public class CardGrid : MonoBehaviour
                 }
             }
         }
-        
+
         if (!connectingSocketAvailable)
         {
             Debug.Log($"Can not place card here, did not find any available connecting sockets.");
             return false;
         }
-        
+
         Debug.Log($"Can place card! All checks passed and we found connecting sockets available.");
         return true;
     }
@@ -408,7 +397,12 @@ public class CardGrid : MonoBehaviour
         cardView.SetRotation(rotation);
         cardView.SetCard(card);
         cardView.OnDeath = _ => DeleteCardAt(gridPos);
-        _grid[gridPos.x, gridPos.y].SetCardView(cardView);
+
+        var cell = _grid[gridPos.x, gridPos.y];
+        cell.SetCardView(cardView);
+
+        UpdateVisibility(card, cell.GetGridPosition(), 1);
+
         if (!_gridPositionsWithActiveCardView.Contains(gridPos))
         {
             _gridPositionsWithActiveCardView.Add(gridPos);
@@ -424,7 +418,7 @@ public class CardGrid : MonoBehaviour
             // add this plant to the connected plant parts
             _graph.AddNode(cardView);
 
-            foreach(var neighbour in GetNeighbors(gridPos))
+            foreach (var neighbour in GetNeighbors(gridPos))
             {
                 if (neighbour.GetActiveCardView() == null) continue;
                 _graph.Connect(cardView, neighbour.GetActiveCardView());
@@ -458,6 +452,7 @@ public class CardGrid : MonoBehaviour
         {
             neighbors.Add(GetNeighborLeft(gridPos));
         }
+
         Debug.Log($"GetNeighbors returning {neighbors.Count} neighbors");
 
         return neighbors;
@@ -475,6 +470,27 @@ public class CardGrid : MonoBehaviour
     #endregion
 
     #region PrivateMethods
+
+    private void UpdateVisibility(Card card, Vector2Int pos, int direction)
+    {
+        var additionalVisibility = 2;
+        for (var x = -card.visionRange - additionalVisibility; x <= card.visionRange + additionalVisibility; ++x)
+        {
+            for (var y = -card.visionRange - additionalVisibility; y <= card.visionRange + additionalVisibility; ++y)
+            {
+                if (x == 0 && y == 0) continue;
+
+                var dir = new Vector2Int(x, y);
+                var visibleCell = GetGridCell(pos + dir);
+                if (visibleCell == null) continue;
+
+                var distance = dir.magnitude;
+                var visibility = card.visionRange / distance;
+                visibility *= visibility;
+                visibleCell.VisibilityCounter += Mathf.Clamp01(visibility) * direction;
+            }
+        }
+    }
 
     private void HandleLeafClicked()
     {
@@ -522,7 +538,7 @@ public class CardGrid : MonoBehaviour
             for (var y = 0; y < heightCells; ++y)
             {
                 if (_grid[x, y].GetTerrain() != earthTerrain) continue;
-                
+
                 var shouldSpawnNitrate = Random.value < nitrateChance;
                 if (shouldSpawnNitrate)
                 {
@@ -565,7 +581,7 @@ public class CardGrid : MonoBehaviour
         var ray = _camera.ScreenPointToRay(Input.mousePosition);
         var hit = Physics2D.Raycast(ray.origin, ray.direction, 10f);
         if (!hit) return null;
-        
+
         var target = hit.collider.gameObject;
         return target.GetComponent<CardView>();
     }

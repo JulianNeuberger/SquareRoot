@@ -121,7 +121,7 @@ public class Hand : MonoBehaviour
         ghost.transform.position = worldPos;
         var gridPos = grid.WorldCoordinatesToGridPosition(worldPos);
         var canPlace = grid.CanPlaceCard(gridPos, _draggedCard.Card, _draggedCardRotation);
-        grid.HighlightCell(gridPos, canPlace ? Color.green : Color.red);
+        ghost.color = canPlace ? Color.green : Color.red;
     }
 
     private void HandleCardDragRotate()
@@ -166,7 +166,7 @@ public class Hand : MonoBehaviour
         _drawerHideStarted = Time.time;
         _drawerTargetPos = _drawerStartPos;
 
-        grid.ResetHighlight();
+        ghost.color = Color.white;
     }
     
     private HandCard GetDraggedHandCard()
