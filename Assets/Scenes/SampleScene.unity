@@ -2922,6 +2922,8 @@ MonoBehaviour:
   gateRight: 5
   gateTop: 8
   gateBottom: -15
+  dragSpeed: 0.5
+  cameraDragging: 1
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
