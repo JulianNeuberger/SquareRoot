@@ -23,7 +23,8 @@ public class Hand : MonoBehaviour
     [SerializeField] private ResourceManager resourceManager;
     
     [SerializeField] private Camera camera;
-    
+    [SerializeField] private AudioManager audioManager;
+
     public Deck redrawPile;
     public List<HandCard> Current => _currentCards;
     
@@ -83,6 +84,7 @@ public class Hand : MonoBehaviour
         
         ghost.sprite = cardStartedDragging.Card.sprite;
         ghost.enabled = true;
+        audioManager.PlayCardStartDragSound();
     }
 
     private void HandleCardDragOngoing()
@@ -108,6 +110,7 @@ public class Hand : MonoBehaviour
 
         var rotationAngles = new Vector3(0, 0, -90);
         ghost.transform.Rotate(rotationAngles);
+        audioManager.PlayCardRotateSound();
     }
 
     private void HandleCardDragEnded()
@@ -127,7 +130,12 @@ public class Hand : MonoBehaviour
                 resourceManager.PayForCard(_draggedCard.Card);
                 resourceManager.UpdateUpkeep();
                 resourceManager.UpdateResourceIncome();
+                audioManager.PlayCardPlacementSound();
             }
+        }
+        else
+        {
+            audioManager.PlayCardReturnToHandSound();
         }
 
         _draggedCard = null;

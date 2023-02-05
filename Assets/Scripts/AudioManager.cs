@@ -17,15 +17,54 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource leafWithering;
     [SerializeField] private AudioSource leafFalling;
 
-    // Start is called before the first frame update
-    void Start()
+
+    public void PlayCardStartDragSound()
     {
-        
+        cardStartDrag.PlayOneShot(cardStartDrag.clip);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlayCardPlacementSound()
     {
-        
+        cardPlacement.PlayOneShot(cardPlacement.clip);
+    }
+
+    public void PlayCardReturnToHandSound()
+    {
+        cardReturnToHand.PlayOneShot(cardReturnToHand.clip);
+    }
+
+    public void PlayCardRotateSound()
+    {
+        cardRotate.PlayOneShot(cardRotate.clip);
+    }
+
+    public void PlayClickOnUsableLeafSound()
+    {
+        clickOnUsableLeaf.PlayOneShot(clickOnUsableLeaf.clip);
+    }
+
+    public void PlayExchangeAtLeafSound()
+    {
+        exchangeAtLeaf.PlayOneShot(exchangeAtLeaf.clip);
+    }
+
+    public void PlayEndRoundSound()
+    {
+        endRound.PlayOneShot(endRound.clip);
+    }
+
+    public void PlayNotifyShortageSound()
+    {
+        notifyShortage.PlayOneShot(notifyShortage.clip);
+    }
+
+    public void PlayLeafWitheringSound()
+    {
+        leafWithering.PlayOneShot(leafWithering.clip);
+    }
+
+    public void PlayLeafFallingSound()
+    {
+        leafFalling.PlayOneShot(leafFalling.clip);
     }
 }

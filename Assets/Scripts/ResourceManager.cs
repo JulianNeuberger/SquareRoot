@@ -18,6 +18,8 @@ public class ResourceManager : MonoBehaviour
     public NitrateDisplay nitrateDisplay;
     public SugarDisplay sugarDisplay;
 
+    public AudioManager audioManager;
+
     [SerializeField] private int waterAmount = 5;
     [SerializeField] private int nitrateAmount = 1;
     [SerializeField] private int sugarAmount = 1;
@@ -256,7 +258,7 @@ public class ResourceManager : MonoBehaviour
         waterAmount -= WaterUpkeep;
         if(waterAmount < 0)
         {
-            Debug.Log("Water shortage!");
+            audioManager.PlayNotifyShortageSound();
             waterAmount = 0;
             waterDisplay.UpdateWaterShortageStatus(true);
             DecreaseLeaveHealth();
@@ -269,6 +271,7 @@ public class ResourceManager : MonoBehaviour
         nitrateAmount -= NitrateUpkeep;
         if (nitrateAmount < 0)
         {
+            audioManager.PlayNotifyShortageSound();
             nitrateAmount = 0;
             nitrateDisplay.UpdateNitrateShortageStatus(true);
             //TODO: Do something to have consequences (?)
@@ -281,6 +284,7 @@ public class ResourceManager : MonoBehaviour
         sugarAmount -= sugarUpkeep;
         if (sugarAmount < 0)
         {
+            audioManager.PlayNotifyShortageSound();
             sugarAmount = 0;
             sugarDisplay.UpdateSugarShortageStatus(true);
             //TODO: Do something to have consequences (?)
@@ -312,6 +316,7 @@ public class ResourceManager : MonoBehaviour
         var firstLeafAlivePosition = leavesAlivePositions.First();
         Debug.Log($"Decreasing health of leaf at position {firstLeafAlivePosition}");
         cardGrid.GetGridCell(firstLeafAlivePosition).GetActiveCardView().DecreaseHealth();
+        audioManager.PlayLeafWitheringSound();
 
         UpdateUpkeep();
     }

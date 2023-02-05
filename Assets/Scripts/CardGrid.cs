@@ -19,6 +19,7 @@ public class CardGrid : MonoBehaviour
     [SerializeField] private ResourceManager resourceManager;
 
     [SerializeField] private Camera _camera;
+    [SerializeField] private AudioManager _audioManager;
 
     [SerializeField] private int earthLevel = 25;
 
@@ -58,6 +59,7 @@ public class CardGrid : MonoBehaviour
             var success = resourceManager.ExchangeResourcesAtLeaf();
             if(success)
             {
+                _audioManager.PlayExchangeAtLeafSound();
                 _leafSelectedForExchange.Use();
             }
             leafExchangeButtonContainer.SetActive(false);
@@ -487,6 +489,7 @@ public class CardGrid : MonoBehaviour
                 return;
             }
 
+            _audioManager.PlayClickOnUsableLeafSound();
             _leafSelectedForExchange = cardView;
 
             var gridPos = WorldCoordinatesToGridPosition(cardView.transform.position);
