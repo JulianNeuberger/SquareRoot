@@ -367,6 +367,7 @@ MonoBehaviour:
   sugarIcon: {fileID: 1807006558123070955, guid: a94ea5b3272966f43894270e2e34ac03, type: 3}
   waterIcon: {fileID: 2328319500548926820, guid: 4801d95b788b71d4182cf8af5e51461c, type: 3}
   nitrateIcon: {fileID: 1171442357146366511, guid: f8b4da90d4fe2d24d900176b5630d745, type: 3}
+  amountTextPrefab: {fileID: 4756175602343370678, guid: 067abb5710a513a4d85c8171db13a28d, type: 3}
   costPanel: {fileID: 8731884347518193738}
   effectsPanel: {fileID: 3715070712541551634}
   effectContainer: {fileID: 8975942222025230621, guid: d981e789415f2bb4aabebc9ecec95ccc, type: 3}

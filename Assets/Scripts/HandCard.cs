@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,8 @@ public class HandCard : MonoBehaviour
     [SerializeField] private RectTransform waterIcon;
     [SerializeField] private RectTransform nitrateIcon;
 
+    [SerializeField] private TextMeshProUGUI amountTextPrefab;
+    
     [SerializeField] private RectTransform costPanel;
     [SerializeField] private RectTransform effectsPanel;
     [SerializeField] private RectTransform effectContainer;
@@ -61,9 +64,18 @@ public class HandCard : MonoBehaviour
 
     private void AddResourceIcon(RectTransform icon, int amount, RectTransform container)
     {
-        for (var i = 0; i < amount; ++i)
+        if (amount > 5)
         {
             Instantiate(icon, container);
+            var text = Instantiate(amountTextPrefab, container);
+            text.text = $"x{amount}";
+        }
+        else
+        {
+            for (var i = 0; i < amount; ++i)
+            {
+                Instantiate(icon, container);
+            }
         }
     }
 

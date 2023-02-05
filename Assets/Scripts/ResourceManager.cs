@@ -14,12 +14,20 @@ public class ResourceManager : MonoBehaviour
     public TerrainType waterTerrain;
     public TerrainType nitrateTerrain;
 
-    public WaterDisplay waterDisplay;
-    public NitrateDisplay nitrateDisplay;
-    public SugarDisplay sugarDisplay;
-
     public AudioManager audioManager;
 
+    public Action<int> WaterAmountChanged;
+    public Action<int> NitrateAmountChanged;
+    public Action<int> SugarAmountChanged;
+    
+    public Action<int> WaterIncomeChanged;
+    public Action<int> NitrateIncomeChanged;
+    public Action<int> SugarIncomeChanged;
+    
+    public Action<int> WaterUpkeepChanged;
+    public Action<int> NitrateUpkeepChanged;
+    public Action<int> SugarUpkeepChanged;
+    
     [SerializeField] private int waterAmount = 5;
     [SerializeField] private int nitrateAmount = 1;
     [SerializeField] private int sugarAmount = 1;
@@ -116,10 +124,10 @@ public class ResourceManager : MonoBehaviour
         var resourceIncome = GatherAllResources();
 
         WaterIncome = (int)resourceIncome.GetValueOrDefault(waterTerrain, 0);
-        waterDisplay.UpdateWaterIncome(WaterIncome);
+        WaterIncomeChanged?.Invoke(WaterIncome);
 
         NitrateIncome = (int)resourceIncome.GetValueOrDefault(nitrateTerrain, 0);
-        nitrateDisplay.UpdateNitrateIncome(NitrateIncome);
+        NitrateIncomeChanged?.Invoke(NitrateIncome);
     }
 
 
@@ -243,13 +251,13 @@ public class ResourceManager : MonoBehaviour
         }
 
         WaterUpkeep = (int)totalWaterUpkeep;
-        waterDisplay.UpdateWaterUpkeep(WaterUpkeep);
+        WaterUpkeepChanged?.Invoke(WaterUpkeep);
 
         NitrateUpkeep = (int)totalNitrateUpkeep;
-        nitrateDisplay.UpdateNitrateUpkeep(NitrateUpkeep);
+        NitrateUpkeepChanged?.Invoke(NitrateUpkeep);
 
         sugarUpkeep = (int)totalSugarUpkeep;
-        sugarDisplay.UpdateSugarUpkeep(sugarUpkeep);
+        SugarUpkeepChanged?.Invoke(sugarUpkeep);
     }
 
 
@@ -260,12 +268,7 @@ public class ResourceManager : MonoBehaviour
         {
             audioManager.PlayNotifyShortageSound();
             waterAmount = 0;
-            waterDisplay.UpdateWaterShortageStatus(true);
             DecreaseLeaveHealth();
-        }
-        else
-        {
-            waterDisplay.UpdateWaterShortageStatus(false);
         }
         
         nitrateAmount -= NitrateUpkeep;
@@ -273,12 +276,7 @@ public class ResourceManager : MonoBehaviour
         {
             audioManager.PlayNotifyShortageSound();
             nitrateAmount = 0;
-            nitrateDisplay.UpdateNitrateShortageStatus(true);
             //TODO: Do something to have consequences (?)
-        }
-        else
-        {
-            nitrateDisplay.UpdateNitrateShortageStatus(false);
         }
         
         sugarAmount -= sugarUpkeep;
@@ -286,12 +284,7 @@ public class ResourceManager : MonoBehaviour
         {
             audioManager.PlayNotifyShortageSound();
             sugarAmount = 0;
-            sugarDisplay.UpdateSugarShortageStatus(true);
             //TODO: Do something to have consequences (?)
-        }
-        else
-        {
-            sugarDisplay.UpdateSugarShortageStatus(false);
         }
 
         UpdateAmountsDisplay();
@@ -323,9 +316,9 @@ public class ResourceManager : MonoBehaviour
 
     private void UpdateAmountsDisplay()
     {
-        waterDisplay.UpdateWaterAmount(waterAmount);
-        nitrateDisplay.UpdateNitrateAmount(nitrateAmount);
-        sugarDisplay.UpdateSugarAmount(sugarAmount);
+        WaterAmountChanged?.Invoke(waterAmount);
+        NitrateAmountChanged?.Invoke(nitrateAmount);
+        SugarAmountChanged?.Invoke(sugarAmount);
     }
 }
 
