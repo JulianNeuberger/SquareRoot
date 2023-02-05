@@ -46,6 +46,7 @@ public class RoundManager : MonoBehaviour
         grid.PlaceStarter(grid.GridSize.x / 2);
         hud.SetActive(true);
         title.SetActive(false);
+        resourceManager.UpdateAmountsDisplay();
     }
 
     public void RestartGame()
