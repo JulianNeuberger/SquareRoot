@@ -137,18 +137,18 @@ public class ResourceManager : MonoBehaviour
         var gatheredResources = new Dictionary<TerrainType, float>();
 
         var allActiveCardViewsGridPositions = cardGrid.GetAllGridPositionsWithActiveCardViews();
-        Debug.Log($"GatherAllResources: Received {allActiveCardViewsGridPositions.Count} active card views throughout the grid");
+        //Debug.Log($"GatherAllResources: Received {allActiveCardViewsGridPositions.Count} active card views throughout the grid");
 
         foreach(var gridPosition in allActiveCardViewsGridPositions)
         {
             var gatheredResourcesOfCardView = GatherResourcesForCardViewAtPosition(gridPosition);
 
-            Debug.Log($"===== Gathered resources for gridPosition {gridPosition}: =====");
-            foreach (var pair in gatheredResourcesOfCardView)
-            {
-                Debug.Log($"{pair.Key}: {pair.Value}");
-            }
-            Debug.Log($"===== ===== ===== =====");
+            //Debug.Log($"===== Gathered resources for gridPosition {gridPosition}: =====");
+            //foreach (var pair in gatheredResourcesOfCardView)
+            //{
+            //    Debug.Log($"{pair.Key}: {pair.Value}");
+            //}
+            //Debug.Log($"===== ===== ===== =====");
 
             foreach (var resource in gatheredResourcesOfCardView.Keys)
             {
@@ -163,12 +163,12 @@ public class ResourceManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"===== Gathered resources overall: =====");
-        foreach (var pair in gatheredResources)
-        {
-            Debug.Log($"{pair.Key}: {pair.Value}");
-        }
-        Debug.Log($"===== ===== ===== =====");
+        //Debug.Log($"===== Gathered resources overall: =====");
+        //foreach (var pair in gatheredResources)
+        //{
+        //    Debug.Log($"{pair.Key}: {pair.Value}");
+        //}
+        //Debug.Log($"===== ===== ===== =====");
 
         return gatheredResources;
     }
@@ -176,44 +176,47 @@ public class ResourceManager : MonoBehaviour
 
     private Dictionary<TerrainType, float> GatherResourcesForCardViewAtPosition(Vector2Int pos)
     {
-        Debug.Log($"GatherResourcesForCardViewAtPosition {pos}, cardType is {cardGrid.GetGridCell(pos).GetActiveCardView().GetCard().name}");
+        //Debug.Log($"GatherResourcesForCardViewAtPosition {pos}, cardType is {cardGrid.GetGridCell(pos).GetActiveCardView().GetCard().name}");
 
         var gatheredResources = new Dictionary<TerrainType, float>();
 
         var gridCell = cardGrid.GetGridCell(pos);
         var gatherMultiplier = gridCell.GetActiveCardView().GetCard().gatherMultiplierOnResource;
         var terrain = gridCell.GetTerrain();
-        Debug.Log($"{pos} On cell: gatherMultiplier is {gatherMultiplier}, terrain is {terrain}");
+        //Debug.Log($"{pos} On cell: gatherMultiplier is {gatherMultiplier}, terrain is {terrain}");
 
         if (terrain.IsGatherable && gridCell.GetActiveCardView().GetCard().CanGatherResource(terrain))
         {
             gatheredResources.Add(terrain, gatherMultiplier);
-            Debug.Log($"{pos} On cell: Added {gatherMultiplier} of {terrain}");
+            //Debug.Log($"{pos} On cell: Added {gatherMultiplier} of {terrain}");
         }    
         
-        var neighborGridCells = cardGrid.GetNeighbors(pos);
 
-        Debug.Log($"Got {neighborGridCells.Count} neighbors to gather from");
-        var gatherMultiplierNeighbors = gridCell.GetActiveCardView().GetCard().gatherMultiplierNextToResource;
-        foreach (var neighbor in neighborGridCells)
-        {
-            terrain = neighbor.GetTerrain();
-            Debug.Log($"{pos} Neighbor {neighbor.GetGridPosition()}: gatherMultiplier is {gatherMultiplierNeighbors}, terrain is {terrain}");
+        //TODO: Reactivate neighbor resource gathering if needed
 
-            if (terrain.IsGatherable && gridCell.GetActiveCardView().GetCard().CanGatherResource(terrain))
-            {
-                if (!gatheredResources.ContainsKey(terrain))
-                {
-                    gatheredResources.Add(terrain, gatherMultiplierNeighbors);
-                    Debug.Log($"{pos} Neighbor: Added {gatherMultiplier} of {terrain} (new resource)");
-                }
-                else
-                {
-                    gatheredResources[terrain] = gatheredResources[terrain] + gatherMultiplierNeighbors;
-                    Debug.Log($"{pos} Neighbor: Added {gatherMultiplier} of {terrain} (existing, total amount is now {gatheredResources[terrain]})");
-                }
-            }
-        }
+        //var neighborGridCells = cardGrid.GetNeighbors(pos);
+
+        //Debug.Log($"Got {neighborGridCells.Count} neighbors to gather from");
+        //var gatherMultiplierNeighbors = gridCell.GetActiveCardView().GetCard().gatherMultiplierNextToResource;
+        //foreach (var neighbor in neighborGridCells)
+        //{
+        //    terrain = neighbor.GetTerrain();
+        //    Debug.Log($"{pos} Neighbor {neighbor.GetGridPosition()}: gatherMultiplier is {gatherMultiplierNeighbors}, terrain is {terrain}");
+
+        //    if (terrain.IsGatherable && gridCell.GetActiveCardView().GetCard().CanGatherResource(terrain))
+        //    {
+        //        if (!gatheredResources.ContainsKey(terrain))
+        //        {
+        //            gatheredResources.Add(terrain, gatherMultiplierNeighbors);
+        //            Debug.Log($"{pos} Neighbor: Added {gatherMultiplier} of {terrain} (new resource)");
+        //        }
+        //        else
+        //        {
+        //            gatheredResources[terrain] = gatheredResources[terrain] + gatherMultiplierNeighbors;
+        //            Debug.Log($"{pos} Neighbor: Added {gatherMultiplier} of {terrain} (existing, total amount is now {gatheredResources[terrain]})");
+        //        }
+        //    }
+        //}
 
         return gatheredResources;
     }
