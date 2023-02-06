@@ -1,10 +1,8 @@
 using System;
-using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Scene = UnityEditor.SearchService.Scene;
 
 public class RoundManager : MonoBehaviour
 {
@@ -48,6 +46,8 @@ public class RoundManager : MonoBehaviour
         grid.PlaceStarter(grid.GridSize.x / 2);
         hud.SetActive(true);
         title.SetActive(false);
+        redrawPile.TriggerUpdate();
+        discardPile.TriggerUpdate();
     }
 
     public void RestartGame()

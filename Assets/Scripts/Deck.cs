@@ -17,6 +17,11 @@ public class Deck : MonoBehaviour
         deckChanged?.Invoke(this);
     }
 
+    public void TriggerUpdate()
+    {
+        deckChanged?.Invoke(this);
+    }
+    
     public int CardsRemaining()
     {
         return contents.Select(e => e.amount).Sum();

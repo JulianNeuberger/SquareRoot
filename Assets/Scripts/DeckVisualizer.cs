@@ -13,13 +13,22 @@ public class DeckVisualizer : MonoBehaviour
     private void Start()
     {
         visualizedDeck.deckChanged.AddListener(d => UpdateCards(d.CardsRemaining()));
+        UpdateCards(visualizedDeck.CardsRemaining(), true);
     }
 
-    private void UpdateCards(int amount)
+    private void UpdateCards(int amount, bool force = false)
     {
         if (_lastSize == amount) return;
         _lastSize = amount;
 
+        if (force)
+        {
+            foreach (Transform child in transform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        
         var currentCards = transform.childCount;
         var diff = amount - currentCards;
 
