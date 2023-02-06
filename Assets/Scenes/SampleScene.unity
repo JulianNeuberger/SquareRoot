@@ -3160,15 +3160,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 401ecf3e7d1585e459e0e0b39f90bcfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowScrollSpeed: 2
-  fastScrollSpeed: 5
+  slowScrollSpeed: 0.5
+  fastScrollSpeed: 1.5
   slowScrollDistance: 30
   fastScrollDistance: 10
   gateLeft: -8
   gateRight: 5
   gateTop: 8
   gateBottom: -15
-  dragSpeed: 0.5
+  dragSpeed: 0.1
   cameraDragging: 1
 --- !u!114 &963194230
 MonoBehaviour:
@@ -3222,7 +3222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76d3acd794873ba498a50a46aee0353c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseCursor: {fileID: 2800000, guid: fa7ab3421b01a84469c1f54cd1b698b9, type: 3}
+  mouseCursor: {fileID: 0}
 --- !u!1 &976356155
 GameObject:
   m_ObjectHideFlags: 0
