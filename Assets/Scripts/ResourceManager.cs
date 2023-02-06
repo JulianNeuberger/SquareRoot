@@ -323,7 +323,7 @@ public class ResourceManager : MonoBehaviour
         UpdateUpkeep();
     }
 
-    private void UpdateAmountsDisplay()
+    public void UpdateAmountsDisplay()
     {
         WaterAmountChanged?.Invoke(waterAmount);
         NitrateAmountChanged?.Invoke(nitrateAmount);

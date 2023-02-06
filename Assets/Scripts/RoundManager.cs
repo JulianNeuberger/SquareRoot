@@ -48,6 +48,7 @@ public class RoundManager : MonoBehaviour
         title.SetActive(false);
         redrawPile.TriggerUpdate();
         discardPile.TriggerUpdate();
+        resourceManager.UpdateAmountsDisplay();
     }
 
     public void RestartGame()
